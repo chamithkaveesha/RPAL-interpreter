@@ -3,10 +3,11 @@ import java.util.List;
 
 public class State {
     private final String name;
-    private HashMap<Character, State> transitions;
+    private final HashMap<Character, State> transitions;
 
     public State(String name) {
         this.name = name;
+        this.transitions = new HashMap<>();
     }
     public String getName() {
         return name;

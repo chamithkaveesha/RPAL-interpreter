@@ -16,6 +16,16 @@ public class FiniteAutomaton {
         this.currentState = initialState;
         this.acceptingStates = new HashSet<>(acceptingStates);
         this.language = new HashSet<>(language);
+        this.outputStates = new HashSet<>();
+    }
+
+    public State getState(String stateName) {
+        for (State state : states) {
+            if (state.getName().equals(stateName)) {
+                return state;
+            }
+        }
+        return null;
     }
 
     public State transition(char symbol) {
