@@ -36,6 +36,10 @@ public class FiniteAutomaton {
         return currentState;
     }
 
+    public boolean hasTransition(char symbol) {
+        return states.contains(currentState.getTransition(symbol));
+    }
+
     public void reset() {
         currentState = initialState;
     }
