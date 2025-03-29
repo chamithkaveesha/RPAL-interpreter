@@ -3,7 +3,8 @@ import java.util.*;
 public class FiniteAutomatonBuilder {
     private final Map<String, State> states = new HashMap<>();
     private State initialState;
-    private final Set<State> finalStates = new HashSet<>();
+    private final Set<State> acceptingStates = new HashSet<>();
+    private final Set<State> outputStates = new HashSet<>();
     private final Set<Character> language = new HashSet<>();
 
     public State addState(String name) {
@@ -20,12 +21,21 @@ public class FiniteAutomatonBuilder {
         return this;
     }
 
-    public FiniteAutomatonBuilder addFinalState(String stateName) {
+    public FiniteAutomatonBuilder addAcceptingState(String stateName) {
         State state = states.get(stateName);
         if (state == null) {
             throw new IllegalArgumentException("State not found: " + stateName);
         }
-        finalStates.add(state);
+        acceptingStates.add(state);
+        return this;
+    }
+
+    public FiniteAutomatonBuilder addOutputState(String stateName) {
+        State state = states.get(stateName);
+        if (state == null) {
+            throw new IllegalArgumentException("State not found: " + stateName);
+        }
+        outputStates.add(state);
         return this;
     }
 
@@ -40,14 +50,14 @@ public class FiniteAutomatonBuilder {
         return this;
     }
 
-    public FiniteAutomata build() {
+    public FiniteAutomaton build() {
         if (initialState == null) {
             throw new IllegalStateException("Initial state not set");
         }
-        return new FiniteAutomata(
+        return new FiniteAutomaton(
                 new ArrayList<>(states.values()),
                 initialState,
-                finalStates,
+                acceptingStates,
                 language
         );
     }

@@ -1,19 +1,20 @@
 import java.util.*;
 
-public class FiniteAutomata {
+public class FiniteAutomaton {
     private final List<State> states;
-    private Set<State> finalStates;
+    private Set<State> acceptingStates;
+    private Set<State> outputStates;
     private Set<Character> language;
     private State initialState;
     private State currentState;
 
 
-    FiniteAutomata(List<State> states, State initialState,
-                           Set<State> finalStates, Set<Character> language) {
+    FiniteAutomaton(List<State> states, State initialState,
+                    Set<State> acceptingStates, Set<Character> language) {
         this.states = new ArrayList<>(states);
         this.initialState = initialState;
         this.currentState = initialState;
-        this.finalStates = new HashSet<>(finalStates);
+        this.acceptingStates = new HashSet<>(acceptingStates);
         this.language = new HashSet<>(language);
     }
 
@@ -43,6 +44,9 @@ public class FiniteAutomata {
         return this.currentState;
     }
     public boolean isAcceptingState(){
-        return finalStates.contains(currentState);
+        return acceptingStates.contains(currentState);
+    }
+    public boolean isOutputState(){
+        return outputStates.contains(currentState);
     }
 }
