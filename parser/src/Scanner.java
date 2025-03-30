@@ -30,6 +30,7 @@ public class Scanner {
     }
 
     public Token nextToken() {
+        // TODO: EOF logic need to be revised
         if (currentPosition >= input.length()) {
             return new Token(TokenType.EOF, "", lineNumber, columnNumber);
         }
@@ -55,7 +56,7 @@ public class Scanner {
                     );
                 }
 
-                // lookahead for next state belonging to sama token class
+                // lookahead for next state belonging to same token class
                 // if not output the token
                 if (!lexerAutomaton.hasTransition(currentChar)) {
                     break;

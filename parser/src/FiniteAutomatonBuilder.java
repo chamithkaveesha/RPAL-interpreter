@@ -43,6 +43,11 @@ public final class FiniteAutomatonBuilder {
         return this;
     }
 
+    public FiniteAutomatonBuilder withAcceptingStates(List<State> statesList) {
+        acceptingStates.addAll(statesList);
+        return this;
+    }
+
     public FiniteAutomatonBuilder withOutputState(String stateName) {
         State state = states.computeIfAbsent(stateName, State::new);
         this.outputStates.add(state);
