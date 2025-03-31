@@ -4,10 +4,8 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        java.util.Scanner userInput = new java.util.Scanner(System.in);
-        System.out.print("Enter the filename: ");
-        String filename = userInput.nextLine();
-
+        String filename = getFilenameFromCommandLineArguments(args);
+        if (filename == null) return;
 
         StringBuilder fileContent = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -15,6 +13,9 @@ public class Main {
             while ((line = reader.readLine()) != null) {
                 fileContent.append(line).append("\n");
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File not found - " + filename);
+            return;
         } catch (IOException e) {
             System.out.println("Error reading the file: " + e.getMessage());
             return;
@@ -41,6 +42,14 @@ public class Main {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private static String getFilenameFromCommandLineArguments(String[] args) {
+        if (args.length == 0) {
+            System.out.println("Usage: java Main <filename>");
+            return null;
+        }
+        return args[0];
     }
 
     private static FiniteAutomaton makeAutomaton() {
