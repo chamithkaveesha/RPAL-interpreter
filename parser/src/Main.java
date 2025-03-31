@@ -66,10 +66,10 @@ public class Main {
         acceptingStatesToTokenTypes.put(automaton.getState("q7"), TokenType.OPERATOR);
         // //+ - recognized as comments
         acceptingStatesToTokenTypes.put(automaton.getState("q9"), TokenType.DELETE);
-        acceptingStatesToTokenTypes.put(automaton.getState("q10"), TokenType.PUNCTUATION_OPEN_BRACKET);
-        acceptingStatesToTokenTypes.put(automaton.getState("q11"), TokenType.PUNCTUATION_CLOSE_BRACKET);
-        acceptingStatesToTokenTypes.put(automaton.getState("q12"), TokenType.PUNCTUATION_SEMICOLON);
-        acceptingStatesToTokenTypes.put(automaton.getState("q13"), TokenType.PUNCTUATION_COMMA);
+        acceptingStatesToTokenTypes.put(automaton.getState("q10"), TokenType.OPEN_BRACKET);
+        acceptingStatesToTokenTypes.put(automaton.getState("q11"), TokenType.CLOSE_BRACKET);
+        acceptingStatesToTokenTypes.put(automaton.getState("q12"), TokenType.SEMICOLON);
+        acceptingStatesToTokenTypes.put(automaton.getState("q13"), TokenType.COMMA);
         return acceptingStatesToTokenTypes;
     }
 
