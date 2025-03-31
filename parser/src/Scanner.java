@@ -45,16 +45,6 @@ public class Scanner {
             char currentChar = input.charAt(currentPosition);
 
             try {
-                if (lexerAutomaton.isOutputState()) {
-                    String tokenText = lexeme.toString();
-                    return new Token(
-                            acceptingStatesToTokenTypes.get(lexerAutomaton.getCurrentState()),
-                            tokenText,
-                            startLine,
-                            startColumn
-                    );
-                }
-
                 // lookahead for next state belonging to same token class
                 // if not output the token
                 if (!lexerAutomaton.hasTransition(currentChar)) {
