@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RPALScreener implements Screener {
-    List<Token> out = new ArrayList<>();
     @Override
     public List<Token> screen(List<Token> tokens) {
+        List<Token> out = new ArrayList<>();
         for (Token token : tokens) {
             if (token.getType() != TokenType.DELETE) {
                 out.add(token);
