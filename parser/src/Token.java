@@ -1,5 +1,5 @@
 public class Token {
-    private final TokenType type;
+    private TokenType type;
     private final String lexeme;
     private final int line;
     private final int column;
@@ -13,6 +13,9 @@ public class Token {
 
     public TokenType getType() {
         return type;
+    }
+    public void setType(TokenType type) {
+        this.type = type;
     }
     public int getLine() {
         return line;
