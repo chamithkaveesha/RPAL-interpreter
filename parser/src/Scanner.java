@@ -30,9 +30,13 @@ public class Scanner {
     }
 
     public Token nextToken() {
-        // TODO: EOF logic need to be revised
-        if (currentPosition >= input.length()) {
-            return new Token(TokenType.EOF, "", lineNumber, columnNumber);
+        if (currentPosition == input.length() - 1) {
+            // TODO: change this
+            if (input.charAt(currentPosition) == '\n') {
+                return new Token(TokenType.EOF, "EOF", lineNumber, columnNumber);
+            }
+            // TODO: throw correct error name and handle it
+            throw new Error("Unexpected end of file at line " + lineNumber + ":" + columnNumber);
         }
 
         int startPosition = currentPosition;

@@ -1,4 +1,4 @@
-class Token {
+public class Token {
     private final TokenType type;
     private final String lexeme;
     private final int line;
@@ -14,8 +14,18 @@ class Token {
     public TokenType getType() {
         return type;
     }
-
+    public int getLine() {
+        return line;
+    }
+    public int getColumn() {
+        return column;
+    }
     public String getLexeme() {
         return lexeme;
+    }
+
+    @Override
+    public String toString() {
+        return type + ": " + lexeme + " at line: " + line + " column: " + column;
     }
 }
