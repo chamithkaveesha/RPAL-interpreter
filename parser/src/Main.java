@@ -1,18 +1,18 @@
 import java.io.*;
 import java.util.*;
 
+import static java.nio.file.Files.readAllBytes;
+import static java.nio.file.Paths.get;
+
 public class Main {
     public static void main(String[] args) {
 
         String filename = getFilenameFromCommandLineArguments(args);
         if (filename == null) return;
 
-        StringBuilder fileContent = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                fileContent.append(line).append("\n");
-            }
+        String fileContent;
+        try {
+            fileContent = new String(readAllBytes(get(filename)));
         } catch (FileNotFoundException e) {
             System.out.println("Error: File not found - " + filename);
             return;
@@ -21,23 +21,13 @@ public class Main {
             return;
         }
 
-        FiniteAutomaton automaton = makeAutomaton();
-        HashMap<State, TokenType> acceptingStatesToTokenTypes = new HashMap<>();
-        acceptingStatesToTokenTypes.put(automaton.getState("q0"), TokenType.IDENTIFIER);
-        acceptingStatesToTokenTypes.put(automaton.getState("q1"), TokenType.IDENTIFIER);
-        Scanner scanner = new Scanner(automaton, new HashMap<>(), acceptingStatesToTokenTypes);
+        Scanner scanner = setupScanner();
 
-        scanner.setInput(fileContent.toString());
+        scanner.setInput(fileContent);
         try {
-            int i = 0;
-            Token token = scanner.nextToken();
-
-            while (token.getType() != TokenType.EOF) {
-                System.out.println("token" + i + " " + token.getLexeme());
-                i++;
-                token = scanner.nextToken();
+            for (Token token : scanner.tokenize()) {
+                System.out.println(token);
             }
-
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -50,6 +40,30 @@ public class Main {
             return null;
         }
         return args[0];
+    }
+
+    private static Scanner setupScanner() {
+        FiniteAutomaton automaton = makeAutomaton();
+        HashMap<State, TokenType> acceptingStatesToTokenTypes = setupStateTokenTypeHashMap(automaton);
+        return new Scanner(automaton, new HashMap<>(), acceptingStatesToTokenTypes);
+    }
+
+    private static HashMap<State, TokenType> setupStateTokenTypeHashMap(FiniteAutomaton automaton) {
+        HashMap<State, TokenType> acceptingStatesToTokenTypes = new HashMap<>();
+        acceptingStatesToTokenTypes.put(automaton.getState("q1"), TokenType.IDENTIFIER);
+        acceptingStatesToTokenTypes.put(automaton.getState("q2"), TokenType.INTEGER);
+        acceptingStatesToTokenTypes.put(automaton.getState("q3"), TokenType.OPERATOR);
+        acceptingStatesToTokenTypes.put(automaton.getState("q5"), TokenType.STRING);
+        acceptingStatesToTokenTypes.put(automaton.getState("q6"), TokenType.DELETE);
+        // / - recognized as operator
+        acceptingStatesToTokenTypes.put(automaton.getState("q7"), TokenType.OPERATOR);
+        // //+ - recognized as comments
+        acceptingStatesToTokenTypes.put(automaton.getState("q9"), TokenType.DELETE);
+        acceptingStatesToTokenTypes.put(automaton.getState("q10"), TokenType.PUNCTUATION_OPEN_BRACKET);
+        acceptingStatesToTokenTypes.put(automaton.getState("q11"), TokenType.PUNCTUATION_CLOSE_BRACKET);
+        acceptingStatesToTokenTypes.put(automaton.getState("q12"), TokenType.PUNCTUATION_SEMICOLON);
+        acceptingStatesToTokenTypes.put(automaton.getState("q13"), TokenType.PUNCTUATION_COMMA);
+        return acceptingStatesToTokenTypes;
     }
 
     private static FiniteAutomaton makeAutomaton() {
