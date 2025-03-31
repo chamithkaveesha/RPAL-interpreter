@@ -1,3 +1,5 @@
+package utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,16 +31,17 @@ public class SymbolUtils {
         return List.of(
                 '+', '-', '*', '<', '>', '&', '.',
                 '@', ':', '=', '~', '|', '$',
-//                '/',
+                '/',
                 '!', '#', '%', '^', '_', ']', '[',
                 '{', '}', '"', '‘', '?'
         );
     }
 
     // symbols allowed in strings rather than digits, letters and operator symbols
+    // change between single and double quotes when using another
     public static List<Character> getStringSymbols() {
         return List.of(
-                '\t', '\n', '\\', '\'',
+                '\t', '\n', '\\', '"',
                 '(', ')', ';', ',',
                 ' '
         );
@@ -46,7 +49,7 @@ public class SymbolUtils {
 
     public static List<Character> getCommentSymbols() {
         return List.of(
-                '"', '(', ')', ';', ',', '\\', ' ',
+                '"', '\'', '(', ')', ';', ',', '\\', ' ',
                 '\t'
         );
     }

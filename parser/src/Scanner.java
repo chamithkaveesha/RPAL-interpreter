@@ -1,106 +1,28 @@
-import java.util.*;
+import java.util.List;
 
-public class Scanner {
-    private final FiniteAutomaton lexerAutomaton;
-    private final Map<String, TokenType> keywords;
-    private final Map<State, TokenType> acceptingStatesToTokenTypes;
-    private String input;
-    private int currentPosition;
-    private int lineNumber;
-    private int columnNumber;
+public abstract class Scanner {
+    protected String input;
+    protected int currentPosition;
+    protected int lineNumber;
+    protected int columnNumber;
 
-    public Scanner(FiniteAutomaton lexerAutomaton, Map<String, TokenType> keywords,
-                   Map<State, TokenType> acceptingStatesToTokenTypes) {
-        this.lexerAutomaton = lexerAutomaton;
-        this.keywords = new HashMap<>(keywords);
-        this.acceptingStatesToTokenTypes = new HashMap<>(acceptingStatesToTokenTypes);
-        reset();
-    }
+    public abstract void setInput(String input);
+    public abstract boolean hasNext();
+    public abstract Token nextToken();
+    public abstract List<Token> tokenize();
 
-    public void setInput(String input) {
-        this.input = input;
-        reset();
-    }
-
-    private void reset() {
+    protected void reset() {
         this.currentPosition = 0;
         this.lineNumber = 1;
         this.columnNumber = 1;
-        lexerAutomaton.reset();
     }
 
-    public boolean hasNext() {
-        return currentPosition < input.length();
-    }
-
-    public Token nextToken() {
-        int startPosition = currentPosition;
-        int startLine = lineNumber;
-        int startColumn = columnNumber;
-        StringBuilder lexeme = new StringBuilder();
-
-        lexerAutomaton.reset();
-
-        while (currentPosition < input.length()) {
-            char currentChar = input.charAt(currentPosition);
-
-            try {
-                // lookahead for next state belonging to same token class
-                // if not output the token
-                if (!lexerAutomaton.hasTransition(currentChar)) {
-                    break;
-                }
-
-                // Process the character
-                lexerAutomaton.transition(currentChar);
-                lexeme.append(currentChar);
-                updatePosition(currentChar);
-                currentPosition++;
-            } catch (IllegalArgumentException | IllegalStateException e) {
-                break;
-            }
-        }
-
-        // output the valid token
-        if (lexerAutomaton.isAcceptingState()) {
-            String tokenText = lexeme.toString();
-
-            TokenType tokenType = acceptingStatesToTokenTypes.get(lexerAutomaton.getCurrentState());
-            // TODO: move this to scanner or keep here
-            if (tokenType == TokenType.IDENTIFIER && keywords.containsKey(tokenText)) {
-                return new Token(keywords.get(tokenText), tokenText, startLine, startColumn);
-            }
-
-            return new Token(tokenType, tokenText, startLine, startColumn);
-        }
-
-        String invalidText = input.substring(startPosition, Math.min(startPosition + 10, input.length()));
-        throw new ScannerException("Invalid token at line " + startLine + ", column " + startColumn +
-                ": '" + invalidText + "'");
-    }
-
-    private void updatePosition(char c) {
+    protected void updatePosition(char c) {
         if (c == '\n') {
             lineNumber++;
             columnNumber = 1;
         } else {
             columnNumber++;
         }
-    }
-
-    public List<Token> tokenize() {
-        List<Token> tokens = new ArrayList<>();
-        Token token;
-        while (hasNext()) {
-            token = nextToken();
-            tokens.add(token);
-        }
-        return tokens;
-    }
-}
-
-class ScannerException extends RuntimeException {
-    public ScannerException(String message) {
-        super(message);
     }
 }
