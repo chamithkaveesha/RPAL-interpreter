@@ -29,16 +29,11 @@ public class Scanner {
         lexerAutomaton.reset();
     }
 
-    public Token nextToken() {
-        if (currentPosition == input.length() - 1) {
-            // TODO: change this
-            if (input.charAt(currentPosition) == '\n') {
-                return new Token(TokenType.EOF, "EOF", lineNumber, columnNumber);
-            }
-            // TODO: throw correct error name and handle it
-            throw new Error("Unexpected end of file at line " + lineNumber + ":" + columnNumber);
-        }
+    public boolean hasNext() {
+        return currentPosition < input.length();
+    }
 
+    public Token nextToken() {
         int startPosition = currentPosition;
         int startLine = lineNumber;
         int startColumn = columnNumber;
@@ -106,10 +101,10 @@ public class Scanner {
     public List<Token> tokenize() {
         List<Token> tokens = new ArrayList<>();
         Token token;
-        do {
+        while (hasNext()) {
             token = nextToken();
             tokens.add(token);
-        } while (token.getType() != TokenType.EOF);
+        }
         return tokens;
     }
 }
