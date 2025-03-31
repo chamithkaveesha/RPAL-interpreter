@@ -3,7 +3,6 @@ import java.util.*;
 public class FiniteAutomaton {
     private final List<State> states;
     private Set<State> acceptingStates;
-    private Set<State> outputStates;
     private Set<Character> language;
     private State initialState;
     private State currentState;
@@ -16,7 +15,6 @@ public class FiniteAutomaton {
         this.currentState = initialState;
         this.acceptingStates = new HashSet<>(acceptingStates);
         this.language = new HashSet<>(language);
-        this.outputStates = new HashSet<>();
     }
 
     public State getState(String stateName) {
@@ -59,8 +57,5 @@ public class FiniteAutomaton {
     }
     public boolean isAcceptingState(){
         return acceptingStates.contains(currentState);
-    }
-    public boolean isOutputState(){
-        return outputStates.contains(currentState);
     }
 }
