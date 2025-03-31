@@ -1,18 +1,42 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+
+        java.util.Scanner userInput = new java.util.Scanner(System.in);
+        System.out.print("Enter the filename: ");
+        String filename = userInput.nextLine();
+
+
+        StringBuilder fileContent = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                fileContent.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading the file: " + e.getMessage());
+            return;
+        }
+
         FiniteAutomaton automaton = makeAutomaton();
         HashMap<State, TokenType> acceptingStatesToTokenTypes = new HashMap<>();
         acceptingStatesToTokenTypes.put(automaton.getState("q0"), TokenType.IDENTIFIER);
         acceptingStatesToTokenTypes.put(automaton.getState("q1"), TokenType.IDENTIFIER);
         Scanner scanner = new Scanner(automaton, new HashMap<>(), acceptingStatesToTokenTypes);
-        scanner.setInput("let f x y = x\n" +
-                "in Print(f 3+4 (1//0))\n");
+
+        scanner.setInput(fileContent.toString());
         try {
-            for (int i = 0; i < 30; i++) {
-                System.out.println("token" + i + " " + scanner.nextToken().getLexeme());
+            int i = 0;
+            Token token = scanner.nextToken();
+
+            while (token.getType() != TokenType.EOF) {
+                System.out.println("token" + i + " " + token.getLexeme());
+                i++;
+                token = scanner.nextToken();
             }
+
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -100,13 +124,11 @@ public class Main {
         language.addAll(stringSymbols);
         language.addAll(commentSymbols);        // these contain all other possible symbols also
 
-        FiniteAutomaton automaton = FiniteAutomatonBuilder.builder()
+        return FiniteAutomatonBuilder.builder()
                 .withStates(List.of(q0, q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13))
                 .withInitialState(q0.getName())
                 .withAcceptingStates(List.of(q1, q2, q3, q5, q6, q7, q9, q10, q11, q12, q13))
                 .withLanguage(language)
                 .build();
-
-        return automaton;
     }
 }
