@@ -24,8 +24,15 @@ public class Main {
         Scanner scanner = setupScanner();
 
         scanner.setInput(fileContent);
+        List<Token> tokenList = scanner.tokenize();
+        Screener screener = new RPALScreener();
+        List<Token> screenedTokens = screener.screen(tokenList);
         try {
-            for (Token token : scanner.tokenize()) {
+            for (Token token : tokenList) {
+                System.out.println(token);
+            }
+            System.out.println("Screened Tokens: ");
+            for (Token token : screenedTokens) {
                 System.out.println(token);
             }
         }
