@@ -116,7 +116,9 @@ public class Main {
         q8.setTransition(digits, q8);
         q8.setTransition(operatorSymbols, q8);
         q8.setTransition(commentSymbols, q8);
-
+        // more / in comment
+        q8.setTransition('/', q8);
+        // FIXME: keep this as this is or remove final \n
         q8.setTransition('\n', q9);
 
         // Punction
