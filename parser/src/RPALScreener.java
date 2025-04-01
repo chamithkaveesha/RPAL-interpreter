@@ -32,7 +32,7 @@ public class RPALScreener implements Screener {
         keywords.put("nil", TokenType.NIL);
         keywords.put("dummy", TokenType.DUMMY);
 
-        keywords.put("within", TokenType.WITHIN);
+        keywords.put("within", TokenType.KEYWORD_WITHIN);
         keywords.put("and", TokenType.AND_SIMULTANEOUS_DEFINITION);
         keywords.put("rec", TokenType.REC);
     }
