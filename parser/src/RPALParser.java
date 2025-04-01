@@ -236,9 +236,9 @@ public class RPALParser implements Parser {
 
     private void Af(){
         Ap();
-        while (nextTokenType == TokenType.EXPONENT){
+        if (nextTokenType == TokenType.EXPONENT){
             read(TokenType.EXPONENT);
-            Ap();
+            Af();
             astBuilder.buildTreeOrdered(new ASTNode("**"), 2);
         }
     }
@@ -304,9 +304,9 @@ public class RPALParser implements Parser {
     // this should not work when two withins are there
     private void D(){
         Da();
-        while (nextTokenType == TokenType.KEYWORD_WITHIN){
+        if (nextTokenType == TokenType.KEYWORD_WITHIN){
             read(TokenType.KEYWORD_WITHIN);
-            Da();
+            D();
             astBuilder.buildTreeOrdered(new ASTNode("within"), 2);
         }
     }
@@ -376,10 +376,6 @@ public class RPALParser implements Parser {
                 read(TokenType.CLOSE_BRACKET);
                 break;
             default:
-                Vl();
-                read(TokenType.EQUAL);
-                E();
-                astBuilder.buildTreeOrdered(new ASTNode("="), 2);
                 break;
         }
     }
