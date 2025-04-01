@@ -12,10 +12,7 @@ public class RPALParser implements Parser {
 
     @Override
     public void parse() {
-        // TODO: this is not optimal
-//        while (nextToken != TokenType.EOF) {
             E();
-//        }
     }
 
     private void read(TokenType tokenType) {
