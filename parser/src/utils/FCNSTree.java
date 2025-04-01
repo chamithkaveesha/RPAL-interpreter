@@ -51,10 +51,24 @@ public class FCNSTree<T> {
     }
 
     public void traversePreOrder(FCNSNode<T> node) {
+        printTree();
+    }
+
+    public void printTree() {
+        printTree(root, 0);
+    }
+
+    private void printTree(FCNSNode<T> node, int level) {
         if (node == null) return;
 
-        System.out.println(node.getData());
-        traversePreOrder(node.getFirstChild());
-        traversePreOrder(node.getNextSibling());
+        String sb = ".".repeat(Math.max(0, level)) +
+                node.getData();
+        System.out.println(sb);
+
+        // first child - new level
+        printTree(node.getFirstChild(), level + 1);
+
+        // siblings - same level
+        printTree(node.getNextSibling(), level);
     }
 }

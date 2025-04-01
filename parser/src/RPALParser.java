@@ -4,10 +4,12 @@ import java.util.List;
 public class RPALParser implements Parser {
     private final Iterator<Token> tokenIterator;
     private TokenType nextToken;
+    private ASTBuilder astBuilder;
 
     public RPALParser(List<Token> tokens) {
         this.tokenIterator = tokens.iterator();
         nextToken = getNextToken();
+        astBuilder = new ASTBuilder();
     }
 
     @Override
