@@ -319,7 +319,9 @@ public class RPALParser implements Parser {
             Dr();
             n++;
         }
-        astBuilder.buildTreeOrdered(new ASTNode("and"), n);
+        if (n > 1){
+            astBuilder.buildTreeOrdered(new ASTNode("and"), n);
+        }
     }
 
     // is this the way
@@ -334,18 +336,39 @@ public class RPALParser implements Parser {
         }
     }
 
+    // TODO: verify this
     private void Db(){
         switch (nextTokenType){
+            // 2 steps look ahead needed here
             case IDENTIFIER:
                 read(TokenType.IDENTIFIER);
-                int n = 0;
-                do {
-                    Vb();
-                    n++;
-                } while (nextTokenType != TokenType.EQUAL);
-                read(TokenType.EQUAL);
-                E();
-                astBuilder.buildTreeOrdered(new ASTNode("fcn_form"), n + 2);
+                int n = 1;
+                if (nextTokenType == TokenType.IDENTIFIER || nextTokenType == TokenType.OPEN_BRACKET){
+                    int VbCount = 0;
+                    do {
+                        Vb();
+                        VbCount++;
+                    } while (nextTokenType != TokenType.EQUAL);
+                    read(TokenType.EQUAL);
+                    E();
+                    astBuilder.buildTreeOrdered(new ASTNode("function_form"), n + VbCount + 1);
+                    break;
+                }
+                if (nextTokenType == TokenType.EQUAL){
+                    read(TokenType.EQUAL);
+                    E();
+                    astBuilder.buildTreeOrdered(new ASTNode("="), 2);
+                    break;
+                }
+                if (nextTokenType == TokenType.COMMA){
+                    do {
+                        read(TokenType.COMMA);
+                        read(TokenType.IDENTIFIER);
+                        n++;
+                    } while (nextTokenType == TokenType.COMMA);
+                    E();
+                    astBuilder.buildTreeOrdered(new ASTNode("="), n + 1);
+                }
                 break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
@@ -360,6 +383,7 @@ public class RPALParser implements Parser {
                 break;
         }
     }
+
     private void Vb(){
         switch (nextTokenType){
             case IDENTIFIER:
