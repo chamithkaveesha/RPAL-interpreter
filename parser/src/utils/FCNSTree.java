@@ -47,10 +47,6 @@ public class FCNSTree<T> {
     }
 
     public void traversePreOrder() {
-        traversePreOrder(root);
-    }
-
-    public void traversePreOrder(FCNSNode<T> node) {
         printTree();
     }
 
@@ -59,16 +55,33 @@ public class FCNSTree<T> {
     }
 
     private void printTree(FCNSNode<T> node, int level) {
-        if (node == null) return;
+        if (node == null) {
+            return;
+        }
 
-        String sb = ".".repeat(Math.max(0, level)) +
-                node.getData();
-        System.out.println(sb);
+        System.out.println(".".repeat(level) + node.getData());
 
-        // first child - new level
         printTree(node.getFirstChild(), level + 1);
 
-        // siblings - same level
         printTree(node.getNextSibling(), level);
+    }
+
+    public void printLeftmostDepthFirst() {
+        printLeftmostDepthFirst(root, 0);
+    }
+
+    private void printLeftmostDepthFirst(FCNSNode<T> node, int level) {
+        if (node == null) {
+            return;
+        }
+
+        System.out.println(".".repeat(level) + node.getData());
+
+        if (node.getFirstChild() != null) {
+            printLeftmostDepthFirst(node.getFirstChild(), level + 1);
+        }
+        else if (node.getNextSibling() != null) {
+            printLeftmostDepthFirst(node.getNextSibling(), level);
+        }
     }
 }

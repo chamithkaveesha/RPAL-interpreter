@@ -1,31 +1,54 @@
 import utils.FCNSTree;
-
 import java.util.Stack;
 
 public class ASTBuilder {
-    private final Stack<FCNSTree<Token>> stack;
+    private final Stack<FCNSTree<ASTNode>> stack;
+    private final Stack<FCNSTree<ASTNode>> inverseStack;
 
     public ASTBuilder() {
         this.stack = new Stack<>();
+        this.inverseStack = new Stack<>();
     }
 
-    // is the token best class for this?
-    public void buildTree(Token token, int childrenCount) {
-        FCNSTree<Token> newTree = new FCNSTree<>(token);
+    public void buildTree(ASTNode token, int childrenCount) {
+        FCNSTree<ASTNode> newTree = new FCNSTree<>(token);
         try {
-            FCNSTree<Token> current;
             for (int i = 0; i < childrenCount; i++) {
-                current = stack.pop();
-                newTree.addChild(current);
+                newTree.addChild(stack.pop());
             }
             stack.push(newTree);
-        }
-        catch (Exception e) {
-            System.out.println("Error building tree");
+        } catch (Exception e) {
+            System.out.println("Error building tree: " + e.getMessage());
         }
     }
 
-    public FCNSTree<Token> get() {
+    // gives elements as they were from top of the stack
+    // uses secondary stack to manage that
+    public void buildTreeOrdered(ASTNode token, int childrenCount) {
+        for (int i = 0; i < childrenCount; i++) {
+            if (!stack.isEmpty()) {
+                inverseStack.push(stack.pop());
+            }
+        }
+
+        FCNSTree<ASTNode> newTree = new FCNSTree<>(token);
+
+        while (!inverseStack.isEmpty()) {
+            newTree.addChild(inverseStack.pop());
+        }
+
+        stack.push(newTree);
+    }
+
+    public FCNSTree<ASTNode> get() {
+        if (stack.isEmpty()) {
+            throw new IllegalStateException("Stack is empty");
+        }
         return stack.peek();
+    }
+
+    public void clear() {
+        stack.clear();
+        inverseStack.clear();
     }
 }
