@@ -300,7 +300,7 @@ public class RPALParser implements Parser {
 
     private void Vl(){
         read(TokenType.IDENTIFIER);
-        while (nextToken != TokenType.COMMA){
+        while (nextToken == TokenType.COMMA){
             read(TokenType.COMMA);
             read(TokenType.IDENTIFIER);
         }
