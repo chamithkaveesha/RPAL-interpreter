@@ -3,50 +3,68 @@ import java.util.List;
 
 public class RPALParser implements Parser {
     private final Iterator<Token> tokenIterator;
-    private TokenType nextToken;
-    private ASTBuilder astBuilder;
+    private Token nextToken;
+    private TokenType nextTokenType;
+    private final ASTBuilder astBuilder;
 
     public RPALParser(List<Token> tokens) {
         this.tokenIterator = tokens.iterator();
-        nextToken = getNextToken();
+        nextTokenType = getNextTokenType();
         astBuilder = new ASTBuilder();
     }
 
     @Override
     public void parse() {
             E();
+            astBuilder.get().printTree();
     }
 
     private void read(TokenType tokenType) {
-        if (tokenType != nextToken) {
-            throw new ParserException("Expected " + tokenType + " but got " + nextToken);
+        if (tokenType != nextTokenType) {
+            throw new ParserException("Expected " + tokenType + " but got " + nextTokenType);
         }
-        System.out.println(tokenType.toString());
-        this.nextToken = getNextToken();
+        switch (nextTokenType) {
+            case IDENTIFIER:
+                astBuilder.buildTree(new IdentifierASTNode(nextToken.lexeme()), 0);
+                break;
+            case INTEGER:
+                astBuilder.buildTree(new IntegerASTNODE(Integer.parseInt(nextToken.lexeme())), 0);
+                break;
+            case STRING:
+                astBuilder.buildTree(new StringASTNode(nextToken.lexeme()), 0);
+                break;
+        }
+        this.nextTokenType = getNextTokenType();
     }
 
-    private TokenType getNextToken(){
-        return tokenIterator.next().type();
+    private TokenType getNextTokenType(){
+        nextToken = tokenIterator.next();
+        return nextToken.type();
     }
 
     // recursion
     private void E(){
-        switch (nextToken){
+        switch (nextTokenType){
             case KEYWORD_LET:
                 read(TokenType.KEYWORD_LET);
                 D();
                 read(TokenType.KEYWORD_IN);
                 E();
+                astBuilder.buildTreeOrdered(new ASTNode("let"), 2);
                 break;
             case KEYWORD_FN:
                 read(TokenType.KEYWORD_FN);
+                int n = 1;
                 Vb();
                 // here use available symbols for Vb: is it not?
-                while(nextToken == TokenType.IDENTIFIER || nextToken == TokenType.OPEN_BRACKET){
+                // in ast, as it seems lambda goes for more than two symbols, function definition
+                while(nextTokenType == TokenType.IDENTIFIER || nextTokenType == TokenType.OPEN_BRACKET){
                     Vb();
+                    n++;
                 }
                 read(TokenType.PERIOD);
                 E();
+                astBuilder.buildTreeOrdered(new ASTNode("lambda"), n + 1);
                 break;
             default:
                 Ew();
@@ -56,89 +74,114 @@ public class RPALParser implements Parser {
 
     private void Ew(){
         T();
-        if(nextToken == TokenType.KEYWORD_WHERE){
+        if(nextTokenType == TokenType.KEYWORD_WHERE){
             read(TokenType.KEYWORD_WHERE);
             Dr();
+            astBuilder.buildTreeOrdered(new ASTNode("where"), 2);
         }
     }
 
     private void T(){
         Ta();
-        while(nextToken == TokenType.COMMA){
+        int n = 1;
+        while(nextTokenType == TokenType.COMMA){
             read(TokenType.COMMA);
             Ta();
+            n++;
+        }
+        // TODO: is there nice logic than this
+        if (n > 1){
+            astBuilder.buildTreeOrdered(new ASTNode("tau"), n);
         }
     }
 
+    // aug is a binary node, so need a different way of managing
+    // TODO: check whether this builds the correct tree
     private void Ta(){
         Tc();
-        while (nextToken == TokenType.KEYWORD_AUG){
+        while (nextTokenType == TokenType.KEYWORD_AUG){
             read(TokenType.KEYWORD_AUG);
             Tc();
+            astBuilder.buildTreeOrdered(new ASTNode("aug"), 2);
         }
     }
 
     // recursion
     private void Tc(){
         B();
-        if (nextToken == TokenType.CONDITION_SIGN){
+        if (nextTokenType == TokenType.CONDITION_SIGN){
             read(TokenType.CONDITION_SIGN);
             Tc();
             read(TokenType.VERTICAL_BAR);
             Tc();
+            astBuilder.buildTreeOrdered(new ASTNode("->"), 3);
         }
     }
 
+    // TODO: check this
     private void B(){
         Bt();
-        while (nextToken == TokenType.OR){
+        while (nextTokenType == TokenType.OR){
             read(TokenType.OR);
             Bt();
+            astBuilder.buildTreeOrdered(new ASTNode("or"), 2);
         }
     }
 
     private void Bt(){
         Bs();
-        while (nextToken == TokenType.AND){
+        while (nextTokenType == TokenType.AND){
             read(TokenType.AND);
             Bs();
+            astBuilder.buildTreeOrdered(new ASTNode("and"), 2);
         }
     }
 
+    // here different because not should be a parent
     private void Bs(){
-        if (nextToken == TokenType.NOT){
+        if (nextTokenType == TokenType.NOT){
             read(TokenType.NOT);
+            Bp();
+            astBuilder.buildTree(new ASTNode("not"), 1);
         }
-        Bp();
+        else {
+            Bp();
+        }
     }
 
     private void Bp(){
         A();
         // TODO: check if both of the ge and >= recognized
-        switch (nextToken){
+        switch (nextTokenType){
             case GREATER_THAN:
                 read(TokenType.GREATER_THAN);
                 A();
+                astBuilder.buildTreeOrdered(new ASTNode("gr"), 2);
                 break;
             case GREATER_THAN_EQUAL:
                 read(TokenType.GREATER_THAN_EQUAL);
                 A();
+                astBuilder.buildTreeOrdered(new ASTNode("ge"), 2);
                 break;
             case LESS_THAN:
                 read(TokenType.LESS_THAN);
                 A();
+                astBuilder.buildTreeOrdered(new ASTNode("ls"), 2);
                 break;
             case LESS_THAN_EQUAL:
                 read(TokenType.LESS_THAN_EQUAL);
                 A();
+                astBuilder.buildTreeOrdered(new ASTNode("le"), 2);
                 break;
             case EQUAL:
                 read(TokenType.EQUAL);
                 A();
+                astBuilder.buildTreeOrdered(new ASTNode("eq"), 2);
                 break;
             case NOT_EQUAL:
                 read(TokenType.NOT_EQUAL);
                 A();
+                astBuilder.buildTreeOrdered(new ASTNode("ne"), 2);
                 break;
             default:
                 break;
@@ -147,71 +190,84 @@ public class RPALParser implements Parser {
 
     // TODO: this violates associativity
     private void A(){
-        if (nextToken == TokenType.PLUS){
+        if (nextTokenType == TokenType.PLUS){
             read(TokenType.PLUS);
             At();
         }
-        else if (nextToken == TokenType.MINUS){
+        // TODO: check for different orders of signs
+        else if (nextTokenType == TokenType.MINUS){
             read(TokenType.MINUS);
             At();
+            astBuilder.buildTree(new ASTNode("neg"), 1);
         }
+        // TODO: check if correct tree get built
         else {
             At();
-            while (nextToken == TokenType.PLUS || nextToken == TokenType.MINUS){
-                if (nextToken == TokenType.PLUS){
+            while (nextTokenType == TokenType.PLUS || nextTokenType == TokenType.MINUS){
+                if (nextTokenType == TokenType.PLUS){
                     read(TokenType.PLUS);
+                    At();
+                    astBuilder.buildTreeOrdered(new ASTNode("+"), 2);
                 }
                 else {
                     read(TokenType.MINUS);
+                    At();
+                    astBuilder.buildTreeOrdered(new ASTNode("-"), 2);
                 }
-                At();
             }
         }
     }
 
     private void At(){
         Af();
-        while (nextToken == TokenType.DIVIDE || nextToken == TokenType.MULTIPLY){
-            if (nextToken == TokenType.DIVIDE){
+        while (nextTokenType == TokenType.DIVIDE || nextTokenType == TokenType.MULTIPLY){
+            if (nextTokenType == TokenType.DIVIDE){
                 read(TokenType.DIVIDE);
+                Af();
+                astBuilder.buildTreeOrdered(new ASTNode("/"), 2);
             }
             else {
                 read(TokenType.MULTIPLY);
+                Af();
+                astBuilder.buildTreeOrdered(new ASTNode("*"), 2);
             }
-            Af();
         }
     }
 
     private void Af(){
         Ap();
-        while (nextToken == TokenType.EXPONENT){
+        while (nextTokenType == TokenType.EXPONENT){
             read(TokenType.EXPONENT);
             Ap();
+            astBuilder.buildTreeOrdered(new ASTNode("**"), 2);
         }
     }
 
+    // TODO: check associativity
     private void Ap(){
         R();
-        while (nextToken == TokenType.INFIX_FUNCTION){
+        while (nextTokenType == TokenType.INFIX_FUNCTION){
             read(TokenType.INFIX_FUNCTION);
             read(TokenType.IDENTIFIER);
             R();
+            astBuilder.buildTreeOrdered(new ASTNode("@"), 3);
         }
     }
 
     // revise this
     private void R(){
         Rn();
-        while(nextToken == TokenType.IDENTIFIER || nextToken == TokenType.INTEGER
-                || nextToken == TokenType.STRING || nextToken == TokenType.BOOLEAN
-                || nextToken ==TokenType.NIL || nextToken == TokenType.OPEN_BRACKET
-                || nextToken == TokenType.DUMMY){
+        while(nextTokenType == TokenType.IDENTIFIER || nextTokenType == TokenType.INTEGER
+                || nextTokenType == TokenType.STRING || nextTokenType == TokenType.BOOLEAN
+                || nextTokenType ==TokenType.NIL || nextTokenType == TokenType.OPEN_BRACKET
+                || nextTokenType == TokenType.DUMMY){
             Rn();
+            astBuilder.buildTreeOrdered(new ASTNode("gamma"), 2);
         }
     }
 
     private void Rn(){
-        switch (nextToken){
+        switch (nextTokenType){
             case IDENTIFIER:
                 read(TokenType.IDENTIFIER);
                 break;
@@ -221,11 +277,14 @@ public class RPALParser implements Parser {
             case STRING:
                 read(TokenType.STRING);
                 break;
+            // TODO: manage true false differently?
             case BOOLEAN:
                 read(TokenType.BOOLEAN);
+                astBuilder.buildTree(new ASTNode("<BOOLEAN:>"), 0);
                 break;
             case NIL:
                 read(TokenType.NIL);
+                astBuilder.buildTree(new ASTNode("nil"), 0);
                 break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
@@ -234,46 +293,59 @@ public class RPALParser implements Parser {
                 break;
             case DUMMY:
                 read(TokenType.DUMMY);
+                astBuilder.buildTree(new ASTNode("dummy"), 0);
                 break;
             default:
                 break;
         }
     }
 
+    // TODO: associativity, double check
+    // this should not work when two withins are there
     private void D(){
         Da();
-        while (nextToken == TokenType.KEYWORD_WITHIN){
+        while (nextTokenType == TokenType.KEYWORD_WITHIN){
             read(TokenType.KEYWORD_WITHIN);
             Da();
+            astBuilder.buildTreeOrdered(new ASTNode("within"), 2);
         }
     }
 
-    // in grammar, it says one or more and, but is it okay? / anyway i didn't use that logic
     private void Da(){
         Dr();
-        while (nextToken == TokenType.AND_SIMULTANEOUS_DEFINITION){
+        int n = 1;
+        while (nextTokenType == TokenType.AND_SIMULTANEOUS_DEFINITION){
             read(TokenType.AND_SIMULTANEOUS_DEFINITION);
             Dr();
+            n++;
         }
+        astBuilder.buildTreeOrdered(new ASTNode("and"), n);
     }
 
     // is this the way
     private void Dr(){
-        if (nextToken == TokenType.REC){
+        if (nextTokenType == TokenType.REC){
             read(TokenType.REC);
+            Db();
+            astBuilder.buildTree(new ASTNode("rec"), 1);
         }
-        Db();
+        else {
+            Db();
+        }
     }
 
     private void Db(){
-        switch (nextToken){
+        switch (nextTokenType){
             case IDENTIFIER:
                 read(TokenType.IDENTIFIER);
+                int n = 0;
                 do {
                     Vb();
-                } while (nextToken != TokenType.EQUAL);
+                    n++;
+                } while (nextTokenType != TokenType.EQUAL);
                 read(TokenType.EQUAL);
                 E();
+                astBuilder.buildTreeOrdered(new ASTNode("fcn_form"), n + 2);
                 break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
@@ -284,19 +356,24 @@ public class RPALParser implements Parser {
                 Vl();
                 read(TokenType.EQUAL);
                 E();
+                astBuilder.buildTreeOrdered(new ASTNode("="), 2);
                 break;
         }
     }
     private void Vb(){
-        switch (nextToken){
+        switch (nextTokenType){
             case IDENTIFIER:
                 read(TokenType.IDENTIFIER);
                 break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
-                if (nextToken != TokenType.CLOSE_BRACKET){
-                    Vl();
+                if (nextTokenType == TokenType.CLOSE_BRACKET){
+                    read(TokenType.CLOSE_BRACKET);
+                    // terminal node
+                    astBuilder.buildTree(new ASTNode("()"), 0);
+                    break;
                 }
+                Vl();
                 read(TokenType.CLOSE_BRACKET);
                 break;
             default:
@@ -306,10 +383,13 @@ public class RPALParser implements Parser {
 
     private void Vl(){
         read(TokenType.IDENTIFIER);
-        while (nextToken == TokenType.COMMA){
+        int n = 1;
+        while (nextTokenType == TokenType.COMMA){
             read(TokenType.COMMA);
             read(TokenType.IDENTIFIER);
+            n++;
         }
+        astBuilder.buildTreeOrdered(new ASTNode(","), n);
     }
 }
 
