@@ -38,6 +38,8 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        Parser parser = new RPALParser(screenedTokens);
+        parser.parse();
     }
 
     private static String getFilenameFromCommandLineArguments(String[] args) {

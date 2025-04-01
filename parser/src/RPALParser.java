@@ -10,14 +10,19 @@ public class RPALParser implements Parser {
         nextToken = getNextToken();
     }
 
-    public void parse(List<Token> tokens) {
-        E();
+    @Override
+    public void parse() {
+        // TODO: this is not optimal
+//        while (nextToken != TokenType.EOF) {
+            E();
+//        }
     }
 
     private void read(TokenType tokenType) {
         if (tokenType != nextToken) {
             throw new ParserException("Expected " + tokenType + " but got " + nextToken);
         }
+        System.out.println(tokenType.toString());
         this.nextToken = getNextToken();
     }
 
@@ -268,6 +273,8 @@ public class RPALParser implements Parser {
                 do {
                     Vb();
                 } while (nextToken != TokenType.EQUAL);
+                read(TokenType.EQUAL);
+                E();
                 break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
