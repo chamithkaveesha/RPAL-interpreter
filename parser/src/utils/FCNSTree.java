@@ -17,9 +17,24 @@ public class FCNSTree<T> {
 
     public boolean isEmpty() { return root == null; }
 
-    public void addChild(FCNSNode<T> parent, T childData) {
-        FCNSNode<T> newChild = new FCNSNode<>(childData);
+    public void addChild(T childData) {
+        if (root == null) {
+            throw new IllegalStateException("Cannot add child to null root");
+        }
+        addChildNode(root, new FCNSNode<>(childData));
+    }
 
+    public void addChild(FCNSTree<T> childTree) {
+        if (root == null) {
+            throw new IllegalStateException("Cannot add child to null root");
+        }
+        if (childTree == null || childTree.isEmpty()) {
+            throw new IllegalArgumentException("Cannot add null or empty child tree");
+        }
+        addChildNode(root, childTree.getRoot());
+    }
+
+    private void addChildNode(FCNSNode<T> parent, FCNSNode<T> newChild) {
         if (parent.getFirstChild() == null) {
             parent.setFirstChild(newChild);
         } else {
@@ -31,11 +46,42 @@ public class FCNSTree<T> {
         }
     }
 
-    public void traversePreOrder(FCNSNode<T> node) {
-        if (node == null) return;
+    public void traversePreOrder() {
+        printTree();
+    }
 
-        System.out.println(node.getData());
-        traversePreOrder(node.getFirstChild());
-        traversePreOrder(node.getNextSibling());
+    public void printTree() {
+        printTree(root, 0);
+    }
+
+    private void printTree(FCNSNode<T> node, int level) {
+        if (node == null) {
+            return;
+        }
+
+        System.out.println(".".repeat(level) + node.getData());
+
+        printTree(node.getFirstChild(), level + 1);
+
+        printTree(node.getNextSibling(), level);
+    }
+
+    public void printLeftmostDepthFirst() {
+        printLeftmostDepthFirst(root, 0);
+    }
+
+    private void printLeftmostDepthFirst(FCNSNode<T> node, int level) {
+        if (node == null) {
+            return;
+        }
+
+        System.out.println(".".repeat(level) + node.getData());
+
+        if (node.getFirstChild() != null) {
+            printLeftmostDepthFirst(node.getFirstChild(), level + 1);
+        }
+        else if (node.getNextSibling() != null) {
+            printLeftmostDepthFirst(node.getNextSibling(), level);
+        }
     }
 }
