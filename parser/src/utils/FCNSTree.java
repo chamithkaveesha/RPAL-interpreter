@@ -17,9 +17,24 @@ public class FCNSTree<T> {
 
     public boolean isEmpty() { return root == null; }
 
-    public void addChild(FCNSNode<T> parent, T childData) {
-        FCNSNode<T> newChild = new FCNSNode<>(childData);
+    public void addChild(T childData) {
+        if (root == null) {
+            throw new IllegalStateException("Cannot add child to null root");
+        }
+        addChildNode(root, new FCNSNode<>(childData));
+    }
 
+    public void addChild(FCNSTree<T> childTree) {
+        if (root == null) {
+            throw new IllegalStateException("Cannot add child to null root");
+        }
+        if (childTree == null || childTree.isEmpty()) {
+            throw new IllegalArgumentException("Cannot add null or empty child tree");
+        }
+        addChildNode(root, childTree.getRoot());
+    }
+
+    private void addChildNode(FCNSNode<T> parent, FCNSNode<T> newChild) {
         if (parent.getFirstChild() == null) {
             parent.setFirstChild(newChild);
         } else {
@@ -29,6 +44,10 @@ public class FCNSTree<T> {
             }
             current.setNextSibling(newChild);
         }
+    }
+
+    public void traversePreOrder() {
+        traversePreOrder(root);
     }
 
     public void traversePreOrder(FCNSNode<T> node) {
