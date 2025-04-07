@@ -3,6 +3,7 @@ package parser;
 import ast.*;
 import scanner.Token;
 import scanner.TokenType;
+import utils.FCNSTree;
 
 import java.util.Iterator;
 import java.util.List;
@@ -13,16 +14,20 @@ public class RPALParser implements Parser {
     private TokenType nextTokenType;
     private final ASTBuilder astBuilder;
 
-    public RPALParser(List<Token> tokens) {
+    public RPALParser(List<Token> tokens, ASTBuilder astBuilder) {
         this.tokenIterator = tokens.iterator();
         nextTokenType = getNextTokenType();
-        astBuilder = new ASTBuilder();
+        this.astBuilder = astBuilder;
     }
 
     @Override
     public void parse() {
             E();
-            astBuilder.get().printTree();
+    }
+
+    @Override
+    public FCNSTree<ASTNode> getAST() {
+        return astBuilder.get();
     }
 
     private void read(TokenType tokenType) {
