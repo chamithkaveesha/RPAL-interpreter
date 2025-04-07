@@ -133,7 +133,7 @@ public class RPALParser implements Parser {
         while (nextTokenType == TokenType.AND){
             read(TokenType.AND);
             Bs();
-            astBuilder.buildTreeOrdered(new ASTNode("and"), 2);
+            astBuilder.buildTreeOrdered(new ASTNode("&"), 2);
         }
     }
 
