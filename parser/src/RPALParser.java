@@ -133,7 +133,7 @@ public class RPALParser implements Parser {
         while (nextTokenType == TokenType.AND){
             read(TokenType.AND);
             Bs();
-            astBuilder.buildTreeOrdered(new ASTNode("and"), 2);
+            astBuilder.buildTreeOrdered(new ASTNode("&"), 2);
         }
     }
 
@@ -203,17 +203,17 @@ public class RPALParser implements Parser {
         // TODO: check if correct tree get built
         else {
             At();
-            while (nextTokenType == TokenType.PLUS || nextTokenType == TokenType.MINUS){
-                if (nextTokenType == TokenType.PLUS){
-                    read(TokenType.PLUS);
-                    At();
-                    astBuilder.buildTreeOrdered(new ASTNode("+"), 2);
-                }
-                else {
-                    read(TokenType.MINUS);
-                    At();
-                    astBuilder.buildTreeOrdered(new ASTNode("-"), 2);
-                }
+        }
+        while (nextTokenType == TokenType.PLUS || nextTokenType == TokenType.MINUS){
+            if (nextTokenType == TokenType.PLUS){
+                read(TokenType.PLUS);
+                At();
+                astBuilder.buildTreeOrdered(new ASTNode("+"), 2);
+            }
+            else {
+                read(TokenType.MINUS);
+                At();
+                astBuilder.buildTreeOrdered(new ASTNode("-"), 2);
             }
         }
     }
