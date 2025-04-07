@@ -1,3 +1,5 @@
+package ast;
+
 public class ASTBuilderTest {
     public static void main(String[] args) {
         ASTBuilder astBuilder = new ASTBuilder();

@@ -1,2 +1,0 @@
-let f x y = x
-in Print(f 3+4 (1//0))

@@ -1,3 +1,8 @@
+import parser.Parser;
+import parser.RPALParser;
+import scanner.*;
+import scanner.Scanner;
+
 import java.io.*;
 import java.util.*;
 
@@ -27,17 +32,17 @@ public class Main {
         List<Token> tokenList = scanner.tokenize();
         Screener screener = new RPALScreener();
         List<Token> screenedTokens = screener.screen(tokenList);
-        try {
-            for (Token token : tokenList) {
-                System.out.println(token);
-            }
-            System.out.println("Screened Tokens: ");
-            for (Token token : screenedTokens) {
-                System.out.println(token);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            for (scanner.Token token : tokenList) {
+//                System.out.println(token);
+//            }
+//            System.out.println("Screened Tokens: ");
+//            for (scanner.Token token : screenedTokens) {
+//                System.out.println(token);
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
         Parser parser = new RPALParser(screenedTokens);
         parser.parse();
     }

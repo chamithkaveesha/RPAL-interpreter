@@ -1,3 +1,5 @@
+package ast;
+
 public class ASTNode {
     public String lexeme;
     public ASTNode(String lexeme) {

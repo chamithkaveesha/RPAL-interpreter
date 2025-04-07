@@ -1,3 +1,5 @@
+package scanner;
+
 import automaton.FiniteAutomaton;
 import automaton.RPALAutomatonFactory;
 import automaton.State;

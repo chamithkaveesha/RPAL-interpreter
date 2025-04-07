@@ -1,3 +1,5 @@
+package scanner;
+
 public enum TokenType {
     IDENTIFIER, INTEGER, STRING,
     OPERATOR, DELETE,
