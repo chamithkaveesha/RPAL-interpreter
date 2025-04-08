@@ -1,14 +1,10 @@
 package ast;
 
-public class ASTNode {
-    public String lexeme;
+public abstract class ASTNode extends Node {
     public ASTNode(String lexeme) {
-        this.lexeme = lexeme;
+        super(lexeme);
     }
 
-    @Override
-    public String toString() {
-        return lexeme;
-    }
+    public abstract STNode standardize();
 }
 

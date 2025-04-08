@@ -1,5 +1,5 @@
 import ast.ASTBuilder;
-import ast.ASTNode;
+import ast.Node;
 import parser.Parser;
 import parser.RPALParser;
 import scanner.*;
@@ -38,7 +38,7 @@ public class Main {
         ASTBuilder astBuilder = new ASTBuilder();
         Parser parser = new RPALParser(screenedTokens, astBuilder);
         parser.parse();
-        FCNSTree<ASTNode> ast = parser.getAST();
+        FCNSTree<Node> ast = parser.getAST();
         ast.printTree();
     }
 
