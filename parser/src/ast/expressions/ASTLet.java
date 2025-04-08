@@ -10,6 +10,6 @@ public class ASTLet extends ASTNode {
 
     @Override
     public STNode standardize() {
-        return null;
+        throw new UnsupportedOperationException("Method not implemented");
     }
 }
