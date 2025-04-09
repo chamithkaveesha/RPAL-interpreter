@@ -2,9 +2,10 @@ package ast.ratorsandrands;
 
 import ast.ASTNode;
 import ast.STNode;
+import ast.STString;
 
 public class ASTString extends ASTNode {
-    public String value;
+    private final String value;
     public ASTString(String value) {
         super("<STR:" + value + ">");
         this.value = value;
@@ -12,6 +13,6 @@ public class ASTString extends ASTNode {
 
     @Override
     public STNode standardize() {
-        return null;
+        return new STString(value);
     }
 }

@@ -1,22 +1,13 @@
-package ast.ratorsandrands;
+package ast;
 
-import ast.ASTNode;
-import ast.STBoolean;
-import ast.STNode;
-
-public class ASTBoolean extends ASTNode {
+public class STBoolean extends STNode {
     private final boolean value;
-    public ASTBoolean(Boolean value) {
+    public STBoolean(Boolean value) {
         super(value != null ? value.toString() : throwIllegalArgumentException());
         this.value = value;
     }
 
     private static String throwIllegalArgumentException() {
         throw new IllegalArgumentException("value cannot be null");
-    }
-
-    @Override
-    public STNode standardize() {
-        return new STBoolean(value);
     }
 }

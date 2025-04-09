@@ -1,6 +1,7 @@
 package ast.ratorsandrands;
 
 import ast.ASTNode;
+import ast.STDummy;
 import ast.STNode;
 
 public class ASTDummy extends ASTNode {
@@ -10,6 +11,6 @@ public class ASTDummy extends ASTNode {
 
     @Override
     public STNode standardize() {
-        return null;
+        return new STDummy();
     }
 }
