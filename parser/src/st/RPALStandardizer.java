@@ -1,7 +1,9 @@
 package st;
 
 import tree.Node;
-import utils.FCNSTree;
+import tree.ast.ASTNode;
+import tree.st.STNode;
+import utils.FCNSNode;
 
 public class RPALStandardizer implements Standardizer {
 
@@ -9,7 +11,7 @@ public class RPALStandardizer implements Standardizer {
 
     }
     @Override
-    public FCNSTree<Node> getST(FCNSTree<Node> tree) {
+    public FCNSNode<STNode> getST(FCNSNode<ASTNode> tree) {
         return null;
     }
 }

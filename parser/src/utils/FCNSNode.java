@@ -1,5 +1,8 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FCNSNode<T> {
     private T data;
     private FCNSNode<T> firstChild;
@@ -19,4 +22,64 @@ public class FCNSNode<T> {
 
     public FCNSNode<T> getNextSibling() { return nextSibling; }
     public void setNextSibling(FCNSNode<T> nextSibling) { this.nextSibling = nextSibling; }
+
+    public void addChild(T childData) {
+        FCNSNode<T> newChild = new FCNSNode<>(childData);
+        addChildNode(newChild);
+    }
+
+    public void addChildNode(FCNSNode<T> childNode) {
+        if (this.firstChild == null) {
+            this.firstChild = childNode;
+        } else {
+            FCNSNode<T> current = this.firstChild;
+            while (current.nextSibling != null) {
+                current = current.nextSibling;
+            }
+            current.nextSibling = childNode;
+        }
+    }
+
+    // Retrieve all children as a list
+    public List<FCNSNode<T>> getChildren() {
+        List<FCNSNode<T>> children = new ArrayList<>();
+        FCNSNode<T> current = this.firstChild;
+        while (current != null) {
+            children.add(current);
+            current = current.nextSibling;
+        }
+        return children;
+    }
+
+    public void traverseDFS() {
+        traverseDFS(0);
+    }
+
+    private void traverseDFS(int level) {
+        System.out.println(".".repeat(level) + data);
+        if (firstChild != null) {
+            firstChild.traverseDFS(level + 1);
+        }
+        if (nextSibling != null) {
+            nextSibling.traverseDFS(level);
+        }
+    }
+
+    // Convert to String representation
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        toString(sb, 0);
+        return sb.toString();
+    }
+
+    private void toString(StringBuilder sb, int level) {
+        sb.append(".".repeat(level)).append(data).append("\n");
+        if (firstChild != null) {
+            firstChild.toString(sb, level + 1);
+        }
+        if (nextSibling != null) {
+            nextSibling.toString(sb, level);
+        }
+    }
 }

@@ -1,8 +1,10 @@
 package st;
 
-import tree.Node;
-import utils.FCNSTree;
+import tree.ast.ASTNode;
+import tree.st.STNode;
+import utils.FCNSNode;
+
 
 public interface Standardizer {
-    FCNSTree<Node> getST(FCNSTree<Node> tree);
+    public FCNSNode<STNode> getST(FCNSNode<ASTNode> tree);
 }

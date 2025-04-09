@@ -4,7 +4,7 @@ import parser.Parser;
 import parser.RPALParser;
 import scanner.*;
 import scanner.Scanner;
-import utils.FCNSTree;
+import utils.FCNSNode;
 
 import java.io.*;
 import java.util.*;
@@ -38,8 +38,8 @@ public class Main {
         ASTBuilder astBuilder = new ASTBuilder();
         Parser parser = new RPALParser(screenedTokens, astBuilder);
         parser.parse();
-        FCNSTree<ASTNode> ast = parser.getAST();
-        ast.printTree();
+        FCNSNode<ASTNode> ast = parser.getAST();
+        System.out.println(ast.toString());
     }
 
     private static String getFilenameFromCommandLineArguments(String[] args) {

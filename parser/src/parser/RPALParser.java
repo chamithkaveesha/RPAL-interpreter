@@ -15,7 +15,7 @@ import tree.ast.variables.ASTEmpty;
 import tree.ast.variables.ASTList;
 import scanner.Token;
 import scanner.TokenType;
-import utils.FCNSTree;
+import utils.FCNSNode;
 
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +38,7 @@ public class RPALParser implements Parser {
     }
 
     @Override
-    public FCNSTree<ASTNode> getAST() {
+    public FCNSNode<ASTNode> getAST() {
         return astBuilder.get();
     }
 
