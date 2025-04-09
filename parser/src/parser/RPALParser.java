@@ -38,7 +38,7 @@ public class RPALParser implements Parser {
     }
 
     @Override
-    public FCNSTree<Node> getAST() {
+    public FCNSTree<ASTNode> getAST() {
         return astBuilder.get();
     }
 

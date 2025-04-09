@@ -1,9 +1,9 @@
 package parser;
 
-import ast.Node;
+import ast.ASTNode;
 import utils.FCNSTree;
 
 public interface Parser {
     void parse();
-    FCNSTree<Node> getAST();
+    FCNSTree<ASTNode> getAST();
 }
