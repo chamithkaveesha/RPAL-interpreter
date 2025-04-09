@@ -1,3 +1,11 @@
+import ast.ASTBuilder;
+import ast.Node;
+import parser.Parser;
+import parser.RPALParser;
+import scanner.*;
+import scanner.Scanner;
+import utils.FCNSTree;
+
 import java.io.*;
 import java.util.*;
 
@@ -27,19 +35,11 @@ public class Main {
         List<Token> tokenList = scanner.tokenize();
         Screener screener = new RPALScreener();
         List<Token> screenedTokens = screener.screen(tokenList);
-        try {
-            for (Token token : tokenList) {
-                System.out.println(token);
-            }
-            System.out.println("Screened Tokens: ");
-            for (Token token : screenedTokens) {
-                System.out.println(token);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        Parser parser = new RPALParser(screenedTokens);
+        ASTBuilder astBuilder = new ASTBuilder();
+        Parser parser = new RPALParser(screenedTokens, astBuilder);
         parser.parse();
+        FCNSTree<Node> ast = parser.getAST();
+        ast.printTree();
     }
 
     private static String getFilenameFromCommandLineArguments(String[] args) {

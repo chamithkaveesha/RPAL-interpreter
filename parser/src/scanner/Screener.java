@@ -1,3 +1,5 @@
+package scanner;
+
 import java.util.List;
 
 public interface Screener {

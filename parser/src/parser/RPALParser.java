@@ -1,3 +1,22 @@
+package parser;
+
+import ast.*;
+import ast.definitions.*;
+import ast.expressions.ASTLambda;
+import ast.expressions.ASTLet;
+import ast.expressions.ASTWhere;
+import ast.operators.*;
+import ast.ratorsandrands.*;
+import ast.ASTNode;
+import ast.tuples.ASTAug;
+import ast.tuples.ASTCondition;
+import ast.tuples.ASTTau;
+import ast.variables.ASTEmpty;
+import ast.variables.ASTList;
+import scanner.Token;
+import scanner.TokenType;
+import utils.FCNSTree;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,16 +26,20 @@ public class RPALParser implements Parser {
     private TokenType nextTokenType;
     private final ASTBuilder astBuilder;
 
-    public RPALParser(List<Token> tokens) {
+    public RPALParser(List<Token> tokens, ASTBuilder astBuilder) {
         this.tokenIterator = tokens.iterator();
         nextTokenType = getNextTokenType();
-        astBuilder = new ASTBuilder();
+        this.astBuilder = astBuilder;
     }
 
     @Override
     public void parse() {
             E();
-            astBuilder.get().printTree();
+    }
+
+    @Override
+    public FCNSTree<Node> getAST() {
+        return astBuilder.get();
     }
 
     private void read(TokenType tokenType) {
@@ -25,13 +48,16 @@ public class RPALParser implements Parser {
         }
         switch (nextTokenType) {
             case IDENTIFIER:
-                astBuilder.buildTree(new IdentifierASTNode(nextToken.lexeme()), 0);
+                astBuilder.buildTree(new ASTIdentifier(nextToken.lexeme()), 0);
                 break;
             case INTEGER:
-                astBuilder.buildTree(new IntegerASTNODE(Integer.parseInt(nextToken.lexeme())), 0);
+                astBuilder.buildTree(new ASTInteger(Integer.parseInt(nextToken.lexeme())), 0);
                 break;
             case STRING:
-                astBuilder.buildTree(new StringASTNode(nextToken.lexeme()), 0);
+                astBuilder.buildTree(new ASTString(nextToken.lexeme()), 0);
+                break;
+            case BOOLEAN:
+                astBuilder.buildTree(new ASTBoolean(Boolean.getBoolean(nextToken.lexeme())), 0);
                 break;
         }
         this.nextTokenType = getNextTokenType();
@@ -50,7 +76,7 @@ public class RPALParser implements Parser {
                 D();
                 read(TokenType.KEYWORD_IN);
                 E();
-                astBuilder.buildTreeOrdered(new ASTNode("let"), 2);
+                astBuilder.buildTreeOrdered(new ASTLet(), 2);
                 break;
             case KEYWORD_FN:
                 read(TokenType.KEYWORD_FN);
@@ -64,7 +90,7 @@ public class RPALParser implements Parser {
                 }
                 read(TokenType.PERIOD);
                 E();
-                astBuilder.buildTreeOrdered(new ASTNode("lambda"), n + 1);
+                astBuilder.buildTreeOrdered(new ASTLambda(), n + 1);
                 break;
             default:
                 Ew();
@@ -77,7 +103,7 @@ public class RPALParser implements Parser {
         if(nextTokenType == TokenType.KEYWORD_WHERE){
             read(TokenType.KEYWORD_WHERE);
             Dr();
-            astBuilder.buildTreeOrdered(new ASTNode("where"), 2);
+            astBuilder.buildTreeOrdered(new ASTWhere(), 2);
         }
     }
 
@@ -91,7 +117,7 @@ public class RPALParser implements Parser {
         }
         // TODO: is there nice logic than this
         if (n > 1){
-            astBuilder.buildTreeOrdered(new ASTNode("tau"), n);
+            astBuilder.buildTreeOrdered(new ASTTau(), n);
         }
     }
 
@@ -102,7 +128,7 @@ public class RPALParser implements Parser {
         while (nextTokenType == TokenType.KEYWORD_AUG){
             read(TokenType.KEYWORD_AUG);
             Tc();
-            astBuilder.buildTreeOrdered(new ASTNode("aug"), 2);
+            astBuilder.buildTreeOrdered(new ASTAug(), 2);
         }
     }
 
@@ -114,7 +140,7 @@ public class RPALParser implements Parser {
             Tc();
             read(TokenType.VERTICAL_BAR);
             Tc();
-            astBuilder.buildTreeOrdered(new ASTNode("->"), 3);
+            astBuilder.buildTreeOrdered(new ASTCondition(), 3);
         }
     }
 
@@ -124,7 +150,7 @@ public class RPALParser implements Parser {
         while (nextTokenType == TokenType.OR){
             read(TokenType.OR);
             Bt();
-            astBuilder.buildTreeOrdered(new ASTNode("or"), 2);
+            astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.OR), 2);
         }
     }
 
@@ -133,7 +159,7 @@ public class RPALParser implements Parser {
         while (nextTokenType == TokenType.AND){
             read(TokenType.AND);
             Bs();
-            astBuilder.buildTreeOrdered(new ASTNode("&"), 2);
+            astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.AND), 2);
         }
     }
 
@@ -142,7 +168,7 @@ public class RPALParser implements Parser {
         if (nextTokenType == TokenType.NOT){
             read(TokenType.NOT);
             Bp();
-            astBuilder.buildTree(new ASTNode("not"), 1);
+            astBuilder.buildTree(new ASTUnOp(UnaryOperator.NOT), 1);
         }
         else {
             Bp();
@@ -156,32 +182,32 @@ public class RPALParser implements Parser {
             case GREATER_THAN:
                 read(TokenType.GREATER_THAN);
                 A();
-                astBuilder.buildTreeOrdered(new ASTNode("gr"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.GREATER_THAN), 2);
                 break;
             case GREATER_THAN_EQUAL:
                 read(TokenType.GREATER_THAN_EQUAL);
                 A();
-                astBuilder.buildTreeOrdered(new ASTNode("ge"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.GREATER_THAN_OR_EQUAL), 2);
                 break;
             case LESS_THAN:
                 read(TokenType.LESS_THAN);
                 A();
-                astBuilder.buildTreeOrdered(new ASTNode("ls"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.LESS_THAN), 2);
                 break;
             case LESS_THAN_EQUAL:
                 read(TokenType.LESS_THAN_EQUAL);
                 A();
-                astBuilder.buildTreeOrdered(new ASTNode("le"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.LESS_THAN_OR_EQUAL), 2);
                 break;
             case EQUAL:
                 read(TokenType.EQUAL);
                 A();
-                astBuilder.buildTreeOrdered(new ASTNode("eq"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.EQUALS), 2);
                 break;
             case NOT_EQUAL:
                 read(TokenType.NOT_EQUAL);
                 A();
-                astBuilder.buildTreeOrdered(new ASTNode("ne"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.NOT_EQUALS), 2);
                 break;
             default:
                 break;
@@ -198,7 +224,7 @@ public class RPALParser implements Parser {
         else if (nextTokenType == TokenType.MINUS){
             read(TokenType.MINUS);
             At();
-            astBuilder.buildTree(new ASTNode("neg"), 1);
+            astBuilder.buildTree(new ASTUnOp(UnaryOperator.NEGATE), 1);
         }
         // TODO: check if correct tree get built
         else {
@@ -208,12 +234,12 @@ public class RPALParser implements Parser {
             if (nextTokenType == TokenType.PLUS){
                 read(TokenType.PLUS);
                 At();
-                astBuilder.buildTreeOrdered(new ASTNode("+"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.ADD), 2);
             }
             else {
                 read(TokenType.MINUS);
                 At();
-                astBuilder.buildTreeOrdered(new ASTNode("-"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.SUBTRACT), 2);
             }
         }
     }
@@ -224,12 +250,12 @@ public class RPALParser implements Parser {
             if (nextTokenType == TokenType.DIVIDE){
                 read(TokenType.DIVIDE);
                 Af();
-                astBuilder.buildTreeOrdered(new ASTNode("/"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.DIVIDE), 2);
             }
             else {
                 read(TokenType.MULTIPLY);
                 Af();
-                astBuilder.buildTreeOrdered(new ASTNode("*"), 2);
+                astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.MULTIPLY), 2);
             }
         }
     }
@@ -239,7 +265,7 @@ public class RPALParser implements Parser {
         if (nextTokenType == TokenType.EXPONENT){
             read(TokenType.EXPONENT);
             Af();
-            astBuilder.buildTreeOrdered(new ASTNode("**"), 2);
+            astBuilder.buildTreeOrdered(new ASTBinOp(BinaryOperator.EXPONENT), 2);
         }
     }
 
@@ -250,7 +276,7 @@ public class RPALParser implements Parser {
             read(TokenType.INFIX_FUNCTION);
             read(TokenType.IDENTIFIER);
             R();
-            astBuilder.buildTreeOrdered(new ASTNode("@"), 3);
+            astBuilder.buildTreeOrdered(new ASTInfixFunction(), 3);
         }
     }
 
@@ -262,7 +288,8 @@ public class RPALParser implements Parser {
                 || nextTokenType ==TokenType.NIL || nextTokenType == TokenType.OPEN_BRACKET
                 || nextTokenType == TokenType.DUMMY){
             Rn();
-            astBuilder.buildTreeOrdered(new ASTNode("gamma"), 2);
+            // gamma
+            astBuilder.buildTreeOrdered(new ASTFunctionApplication(), 2);
         }
     }
 
@@ -277,14 +304,12 @@ public class RPALParser implements Parser {
             case STRING:
                 read(TokenType.STRING);
                 break;
-            // TODO: manage true false differently?
             case BOOLEAN:
                 read(TokenType.BOOLEAN);
-                astBuilder.buildTree(new ASTNode("<BOOLEAN:>"), 0);
                 break;
             case NIL:
                 read(TokenType.NIL);
-                astBuilder.buildTree(new ASTNode("nil"), 0);
+                astBuilder.buildTree(new ASTNil(), 0);
                 break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
@@ -293,7 +318,7 @@ public class RPALParser implements Parser {
                 break;
             case DUMMY:
                 read(TokenType.DUMMY);
-                astBuilder.buildTree(new ASTNode("dummy"), 0);
+                astBuilder.buildTree(new ASTDummy(), 0);
                 break;
             default:
                 break;
@@ -307,7 +332,7 @@ public class RPALParser implements Parser {
         if (nextTokenType == TokenType.KEYWORD_WITHIN){
             read(TokenType.KEYWORD_WITHIN);
             D();
-            astBuilder.buildTreeOrdered(new ASTNode("within"), 2);
+            astBuilder.buildTreeOrdered(new ASTWithin(), 2);
         }
     }
 
@@ -320,7 +345,7 @@ public class RPALParser implements Parser {
             n++;
         }
         if (n > 1){
-            astBuilder.buildTreeOrdered(new ASTNode("and"), n);
+            astBuilder.buildTreeOrdered(new ASTSimultaneousDefinition(), n);
         }
     }
 
@@ -329,7 +354,7 @@ public class RPALParser implements Parser {
         if (nextTokenType == TokenType.REC){
             read(TokenType.REC);
             Db();
-            astBuilder.buildTree(new ASTNode("rec"), 1);
+            astBuilder.buildTree(new ASTRecursiveFunction(), 1);
         }
         else {
             Db();
@@ -351,25 +376,26 @@ public class RPALParser implements Parser {
                     } while (nextTokenType != TokenType.EQUAL);
                     read(TokenType.EQUAL);
                     E();
-                    astBuilder.buildTreeOrdered(new ASTNode("function_form"), n + VbCount + 1);
+                    astBuilder.buildTreeOrdered(new ASTFunctionForm(), n + VbCount + 1);
                     break;
                 }
                 if (nextTokenType == TokenType.EQUAL){
                     read(TokenType.EQUAL);
                     E();
-                    astBuilder.buildTreeOrdered(new ASTNode("="), 2);
+                    astBuilder.buildTreeOrdered(new ASTAssign(), 2);
                     break;
                 }
-                if (nextTokenType == TokenType.COMMA){
-                    do {
-                        read(TokenType.COMMA);
-                        read(TokenType.IDENTIFIER);
-                        n++;
-                    } while (nextTokenType == TokenType.COMMA);
-                    E();
-                    astBuilder.buildTreeOrdered(new ASTNode("="), n + 1);
-                }
-                break;
+//                // FIXME: this
+//                if (nextTokenType == TokenType.COMMA){
+//                    do {
+//                        read(TokenType.COMMA);
+//                        read(TokenType.IDENTIFIER);
+//                        n++;
+//                    } while (nextTokenType == TokenType.COMMA);
+//                    E();
+//                    astBuilder.buildTreeOrdered(new ASTNode("="), n + 1);
+//                }
+//                break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
                 D();
@@ -390,7 +416,7 @@ public class RPALParser implements Parser {
                 if (nextTokenType == TokenType.CLOSE_BRACKET){
                     read(TokenType.CLOSE_BRACKET);
                     // terminal node
-                    astBuilder.buildTree(new ASTNode("()"), 0);
+                    astBuilder.buildTree(new ASTEmpty(), 0);
                     break;
                 }
                 Vl();
@@ -409,7 +435,7 @@ public class RPALParser implements Parser {
             read(TokenType.IDENTIFIER);
             n++;
         }
-        astBuilder.buildTreeOrdered(new ASTNode(","), n);
+        astBuilder.buildTreeOrdered(new ASTList(), n);
     }
 }
 

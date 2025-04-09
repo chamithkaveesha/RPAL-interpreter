@@ -1,3 +1,5 @@
+package scanner;
+
 import java.util.List;
 
 public abstract class Scanner {
