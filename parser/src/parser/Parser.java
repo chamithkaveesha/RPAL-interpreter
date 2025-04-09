@@ -1,6 +1,6 @@
 package parser;
 
-import ast.ASTNode;
+import tree.ast.ASTNode;
 import utils.FCNSTree;
 
 public interface Parser {

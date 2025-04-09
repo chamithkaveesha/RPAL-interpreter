@@ -1,5 +1,5 @@
-import ast.ASTBuilder;
-import ast.ASTNode;
+import tree.ast.ASTBuilder;
+import tree.ast.ASTNode;
 import parser.Parser;
 import parser.RPALParser;
 import scanner.*;

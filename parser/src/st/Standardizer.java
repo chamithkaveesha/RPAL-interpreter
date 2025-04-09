@@ -1,6 +1,6 @@
 package st;
 
-import ast.Node;
+import tree.Node;
 import utils.FCNSTree;
 
 public interface Standardizer {
