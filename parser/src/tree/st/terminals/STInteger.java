@@ -1,4 +1,6 @@
-package tree.st;
+package tree.st.terminals;
+
+import tree.st.STNode;
 
 public class STInteger extends STNode {
     private final int value;
