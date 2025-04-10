@@ -57,7 +57,7 @@ public class RPALParser implements Parser {
                 astBuilder.buildTree(new ASTString(nextToken.lexeme()), 0);
                 break;
             case BOOLEAN:
-                astBuilder.buildTree(new ASTBoolean(Boolean.getBoolean(nextToken.lexeme())), 0);
+                astBuilder.buildTree(new ASTBoolean(Boolean.parseBoolean(nextToken.lexeme())), 0);
                 break;
         }
         this.nextTokenType = getNextTokenType();

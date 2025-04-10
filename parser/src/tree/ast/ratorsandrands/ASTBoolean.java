@@ -7,7 +7,7 @@ import tree.st.STNode;
 public class ASTBoolean extends ASTNode {
     private final boolean value;
     public ASTBoolean(Boolean value) {
-        super(value != null ? value.toString() : throwIllegalArgumentException());
+        super(value != null ? "<" + value.toString() + ">" : throwIllegalArgumentException());
         this.value = value;
     }
 
