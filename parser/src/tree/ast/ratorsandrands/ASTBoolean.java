@@ -1,7 +1,7 @@
 package tree.ast.ratorsandrands;
 
 import tree.ast.ASTNode;
-import tree.st.STBoolean;
+import tree.st.terminals.STBoolean;
 import tree.st.STBuilder;
 import tree.st.STNode;
 import utils.FCNSNode;
