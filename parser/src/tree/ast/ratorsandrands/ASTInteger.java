@@ -1,8 +1,10 @@
 package tree.ast.ratorsandrands;
 
 import tree.ast.ASTNode;
-import tree.st.STInteger;
+import tree.st.STBuilder;
+import tree.st.terminals.STInteger;
 import tree.st.STNode;
+import utils.FCNSNode;
 
 public class ASTInteger extends ASTNode {
     private final int value;
@@ -12,7 +14,7 @@ public class ASTInteger extends ASTNode {
     }
 
     @Override
-    public STNode standardize() {
-        return new STInteger(value);
+    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
+        return new FCNSNode<>(new STInteger(value));
     }
 }

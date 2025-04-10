@@ -2,7 +2,9 @@ package tree.ast.ratorsandrands;
 
 import tree.ast.ASTNode;
 import tree.st.STBoolean;
+import tree.st.STBuilder;
 import tree.st.STNode;
+import utils.FCNSNode;
 
 public class ASTBoolean extends ASTNode {
     private final boolean value;
@@ -16,7 +18,8 @@ public class ASTBoolean extends ASTNode {
     }
 
     @Override
-    public STNode standardize() {
-        return new STBoolean(value);
+    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
+        // For leaf nodes, just create the corresponding ST node with no children
+        return new FCNSNode<>(new STBoolean(value));
     }
 }

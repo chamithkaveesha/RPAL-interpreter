@@ -1,7 +1,10 @@
 package tree.ast.variables;
 
 import tree.ast.ASTNode;
+import tree.st.STBuilder;
+import tree.st.terminals.STEmpty;
 import tree.st.STNode;
+import utils.FCNSNode;
 
 public class ASTEmpty extends ASTNode {
     public ASTEmpty() {
@@ -9,7 +12,7 @@ public class ASTEmpty extends ASTNode {
     }
 
     @Override
-    public STNode standardize() {
-        return null;
+    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
+        return new FCNSNode<>(new STEmpty());
     }
 }
