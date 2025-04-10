@@ -1,21 +1,21 @@
 package parser;
 
-import ast.*;
-import ast.definitions.*;
-import ast.expressions.ASTLambda;
-import ast.expressions.ASTLet;
-import ast.expressions.ASTWhere;
-import ast.operators.*;
-import ast.ratorsandrands.*;
-import ast.ASTNode;
-import ast.tuples.ASTAug;
-import ast.tuples.ASTCondition;
-import ast.tuples.ASTTau;
-import ast.variables.ASTEmpty;
-import ast.variables.ASTList;
+import tree.ast.ASTBuilder;
+import tree.ast.definitions.*;
+import tree.ast.expressions.ASTLambda;
+import tree.ast.expressions.ASTLet;
+import tree.ast.expressions.ASTWhere;
+import tree.ast.ASTNode;
+import tree.ast.operators.*;
+import tree.ast.ratorsandrands.*;
+import tree.ast.tuples.ASTAug;
+import tree.ast.tuples.ASTCondition;
+import tree.ast.tuples.ASTTau;
+import tree.ast.variables.ASTEmpty;
+import tree.ast.variables.ASTList;
 import scanner.Token;
 import scanner.TokenType;
-import utils.FCNSTree;
+import utils.FCNSNode;
 
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +38,7 @@ public class RPALParser implements Parser {
     }
 
     @Override
-    public FCNSTree<Node> getAST() {
+    public FCNSNode<ASTNode> getAST() {
         return astBuilder.get();
     }
 
@@ -57,7 +57,7 @@ public class RPALParser implements Parser {
                 astBuilder.buildTree(new ASTString(nextToken.lexeme()), 0);
                 break;
             case BOOLEAN:
-                astBuilder.buildTree(new ASTBoolean(Boolean.getBoolean(nextToken.lexeme())), 0);
+                astBuilder.buildTree(new ASTBoolean(Boolean.parseBoolean(nextToken.lexeme())), 0);
                 break;
         }
         this.nextTokenType = getNextTokenType();
