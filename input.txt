@@ -1,7 +1,6 @@
 //let f x y = x + -3
 //in Print(f 3 (1))//
 //Print (Inc 7, true) where Inc x = x + 1
-//(fn x y. x + y) 2 3
 //Print(1 ** 3 *2, 'csaa')
 //Print(1 ** 3 **2, 'csaa')
 //let a = 2 and b = 5 and c =3 in Print(x + y)
@@ -9,7 +8,7 @@
 //let a = nil aug 5 aug 2 in Print(a)
 //let f x y z = x + y + z in f 1 2 3
 //Print(not -3 + 5 /3 > 1)
-//let f x y = x + y in 3 @f y
+//let f x y = x + y in 3 @f 2
 //Print((2, 3) 1)
 //(fn n.n < 0 -> -n | n)(-3)
 //(fn (x,y).x+y)(5,6)
@@ -20,7 +19,16 @@
 //Print(not -3 + 5 /3 > 1)
 //let rec f n = n eq 1 -> 1 | n * f (n -1) in f 3
 //let f x y = x + 3 in Print(f 3 1)
-//Print(x+3)
-f x y = x
-in Print(f 3 (1))
-
+//let f x y = x in Print(f 3 1)
+//Print(- 2 + 2 + 3)
+//Print( true & not true & false)
+//Print(true -> 1 | 2)
+//Print(1,2,3)
+//Print((1,2) aug 3)
+//Print(nil aug 3)
+//Print(nil aug 3 aug 2)
+//let a = 5 in Print(a)
+//Print(a) where a = 5
+//(fn x y z. x + y) 2 3 1
+//Print(2 @f 3 @f 5) where f x y= x + y
+let Add x y z = x + y in Print (2 @Add 3 @Add 4 @Add 5)
