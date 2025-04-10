@@ -1,9 +1,11 @@
+import st.RPALStandardizer;
 import tree.ast.ASTBuilder;
 import tree.ast.ASTNode;
 import parser.Parser;
 import parser.RPALParser;
 import scanner.*;
 import scanner.Scanner;
+import tree.st.STBuilder;
 import utils.FCNSNode;
 
 import java.io.*;
@@ -40,6 +42,8 @@ public class Main {
         parser.parse();
         FCNSNode<ASTNode> ast = parser.getAST();
         System.out.println(ast.toString());
+        System.out.println(new RPALStandardizer().getST(ast));
+
     }
 
     private static String getFilenameFromCommandLineArguments(String[] args) {
