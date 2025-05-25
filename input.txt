@@ -31,4 +31,13 @@
 //Print(a) where a = 5
 //(fn x y z. x + y) 2 3 1
 //Print(2 @f 3 @f 5) where f x y= x + y
-let Add x y z = x + y in Print (2 @Add 3 @Add 4 @Add 5)
+//let Add x y z = x + y in Print (2 @Add 3 @Add 4 @Add 5)
+//(fn x.x-1) 4 * 2
+//(fn x.x - 1) 4
+//true or true or false
+//let f x y = x + y in 3 @f y
+//Print(-2)
+//(fn x y. x + y) 5 6
+//print(1,2,3)
+//(fn x. x > 1 -> x + 1| 2 / 5) 5
+(fn x. n < 0 -> -n| n) (- 5)
