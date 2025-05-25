@@ -1,4 +1,4 @@
-package cse_machine.elements;
+package cse_machine.elements.control;
 
 import cse_machine.ControlElementVisitor;
 

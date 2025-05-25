@@ -1,6 +1,6 @@
 package tree.st.terminals;
 
-import cse_machine.elements.IntegerControlElement;
+import cse_machine.elements.control.IntegerControlElement;
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
 

@@ -1,6 +1,6 @@
 package tree.st;
 
-import cse_machine.elements.BinOpControlElement;
+import cse_machine.elements.control.BinOpControlElement;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;
 

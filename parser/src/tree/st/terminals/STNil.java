@@ -1,6 +1,6 @@
 package tree.st.terminals;
 
-import cse_machine.elements.NilControlElement;
+import cse_machine.elements.control.NilControlElement;
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
 

@@ -1,6 +1,6 @@
 package tree.st;
 
-import cse_machine.elements.GammaControlElement;
+import cse_machine.elements.control.GammaControlElement;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;
 

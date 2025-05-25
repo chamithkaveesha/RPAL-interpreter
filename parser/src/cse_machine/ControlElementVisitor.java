@@ -1,8 +1,8 @@
 package cse_machine;
 
-import cse_machine.elements.IdentifierControlElement;
-import cse_machine.elements.GammaControlElement;
-import cse_machine.elements.LambdaControlElement;
+import cse_machine.elements.control.IdentifierControlElement;
+import cse_machine.elements.control.GammaControlElement;
+import cse_machine.elements.control.LambdaControlElement;
 
 public interface ControlElementVisitor {
     public void visitGamma(GammaControlElement element);

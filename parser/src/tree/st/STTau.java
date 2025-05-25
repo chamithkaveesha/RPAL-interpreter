@@ -1,6 +1,6 @@
 package tree.st;
 
-import cse_machine.elements.TauControlElement;
+import cse_machine.elements.control.TauControlElement;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;
 

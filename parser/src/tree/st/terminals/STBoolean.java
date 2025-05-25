@@ -1,6 +1,6 @@
 package tree.st.terminals;
 
-import cse_machine.elements.BooleanControlElement;
+import cse_machine.elements.control.BooleanControlElement;
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
 

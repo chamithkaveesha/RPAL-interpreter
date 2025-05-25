@@ -1,6 +1,6 @@
 package tree.st;
 
-import cse_machine.elements.LambdaControlElement;
+import cse_machine.elements.control.LambdaControlElement;
 import tree.st.terminals.STIdentifier;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;

@@ -1,6 +1,6 @@
 package tree.transform;
 
-import cse_machine.elements.ControlElement;
+import cse_machine.elements.control.ControlElement;
 
 import java.util.ArrayList;
 import java.util.List;

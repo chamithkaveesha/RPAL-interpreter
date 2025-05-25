@@ -1,6 +1,6 @@
 package tree.st.terminals;
 
-import cse_machine.elements.DummyControlElement;
+import cse_machine.elements.control.DummyControlElement;
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
 

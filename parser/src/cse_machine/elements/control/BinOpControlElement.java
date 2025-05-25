@@ -1,12 +1,12 @@
-package cse_machine.elements;
+package cse_machine.elements.control;
 
 import cse_machine.ControlElementVisitor;
 
-public class UnOpControlElement extends ControlElement {
+public class BinOpControlElement extends ControlElement {
     private final String operator;
 
-    public UnOpControlElement(String operator) {
-        super(String.format("UnOp(%s)", operator));
+    public BinOpControlElement(String operator) {
+        super(String.format("BinOp(%s)", operator));
         this.operator = operator;
     }
 

@@ -1,7 +1,7 @@
 package tree.st;
 
-import cse_machine.elements.BetaControlElement;
-import cse_machine.elements.DeltaControlElement;
+import cse_machine.elements.control.BetaControlElement;
+import cse_machine.elements.control.DeltaControlElement;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;
 
