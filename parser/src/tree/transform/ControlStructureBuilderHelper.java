@@ -17,6 +17,13 @@ public class ControlStructureBuilderHelper {
         return currentLevel;
     }
 
+    public void setCurrentLevel(int level) {
+        if (level < 0 || level >= controlStructures.size()) {
+            throw new IllegalArgumentException("Invalid level");
+        }
+        currentLevel = level;
+    }
+
     public ControlStructure getCurrentControlStructure() {
         return controlStructures.get(currentLevel);
     }
@@ -29,9 +36,16 @@ public class ControlStructureBuilderHelper {
         getCurrentControlStructure().addElement(element);
     }
 
-    public void incrementLevel() {
-        currentLevel++;
-        controlStructures.add(new ControlStructure(currentLevel));
+    public int addNewLevel() {
+        int newLevel = controlStructures.size();
+        controlStructures.add(new ControlStructure(newLevel));
+        return newLevel;
+    }
+
+    public int addNewLevelAndGoToIt() {
+        int newLevel = addNewLevel();
+        setCurrentLevel(newLevel);
+        return newLevel;
     }
 
     public ControlStructure getControlStructure(int level) {

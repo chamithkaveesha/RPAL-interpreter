@@ -28,6 +28,6 @@ public class ControlStructure {
 
     @Override
     public String toString() {
-        return "Level: " + level + ": " + elements;
+        return "Level " + level + ": " + elements;
     }
 }

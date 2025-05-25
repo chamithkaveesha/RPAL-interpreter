@@ -6,6 +6,8 @@ import parser.RPALParser;
 import scanner.*;
 import scanner.Scanner;
 import tree.st.STBuilder;
+import tree.st.STNode;
+import tree.transform.ControlStructureBuilder;
 import utils.FCNSNode;
 
 import java.io.*;
@@ -42,8 +44,10 @@ public class Main {
         parser.parse();
         FCNSNode<ASTNode> ast = parser.getAST();
         System.out.println(ast.toString());
-        System.out.println(new RPALStandardizer().getST(ast));
+        FCNSNode<STNode> st = new RPALStandardizer().getST(ast);
+        System.out.println(st);
 
+        System.out.println(new ControlStructureBuilder().build(st));
     }
 
     private static String getFilenameFromCommandLineArguments(String[] args) {
