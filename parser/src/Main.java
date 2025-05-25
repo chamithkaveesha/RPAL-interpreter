@@ -1,3 +1,8 @@
+import cse_machine.Control;
+import cse_machine.CseMachine;
+import cse_machine.Environment;
+import cse_machine.Stack;
+import cse_machine.elements.control.ControlElement;
 import st.RPALStandardizer;
 import tree.ast.ASTBuilder;
 import tree.ast.ASTNode;
@@ -5,8 +10,8 @@ import parser.Parser;
 import parser.RPALParser;
 import scanner.*;
 import scanner.Scanner;
-import tree.st.STBuilder;
 import tree.st.STNode;
+import tree.transform.ControlStructure;
 import tree.transform.ControlStructureBuilder;
 import utils.FCNSNode;
 
@@ -46,8 +51,23 @@ public class Main {
         System.out.println(ast.toString());
         FCNSNode<STNode> st = new RPALStandardizer().getST(ast);
         System.out.println(st);
+        ControlStructureBuilder controlStructureBuilder = new ControlStructureBuilder();
+        List<ControlStructure> controlStructureList = controlStructureBuilder.build(st);
+        System.out.println(controlStructureList);
 
-        System.out.println(new ControlStructureBuilder().build(st));
+        Control control = new Control(controlStructureList);
+        Stack stack = new Stack();
+        Environment primitiveEnv = new Environment();
+        primitiveEnv.setVariable("x", 1);
+        CseMachine cseMachine = new CseMachine(control, stack, primitiveEnv);
+        System.out.println(cseMachine);
+
+        while (control.hasNext()) {
+            System.out.println("--------------------------------------------------------");
+            ControlElement element = control.next();
+            element.accept(cseMachine);
+            System.out.println(cseMachine);
+        }
     }
 
     private static String getFilenameFromCommandLineArguments(String[] args) {
