@@ -16,6 +16,6 @@ public class IdentifierControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitData(this);
     }
 }

@@ -16,6 +16,6 @@ public class BinOpControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitBinOp(this);
     }
 }

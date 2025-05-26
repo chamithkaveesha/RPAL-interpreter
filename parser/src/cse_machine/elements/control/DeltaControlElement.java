@@ -16,6 +16,6 @@ public class DeltaControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitDelta(this);
     }
 }

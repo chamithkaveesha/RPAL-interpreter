@@ -9,6 +9,6 @@ public class GammaControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitGamma(this);
     }
 }

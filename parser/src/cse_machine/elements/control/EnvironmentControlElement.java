@@ -16,6 +16,6 @@ public class EnvironmentControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitEnvironment(this);
     }
 }

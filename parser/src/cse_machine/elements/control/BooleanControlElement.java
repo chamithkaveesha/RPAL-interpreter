@@ -21,6 +21,6 @@ public class BooleanControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitBoolean(this);
     }
 }

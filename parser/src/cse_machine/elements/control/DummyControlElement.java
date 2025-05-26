@@ -9,6 +9,6 @@ public class DummyControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitDummy(this);
     }
 }

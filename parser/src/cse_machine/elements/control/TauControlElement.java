@@ -30,6 +30,6 @@ public class TauControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitTau(this);
     }
 }

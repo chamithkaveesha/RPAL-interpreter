@@ -16,6 +16,6 @@ public class StringControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitString(this);
     }
 }

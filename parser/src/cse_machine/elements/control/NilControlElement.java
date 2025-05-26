@@ -9,6 +9,6 @@ public class NilControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitNil(this);
     }
 }

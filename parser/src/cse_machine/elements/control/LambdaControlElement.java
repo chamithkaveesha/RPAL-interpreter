@@ -22,6 +22,6 @@ public class LambdaControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitLambda(this);
     }
 }

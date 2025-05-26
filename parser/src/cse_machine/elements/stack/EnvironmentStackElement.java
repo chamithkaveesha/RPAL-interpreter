@@ -3,7 +3,7 @@ package cse_machine.elements.stack;
 import cse_machine.Environment;
 
 public class EnvironmentStackElement extends StackElement {
-    private int number;
+    private final int number;
     private final Environment environment;
 
     public EnvironmentStackElement(int number, Environment environment) {
@@ -13,6 +13,10 @@ public class EnvironmentStackElement extends StackElement {
 
     public Environment getEnvironment() {
         return environment;
+    }
+
+    public int getNumber() {
+        return number;
     }
 
     @Override

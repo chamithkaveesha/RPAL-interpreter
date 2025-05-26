@@ -3,6 +3,12 @@ import cse_machine.CseMachine;
 import cse_machine.Environment;
 import cse_machine.Stack;
 import cse_machine.elements.control.ControlElement;
+import cse_machine.elements.stack.BinOpStackElement;
+import cse_machine.elements.stack.UnOpStackElement;
+import cse_machine.operations.IntAddition;
+import cse_machine.operations.IntGreaterThan;
+import cse_machine.operations.NegateOperation;
+import cse_machine.operations.NotOperation;
 import st.RPALStandardizer;
 import tree.ast.ASTBuilder;
 import tree.ast.ASTNode;
@@ -59,6 +65,10 @@ public class Main {
         Stack stack = new Stack();
         Environment primitiveEnv = new Environment();
         primitiveEnv.setVariable("x", 1);
+        primitiveEnv.setVariable("+", new BinOpStackElement("+", new IntAddition()));
+        primitiveEnv.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
+        primitiveEnv.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));
+        primitiveEnv.setVariable("not", new UnOpStackElement("not", new NotOperation()));
         CseMachine cseMachine = new CseMachine(control, stack, primitiveEnv);
         System.out.println(cseMachine);
 

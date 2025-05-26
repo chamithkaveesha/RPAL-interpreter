@@ -21,6 +21,6 @@ public class IntegerControlElement extends ControlElement {
 
     @Override
     public void accept(ControlElementVisitor visitor) {
-
+        visitor.visitInteger(this);
     }
 }
