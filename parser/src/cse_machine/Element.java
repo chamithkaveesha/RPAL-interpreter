@@ -1,4 +1,4 @@
 package cse_machine;
 
-public class Element {
+public abstract class Element {
 }

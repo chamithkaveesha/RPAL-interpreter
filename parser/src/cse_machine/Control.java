@@ -37,6 +37,10 @@ public class Control {
         return controlElements.removeLast(); // Remove from end (stack behavior)
     }
 
+    public void append(ControlElement element) {
+        this.controlElements.addLast(element);
+    }
+
     public ControlElement peek() {
         return controlElements.peekLast(); // Peek at end
     }

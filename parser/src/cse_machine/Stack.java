@@ -5,6 +5,7 @@ import cse_machine.elements.stack.StackElement;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Iterator;
 
 public class Stack {
 
@@ -48,6 +49,17 @@ public class Stack {
 
     public Deque<StackElement> getElements() {
         return elements;
+    }
+
+    public int findNearestEnvironmentNumber() {
+        Iterator<StackElement> it = elements.descendingIterator();
+        while (it.hasNext()) {
+            StackElement element = it.next();
+            if (element instanceof EnvironmentStackElement) {
+                return ((EnvironmentStackElement) element).getNumber();
+            }
+        }
+        throw new IllegalStateException("Cannot find environments.");
     }
 
     @Override
