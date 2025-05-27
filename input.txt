@@ -44,6 +44,15 @@
 //Print(1 + true)  // check for errors
 //(fn x. -x) 1
 //not true
-(1,2,3)  3
+//(1,2,3)  3
 //(fn (x,y). x + y) (5,6)
 //let T = (2,3) in let A = T aug 4 in Print (A)
+//let a = 2 in a
+//let c = 2 within f x = x + c in f 2
+//a where a = 2
+//let f x y z = x + y + z  in f 1 2 3
+//let x = 5 and y = 3 in x + y
+//Print(1, 2, 3)
+//(fn x y. x + y) 5 6
+let rec f n = n eq 1 -> | n * f (n -1) in f 3
+

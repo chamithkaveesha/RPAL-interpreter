@@ -2,22 +2,29 @@ package cse_machine.elements.control;
 
 import cse_machine.ControlElementVisitor;
 
+import java.util.List;
+
 public class LambdaControlElement extends ControlElement {
-    private final String boundVariable;
+    private final List<String> boundVariables;
     private final int newIndex;
 
-    public LambdaControlElement(String boundVariable, int newIndex) {
-        super(String.format("Lambda(%d, %s)", newIndex, boundVariable));
-        this.boundVariable = boundVariable;
+    public LambdaControlElement(List<String> boundVariables, int newIndex) {
+        super(String.format("Lambda(%d, %s)", newIndex, boundVariables.toString()));
+        this.boundVariables = boundVariables;
         this.newIndex = newIndex;
     }
 
-    public String getBoundVariable() {
-        return boundVariable;
+    public List<String> getBoundVariables() {
+        return boundVariables;
     }
 
     public int getNewIndex() {
         return newIndex;
+    }
+
+    @Override
+    public String toString() {
+        return "LambdaControlElement(boundVariables=" + boundVariables + ", newIndex=" + newIndex + ")";
     }
 
     @Override
