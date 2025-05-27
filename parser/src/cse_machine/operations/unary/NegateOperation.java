@@ -1,4 +1,4 @@
-package cse_machine.operations;
+package cse_machine.operations.unary;
 
 import cse_machine.elements.stack.DataStackElement;
 
