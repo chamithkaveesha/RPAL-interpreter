@@ -77,7 +77,8 @@ public class Main {
         primitiveEnv.setVariable("Istuple", new UnOpStackElement("Istuple", new IsTupleOperation()));
         primitiveEnv.setVariable("Isdummy", new UnOpStackElement("Isdummy", new IsDummyOperation()));
         primitiveEnv.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
-        primitiveEnv.setVariable("eq", new BinOpStackElement("eq", new IntEqual()));
+        primitiveEnv.setVariable("eq", new BinOpStackElement("eq", new EqualOperation()));
+        primitiveEnv.setVariable("ne", new BinOpStackElement("ne", new NotEqualOperation()));
         primitiveEnv.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));
         primitiveEnv.setVariable("not", new UnOpStackElement("not", new NotOperation()));
         CseMachine cseMachine = new CseMachine(control, stack, primitiveEnv);

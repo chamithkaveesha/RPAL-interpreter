@@ -61,5 +61,7 @@
 //true & not false
 //Isinteger true
 //Istruthvalue 11
-Isstring true
+//Isstring true
 //Istuple (1,2)
+//true ne false
+1 ne 2
