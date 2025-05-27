@@ -66,6 +66,7 @@ public class Main {
         primitiveEnv.setVariable("-", new BinOpStackElement("-", new IntSubtraction()));
         primitiveEnv.setVariable("*", new BinOpStackElement("+", new IntMultiplication()));
         primitiveEnv.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
+        primitiveEnv.setVariable("eq", new BinOpStackElement("eq", new IntEqual()));
         primitiveEnv.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));
         primitiveEnv.setVariable("not", new UnOpStackElement("not", new NotOperation()));
         CseMachine cseMachine = new CseMachine(control, stack, primitiveEnv);

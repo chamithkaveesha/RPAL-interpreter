@@ -17,4 +17,5 @@ public interface ControlElementVisitor {
     void visitBeta(BetaControlElement element);
     void visitDelta(DeltaControlElement element);
     void visitTau(TauControlElement element);
+    void visitYStar(YStarControlElement element);
 }

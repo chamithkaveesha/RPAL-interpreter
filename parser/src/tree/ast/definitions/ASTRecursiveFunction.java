@@ -2,6 +2,7 @@ package tree.ast.definitions;
 
 import tree.ast.ASTNode;
 import tree.st.*;
+import tree.st.terminals.STYStar;
 import utils.FCNSNode;
 
 public class ASTRecursiveFunction extends ASTNode {
