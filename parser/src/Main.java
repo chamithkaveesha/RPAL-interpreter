@@ -63,7 +63,7 @@ public class Main {
         Environment primitiveEnv = new Environment();
         primitiveEnv.setVariable("x", 1);
         primitiveEnv.setVariable("+", new BinOpStackElement("+", new IntAddition()));
-        primitiveEnv.setVariable("-", new BinOpStackElement("+", new IntSubtraction()));
+        primitiveEnv.setVariable("-", new BinOpStackElement("-", new IntSubtraction()));
         primitiveEnv.setVariable("*", new BinOpStackElement("+", new IntMultiplication()));
         primitiveEnv.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
         primitiveEnv.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));
