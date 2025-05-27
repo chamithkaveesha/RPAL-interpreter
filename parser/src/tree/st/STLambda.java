@@ -5,6 +5,9 @@ import tree.st.terminals.STIdentifier;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class STLambda extends STNode {
     public STLambda() {
         super("lambda");
@@ -25,26 +28,32 @@ public class STLambda extends STNode {
             throw new IllegalStateException("STLambda must have exactly two children: parameters and body");
         }
 
-        STNode node = parametersNode.getData();
-        if (!(node instanceof STIdentifier)){
-            throw new IllegalStateException("STLambda's parameters node expected to be STIdentifier but was " + node.getClass().getSimpleName());
-        }
+        List<String> boundVariables = extractBoundVariables(parametersNode);
 
-        String boundVariable = ((STIdentifier) node).getName();
-
-        // To add new control structure for lambda
         int previousLevel = helper.getCurrentLevel();
-
         int newLevel = helper.addNewLevel();
 
-        // Add Lambda control element representing lambda abstraction
-        helper.addControlElement(new LambdaControlElement(boundVariable, newLevel));
-
+        // Add LambdaControlElement with a list of variables
+        helper.addControlElement(new LambdaControlElement(boundVariables, newLevel));
         helper.setCurrentLevel(newLevel);
 
-        // Build control structure for the body of the lambda in new level
+        // Build control structure for the body
         bodyNode.getData().buildControlStructure(helper);
 
         helper.setCurrentLevel(previousLevel);
+    }
+
+    private List<String> extractBoundVariables(FCNSNode<STNode> node) {
+        List<String> vars = new ArrayList<>();
+        if (node.getData() instanceof STIdentifier) {
+            vars.add(((STIdentifier) node.getData()).getName());
+        } else if (node.getData().getLabel().equals(",")) {
+            for (FCNSNode<STNode> child : node.getChildren()) {
+                vars.addAll(extractBoundVariables(child));
+            }
+        } else {
+            throw new IllegalStateException("Unexpected parameter format in lambda");
+        }
+        return vars;
     }
 }

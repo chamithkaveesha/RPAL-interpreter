@@ -7,15 +7,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Environment {
+    private static int envCounter = 0; // shared across all instances
+    private final int id;
+
+
     private final Map<String, StackElement> variables = new HashMap<>();
     private final Environment parent;  // enclosing environment (outer scope)
 
     public Environment(Environment parent) {
+        this.id = envCounter++;
         this.parent = parent;
     }
 
     public Environment() {
         this(null);
+    }
+
+    public int getId() {
+        return id;
     }
 
     /**
@@ -57,6 +66,7 @@ public class Environment {
 
     @Override
     public String toString() {
-        return "EnvFrame" + variables.toString();
+        String parentInfo = (parent == null) ? "null" : "Env#" + parent.getId();
+        return "<Env#" + id + " " + variables.toString() + " | Parent: " + parentInfo + ">";
     }
 }

@@ -44,9 +44,9 @@ public class CseMachine implements ControlElementVisitor{
         int arity = function.getArity();
         List<StackElement> args = new ArrayList<>();
         for (int i = 0; i < arity; i++) {
-            args.add(0, stack.pop()); // Reverse order
+            // Order doesn't matter, gamma is only called where there is only one argument
+            args.add(stack.pop());
         }
-
         function.apply(stack, control, environmentManager, args);
     }
 
@@ -99,7 +99,7 @@ public class CseMachine implements ControlElementVisitor{
     public void visitLambda(LambdaControlElement element) {
         int nearestEnvNumber = this.stack.findNearestEnvironmentNumber();
         LambdaStackElement lambdaStackElement = new LambdaStackElement(
-                element.getBoundVariable(),
+                element.getBoundVariables(),
                 element.getNewIndex(),
                 nearestEnvNumber
         );
@@ -212,9 +212,12 @@ public class CseMachine implements ControlElementVisitor{
                     // Remove from stack
                     iterator.remove();
 
-                    // Remove from environment manager only if it matches current
-                    if (environmentManager.getCurrent().getNumber() == targetNumber) {
-                        environmentManager.removeCurrent();  // This sets the parent as current automatically
+                    // Only switch if it's not the primitive environment
+                    if (targetNumber != 0) {
+                        // Only switch if the one removed was the current
+                        if (environmentManager.getCurrent().getNumber() == targetNumber) {
+                            environmentManager.switchToEnvironment(stack.findNearestEnvironmentNumber());
+                        }
                     }
 
                     return;
@@ -224,7 +227,6 @@ public class CseMachine implements ControlElementVisitor{
 
         throw new IllegalStateException("EnvironmentStackElement with number " + targetNumber + " not found in stack");
     }
-
 
     @Override
     public String toString() {
