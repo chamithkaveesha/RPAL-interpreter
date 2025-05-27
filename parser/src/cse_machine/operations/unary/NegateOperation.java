@@ -1,15 +1,16 @@
 package cse_machine.operations.unary;
 
 import cse_machine.elements.stack.DataStackElement;
+import cse_machine.elements.stack.StackElement;
 
 public class NegateOperation implements UnaryOperation {
     @Override
-    public DataStackElement apply(DataStackElement operand) {
-        if (operand.getDataType() != DataStackElement.Type.INT) {
-            throw new IllegalArgumentException("Negate operation expects an integer.");
+    public DataStackElement apply(StackElement operand) {
+        if (!(operand instanceof DataStackElement dse) || dse.getDataType() != DataStackElement.Type.INT) {
+            throw new IllegalArgumentException("Negate operation expects a DataStackElement of type INT.");
         }
 
-        int value = (Integer) operand.getValue();
+        int value = dse.getIntValue();
         return new DataStackElement(DataStackElement.Type.INT, -value);
     }
 

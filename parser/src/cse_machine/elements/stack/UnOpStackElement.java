@@ -23,11 +23,8 @@ public class UnOpStackElement extends StackElement implements CallableElement {
             throw new IllegalArgumentException("Unary operation '" + name + "' expects 1 argument.");
         }
 
-        if (!(arguments.get(0) instanceof DataStackElement operand)) {
-            throw new IllegalArgumentException("Unary operations only support DataStackElements.");
-        }
-
-        DataStackElement result = operation.apply(operand);
+        StackElement arg = arguments.get(0);
+        DataStackElement result = operation.apply(arg);
         stack.push(result);
     }
 
