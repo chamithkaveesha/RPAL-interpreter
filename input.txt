@@ -45,14 +45,16 @@
 //(fn x. -x) 1
 //not true
 //(1,2,3)  3
-//(fn (x,y). x + y) (5,6)
+//(fn (x,y). x - y) (5,6)
 //let T = (2,3) in let A = T aug 4 in Print (A)
 //let a = 2 in a
-//let c = 2 within f x = x + c in f 2
+//let c = 2 within d = 1 within f x = x + c + d in f 3
 //a where a = 2
-//let f x y z = x + y + z  in f 1 2 3
+//let f x y z = x - y  in f 1 2 3
 //let x = 5 and y = 3 in x + y
 //Print(1, 2, 3)
-//(fn x y. x + y) 5 6
-let rec f n = n eq 1 -> | n * f (n -1) in f 3
+//(fn x y z. x - y - z) 5 1 2
+//let rec f n = n eq 1 -> | n * f (n -1) in f 3
+//nil aug 2 aug true aug 'pak'
+//let f a b = a - b in 1 @f (2 @f 3)
 

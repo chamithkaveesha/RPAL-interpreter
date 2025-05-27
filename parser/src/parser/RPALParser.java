@@ -82,7 +82,7 @@ public class RPALParser implements Parser {
                 read(TokenType.KEYWORD_FN);
                 int n = 1;
                 Vb();
-                // here use available symbols for Vb: is it not?
+                // Here use available symbols for Vb: is it not?
                 // in ast, as it seems lambda goes for more than two symbols, function definition
                 while(nextTokenType == TokenType.IDENTIFIER || nextTokenType == TokenType.OPEN_BRACKET){
                     Vb();
@@ -115,14 +115,12 @@ public class RPALParser implements Parser {
             Ta();
             n++;
         }
-        // TODO: is there nice logic than this
         if (n > 1){
             astBuilder.buildTreeOrdered(new ASTTau(), n);
         }
     }
 
-    // aug is a binary node, so need a different way of managing
-    // TODO: check whether this builds the correct tree
+    // Aug is a binary node, so need a different way of managing
     private void Ta(){
         Tc();
         while (nextTokenType == TokenType.KEYWORD_AUG){
@@ -144,7 +142,6 @@ public class RPALParser implements Parser {
         }
     }
 
-    // TODO: check this
     private void B(){
         Bt();
         while (nextTokenType == TokenType.OR){
@@ -163,7 +160,7 @@ public class RPALParser implements Parser {
         }
     }
 
-    // here different because not should be a parent
+    // Here, different because not should be a parent
     private void Bs(){
         if (nextTokenType == TokenType.NOT){
             read(TokenType.NOT);
@@ -177,7 +174,6 @@ public class RPALParser implements Parser {
 
     private void Bp(){
         A();
-        // TODO: check if both of the ge and >= recognized
         switch (nextTokenType){
             case GREATER_THAN:
                 read(TokenType.GREATER_THAN);
@@ -214,19 +210,16 @@ public class RPALParser implements Parser {
         }
     }
 
-    // TODO: this violates associativity
     private void A(){
         if (nextTokenType == TokenType.PLUS){
             read(TokenType.PLUS);
             At();
         }
-        // TODO: check for different orders of signs
         else if (nextTokenType == TokenType.MINUS){
             read(TokenType.MINUS);
             At();
             astBuilder.buildTree(new ASTUnOp(UnaryOperator.NEGATE), 1);
         }
-        // TODO: check if correct tree get built
         else {
             At();
         }
@@ -269,7 +262,6 @@ public class RPALParser implements Parser {
         }
     }
 
-    // TODO: check associativity
     private void Ap(){
         R();
         while (nextTokenType == TokenType.INFIX_FUNCTION){
@@ -325,8 +317,6 @@ public class RPALParser implements Parser {
         }
     }
 
-    // TODO: associativity, double check
-    // this should not work when two withins are there
     private void D(){
         Da();
         if (nextTokenType == TokenType.KEYWORD_WITHIN){
@@ -385,17 +375,16 @@ public class RPALParser implements Parser {
                     astBuilder.buildTreeOrdered(new ASTAssign(), 2);
                     break;
                 }
-//                // FIXME: this
-//                if (nextTokenType == TokenType.COMMA){
-//                    do {
-//                        read(TokenType.COMMA);
-//                        read(TokenType.IDENTIFIER);
-//                        n++;
-//                    } while (nextTokenType == TokenType.COMMA);
-//                    E();
-//                    astBuilder.buildTreeOrdered(new ASTNode("="), n + 1);
-//                }
-//                break;
+                if (nextTokenType == TokenType.COMMA){
+                    do {
+                        read(TokenType.COMMA);
+                        read(TokenType.IDENTIFIER);
+                        n++;
+                    } while (nextTokenType == TokenType.COMMA);
+                    E();
+                    astBuilder.buildTreeOrdered(new ASTList(), n + 1);
+                }
+                break;
             case OPEN_BRACKET:
                 read(TokenType.OPEN_BRACKET);
                 D();

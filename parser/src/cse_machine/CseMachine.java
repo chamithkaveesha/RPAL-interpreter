@@ -44,10 +44,9 @@ public class CseMachine implements ControlElementVisitor{
         int arity = function.getArity();
         List<StackElement> args = new ArrayList<>();
         for (int i = 0; i < arity; i++) {
-            // FIXME: is this correct
-            args.add(0, stack.pop()); // Reverse order
+            // Order doesn't matter, gamma is only called where there is only one argument
+            args.add(stack.pop());
         }
-
         function.apply(stack, control, environmentManager, args);
     }
 
