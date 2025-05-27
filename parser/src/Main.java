@@ -5,7 +5,9 @@ import cse_machine.Stack;
 import cse_machine.elements.control.ControlElement;
 import cse_machine.elements.stack.BinOpStackElement;
 import cse_machine.elements.stack.UnOpStackElement;
+import cse_machine.elements.stack.CurriedOperationStackElement;
 import cse_machine.operations.binary.*;
+import cse_machine.operations.two_step.ConcatenationOperation;
 import cse_machine.operations.unary.*;
 import st.RPALStandardizer;
 import tree.ast.ASTBuilder;
@@ -77,6 +79,7 @@ public class Main {
         primitiveEnv.setVariable("Istuple", new UnOpStackElement("Istuple", new IsTupleOperation()));
         primitiveEnv.setVariable("Isdummy", new UnOpStackElement("Isdummy", new IsDummyOperation()));
         primitiveEnv.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
+        primitiveEnv.setVariable("Conc", new CurriedOperationStackElement<>(new ConcatenationOperation()));
         primitiveEnv.setVariable("eq", new BinOpStackElement("eq", new EqualOperation()));
         primitiveEnv.setVariable("ne", new BinOpStackElement("ne", new NotEqualOperation()));
         primitiveEnv.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));

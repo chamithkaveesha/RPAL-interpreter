@@ -64,4 +64,6 @@
 //Isstring true
 //Istuple (1,2)
 //true ne false
-1 ne 2
+//1 ne 2
+//Print(Conc 'pak' 'you')
+Conc 'pak' 'you'
