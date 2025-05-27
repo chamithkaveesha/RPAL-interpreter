@@ -57,4 +57,4 @@
 //let rec f n = n eq 1 -> | n * f (n -1) in f 3
 //nil aug 2 aug true aug 'pak'
 //let f a b = a - b in 1 @f (2 @f 3)
-
+let rec f n = n eq 0 -> 'even' | n eq 1 -> 'odd' | f(n-2) in f 3

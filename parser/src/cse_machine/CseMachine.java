@@ -172,6 +172,11 @@ public class CseMachine implements ControlElementVisitor{
         stack.push(tuple);
     }
 
+    @Override
+    public void visitYStar(YStarControlElement element) {
+        stack.push(new YStarStackElement());
+    }
+
 
     @Override
     public void visitInteger(IntegerControlElement element) {
