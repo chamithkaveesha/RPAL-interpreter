@@ -25,4 +25,9 @@ public class State {
             setTransition(c, s);
         }
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
