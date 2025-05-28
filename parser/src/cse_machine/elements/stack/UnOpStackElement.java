@@ -4,7 +4,7 @@ import cse_machine.CallableElement;
 import cse_machine.Control;
 import cse_machine.EnvironmentManager;
 import cse_machine.Stack;
-import cse_machine.operations.UnaryOperation;
+import cse_machine.operations.unary.UnaryOperation;
 
 import java.util.List;
 
@@ -23,11 +23,8 @@ public class UnOpStackElement extends StackElement implements CallableElement {
             throw new IllegalArgumentException("Unary operation '" + name + "' expects 1 argument.");
         }
 
-        if (!(arguments.get(0) instanceof DataStackElement operand)) {
-            throw new IllegalArgumentException("Unary operations only support DataStackElements.");
-        }
-
-        DataStackElement result = operation.apply(operand);
+        StackElement arg = arguments.get(0);
+        DataStackElement result = operation.apply(arg);
         stack.push(result);
     }
 

@@ -4,7 +4,7 @@ import cse_machine.CallableElement;
 import cse_machine.Control;
 import cse_machine.EnvironmentManager;
 import cse_machine.Stack;
-import cse_machine.operations.BinaryOperation;
+import cse_machine.operations.binary.BinaryOperation;
 
 import java.util.List;
 
