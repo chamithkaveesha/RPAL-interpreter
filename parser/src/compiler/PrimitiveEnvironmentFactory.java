@@ -16,12 +16,14 @@ public class PrimitiveEnvironmentFactory {
         // Int
         env.setVariable("+", new BinOpStackElement("+", new IntAddition()));
         env.setVariable("-", new BinOpStackElement("-", new IntSubtraction()));
-        env.setVariable("*", new BinOpStackElement("+", new IntMultiplication()));
+        env.setVariable("*", new BinOpStackElement("*", new IntMultiplication()));
         env.setVariable("/", new BinOpStackElement("/", new IntDivision()));
-        env.setVariable("**", new BinOpStackElement("*", new IntExponentiation()));
+        env.setVariable("**", new BinOpStackElement("**", new IntExponentiation()));
+        env.setVariable("le", new BinOpStackElement("le", new IntLessThanOrEqual()));
+        env.setVariable("ge", new BinOpStackElement("ge", new IntGreaterThanOrEqual()));
         env.setVariable("ls", new BinOpStackElement("ls", new IntLessThan()));
-        env.setVariable("&", new BinOpStackElement("&", new AndOperation()));
-        env.setVariable("or", new BinOpStackElement("or", new AndOperation()));
+        env.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
+        env.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));
 
         // Type checking
         env.setVariable("Isinteger", new UnOpStackElement("Isinteger", new IsIntegerOperation()));
@@ -38,11 +40,11 @@ public class PrimitiveEnvironmentFactory {
         env.setVariable("Print", new UnOpStackElement("Print", new PrintOperation()));
 
         // Bool
-        env.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
         env.setVariable("eq", new BinOpStackElement("eq", new EqualOperation()));
         env.setVariable("ne", new BinOpStackElement("ne", new NotEqualOperation()));
-        env.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));
         env.setVariable("not", new UnOpStackElement("not", new NotOperation()));
+        env.setVariable("&", new BinOpStackElement("&", new AndOperation()));
+        env.setVariable("or", new BinOpStackElement("or", new OrOperation()));
 
         return env;
     }
