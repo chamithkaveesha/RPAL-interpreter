@@ -1,14 +1,25 @@
 package cse_machine.operations.binary;
 
 import cse_machine.elements.stack.DataStackElement;
+import cse_machine.elements.stack.StackElement;
 
 public class IntAddition implements BinaryOperation {
     @Override
-    public DataStackElement apply(DataStackElement left, DataStackElement right) {
-        if (left.getDataType() != DataStackElement.Type.INT || right.getDataType() != DataStackElement.Type.INT) {
+    public StackElement apply(StackElement left, StackElement right) {
+        if (!(left instanceof DataStackElement l) || !(right instanceof DataStackElement r)) {
+            throw new IllegalArgumentException("Addition requires DataStackElements.");
+        }
+
+        if (l.getDataType() != DataStackElement.Type.INT || r.getDataType() != DataStackElement.Type.INT) {
             throw new IllegalArgumentException("Addition requires integer operands.");
         }
-        int result = left.getIntValue() + right.getIntValue();
+
+        int result = l.getIntValue() + r.getIntValue();
         return new DataStackElement(DataStackElement.Type.INT, result);
+    }
+
+    @Override
+    public String toString() {
+        return "BinaryOperation(add)";
     }
 }

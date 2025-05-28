@@ -1,7 +1,7 @@
 package cse_machine.operations.binary;
 
-import cse_machine.elements.stack.DataStackElement;
+import cse_machine.elements.stack.StackElement;
 
 public interface BinaryOperation {
-    DataStackElement apply(DataStackElement left, DataStackElement right);
+    StackElement apply(StackElement left, StackElement right);
 }

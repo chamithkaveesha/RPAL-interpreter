@@ -23,11 +23,10 @@ public class BinOpStackElement extends StackElement implements CallableElement {
             throw new IllegalArgumentException("Binary operation '" + name + "' expects 2 arguments.");
         }
 
-        if (!(arguments.get(0) instanceof DataStackElement left) || !(arguments.get(1) instanceof DataStackElement right)) {
-            throw new IllegalArgumentException("Binary operations only support DataStackElements.");
-        }
+        StackElement left = arguments.get(0);
+        StackElement right = arguments.get(1);
 
-        DataStackElement result = operation.apply(left, right);
+        StackElement result = operation.apply(left, right);
         stack.push(result);
     }
 

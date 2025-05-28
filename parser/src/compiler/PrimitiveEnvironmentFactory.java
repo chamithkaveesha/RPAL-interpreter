@@ -46,6 +46,9 @@ public class PrimitiveEnvironmentFactory {
         env.setVariable("&", new BinOpStackElement("&", new AndOperation()));
         env.setVariable("or", new BinOpStackElement("or", new OrOperation()));
 
+        // Tuple
+        env.setVariable("aug", new BinOpStackElement("aug", new AugOperation()));
+
         return env;
     }
 }

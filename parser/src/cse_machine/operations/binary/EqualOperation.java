@@ -1,39 +1,40 @@
 package cse_machine.operations.binary;
 
 import cse_machine.elements.stack.DataStackElement;
+import cse_machine.elements.stack.StackElement;
 
 public class EqualOperation implements BinaryOperation {
     @Override
-    public DataStackElement apply(DataStackElement left, DataStackElement right) {
+    public StackElement apply(StackElement left, StackElement right) {
+        if (!(left instanceof DataStackElement l) || !(right instanceof DataStackElement r)) {
+            throw new IllegalArgumentException("Equality check requires DataStackElements.");
+        }
+
         // If types differ, not equal
-        if (left.getDataType() != right.getDataType()) {
+        if (l.getDataType() != r.getDataType()) {
             return new DataStackElement(DataStackElement.Type.BOOL, false);
         }
 
-        switch (left.getDataType()) {
+        boolean isEqual;
+        switch (l.getDataType()) {
             case INT:
-                return new DataStackElement(
-                        DataStackElement.Type.BOOL,
-                        left.getIntValue() == right.getIntValue()
-                );
+                isEqual = l.getIntValue() == r.getIntValue();
+                break;
             case STRING:
-                return new DataStackElement(
-                        DataStackElement.Type.BOOL,
-                        left.getStringValue().equals(right.getStringValue())
-                );
+                isEqual = l.getStringValue().equals(r.getStringValue());
+                break;
             case BOOL:
-                return new DataStackElement(
-                        DataStackElement.Type.BOOL,
-                        left.getBooleanValue() == right.getBooleanValue()
-                );
+                isEqual = l.getBooleanValue() == r.getBooleanValue();
+                break;
             case NIL:
                 // Both are NIL, consider equal
-                return new DataStackElement(DataStackElement.Type.BOOL, true);
+                isEqual = true;
+                break;
             default:
-                throw new IllegalArgumentException(
-                        "Equality not supported for type: " + left.getDataType()
-                );
+                throw new IllegalArgumentException("Equality not supported for type: " + l.getDataType());
         }
+
+        return new DataStackElement(DataStackElement.Type.BOOL, isEqual);
     }
 
     @Override
