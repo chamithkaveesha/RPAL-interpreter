@@ -66,4 +66,8 @@
 //true ne false
 //1 ne 2
 //Print(Conc 'pak' 'you')
-Conc 'pak' 'you'
+//Conc 'pak' 'you'
+//Stem 'hehe'
+//Print(Stern 'hehe')
+//let X=3 and Y=5 in Print(X+Y)
+Print(1,2,3)

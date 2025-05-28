@@ -78,6 +78,9 @@ public class Main {
         primitiveEnv.setVariable("Isstring", new UnOpStackElement("Isstring", new IsStringOperation()));
         primitiveEnv.setVariable("Istuple", new UnOpStackElement("Istuple", new IsTupleOperation()));
         primitiveEnv.setVariable("Isdummy", new UnOpStackElement("Isdummy", new IsDummyOperation()));
+        primitiveEnv.setVariable("Stem", new UnOpStackElement("Stem", new StemOperation()));
+        primitiveEnv.setVariable("Stern", new UnOpStackElement("Stern", new SternOperation()));
+        primitiveEnv.setVariable("Print", new UnOpStackElement("Print", new PrintOperation()));
         primitiveEnv.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
         primitiveEnv.setVariable("Conc", new CurriedOperationStackElement<>(new ConcatenationOperation()));
         primitiveEnv.setVariable("eq", new BinOpStackElement("eq", new EqualOperation()));
