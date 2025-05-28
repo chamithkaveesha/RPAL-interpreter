@@ -1,0 +1,49 @@
+package compiler;
+
+import cse_machine.Environment;
+import cse_machine.elements.stack.BinOpStackElement;
+import cse_machine.elements.stack.CurriedOperationStackElement;
+import cse_machine.elements.stack.UnOpStackElement;
+import cse_machine.operations.binary.*;
+import cse_machine.operations.two_step.ConcatenationOperation;
+import cse_machine.operations.unary.*;
+
+public class PrimitiveEnvironmentFactory {
+    public static Environment create() {
+
+        Environment env = new Environment();
+
+        // Int
+        env.setVariable("+", new BinOpStackElement("+", new IntAddition()));
+        env.setVariable("-", new BinOpStackElement("-", new IntSubtraction()));
+        env.setVariable("*", new BinOpStackElement("+", new IntMultiplication()));
+        env.setVariable("/", new BinOpStackElement("/", new IntDivision()));
+        env.setVariable("**", new BinOpStackElement("*", new IntExponentiation()));
+        env.setVariable("ls", new BinOpStackElement("ls", new IntLessThan()));
+        env.setVariable("&", new BinOpStackElement("&", new AndOperation()));
+        env.setVariable("or", new BinOpStackElement("or", new AndOperation()));
+
+        // Type checking
+        env.setVariable("Isinteger", new UnOpStackElement("Isinteger", new IsIntegerOperation()));
+        env.setVariable("Istruthvalue", new UnOpStackElement("Istruthvalue", new IsTruthValueOperation()));
+        env.setVariable("Isstring", new UnOpStackElement("Isstring", new IsStringOperation()));
+        env.setVariable("Istuple", new UnOpStackElement("Istuple", new IsTupleOperation()));
+        env.setVariable("Isdummy", new UnOpStackElement("Isdummy", new IsDummyOperation()));
+
+        // String
+        env.setVariable("Stem", new UnOpStackElement("Stem", new StemOperation()));
+        env.setVariable("Stern", new UnOpStackElement("Stern", new SternOperation()));
+        env.setVariable("Conc", new CurriedOperationStackElement<>(new ConcatenationOperation()));
+
+        env.setVariable("Print", new UnOpStackElement("Print", new PrintOperation()));
+
+        // Bool
+        env.setVariable("gr", new BinOpStackElement("gr", new IntGreaterThan()));
+        env.setVariable("eq", new BinOpStackElement("eq", new EqualOperation()));
+        env.setVariable("ne", new BinOpStackElement("ne", new NotEqualOperation()));
+        env.setVariable("neg", new UnOpStackElement("neg", new NegateOperation()));
+        env.setVariable("not", new UnOpStackElement("not", new NotOperation()));
+
+        return env;
+    }
+}
