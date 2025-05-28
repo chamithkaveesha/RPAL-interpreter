@@ -17,7 +17,7 @@ public class Main {
         try {
             cliArgs = CLIArguments.parse(args);
         } catch (IllegalArgumentException e) {
-            System.out.println("Usage: java Main <filename> [--ast] [--st] [--control] [--cse]");
+            System.out.println("Usage: java Main <filename> [-ast] [-st] [-control] [-cse]");
             System.out.println("Error: " + e.getMessage());
             return;
         }

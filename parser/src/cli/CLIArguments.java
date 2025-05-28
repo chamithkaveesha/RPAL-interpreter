@@ -27,20 +27,20 @@ public class CLIArguments {
 
         for (String arg : args) {
             switch (arg) {
-                case "--ast":
+                case "-ast":
                     ast = true;
                     break;
-                case "--st":
+                case "-st":
                     st = true;
                     break;
-                case "--cse":
+                case "-cse":
                     cse = true;
                     break;
-                case "--control":
+                case "-control":
                     control = true;
                     break;
                 default:
-                    if (!arg.startsWith("--") && file == null) {
+                    if (!arg.startsWith("-") && file == null) {
                         file = arg;
                     }
             }
@@ -48,7 +48,7 @@ public class CLIArguments {
 
         if (file == null) {
             throw new IllegalArgumentException("Error: Filename must be provided.\n" +
-                    "Usage: java -jar rpal.jar <filename> [--ast] [--st] [--control] [--cse]");
+                    "Usage: java -jar rpal.jar <filename> [-ast] [-st] [-control] [-cse]");
         }
 
         return new CLIArguments(file, ast, st, cse, control);
