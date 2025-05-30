@@ -71,13 +71,13 @@ jobs:
       # - name: 🧼 Make test script executable
       #   run: chmod +x test/interpreter/run_rpal_tests.sh
 
-      # - name: 🚀 Run interpreter tests
-      #   working-directory: test/interpreter
-      #   run: |
-      #     pwd
-      #     ls
-      #     ./run_rpal_tests.sh
+      - name: 🚀 Run interpreter tests
+        working-directory: test/interpreter
+        run: |
+          pwd
+          ls
+          ./runTests.sh
 
       - name: 🚀 Run interpreter tests
-        run: bash test/interpreter/run_rpal_tests.sh
+        run: bash test/interpreter/runTests.sh
           
