@@ -73,4 +73,6 @@ jobs:
 
       - name: 🚀 Run interpreter tests
         working-directory: test/interpreter
-        run: ./run_rpal_tests.sh
+        run: |
+          pwd
+          ./run_rpal_tests.sh
