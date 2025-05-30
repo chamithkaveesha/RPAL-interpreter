@@ -68,8 +68,8 @@ jobs:
             exit 1
           fi
 
-      - name: 🧼 Make test script executable
-        run: chmod +x test/interpreter/run_rpal_tests.sh
+      # - name: 🧼 Make test script executable
+      #   run: chmod +x test/interpreter/run_rpal_tests.sh
 
       - name: 🚀 Run interpreter tests
         working-directory: test/interpreter
