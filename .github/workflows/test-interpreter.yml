@@ -44,9 +44,18 @@ jobs:
             exit 1
           fi
 
-      - name: 📂 Extract `rpal.zip`
-        working-directory: test/interpreter
-        run: unzip -o rpal.zip
+      - name: 📂 Extract `rpal.zip` to temp folder
+        run: |
+          mkdir -p test/interpreter/temp_extract
+          unzip -o test/interpreter/rpal.zip -d test/interpreter/temp_extract
+
+      - name: 📦 Move inner contents if nested in 'rpal/' folder
+        run: |
+          if [ -d test/interpreter/temp_extract/rpal ]; then
+            mv test/interpreter/temp_extract/rpal/* test/interpreter/
+          else
+            mv test/interpreter/temp_extract/* test/interpreter/
+          fi
 
       - name: 🧼 Make test script executable
         run: chmod +x test/interpreter/run_rpal_tests.sh
