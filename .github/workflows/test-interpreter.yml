@@ -21,11 +21,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: 🧪 Install Wine (to run rpal.exe)
-        run: |
-          sudo dpkg --add-architecture i386
-          sudo apt update
-          sudo apt install -y wine32 unzip
+      # - name: 🧪 Install Wine (to run rpal.exe)
+      #   run: |
+      #     sudo dpkg --add-architecture i386
+      #     sudo apt update
+      #     sudo apt install -y wine32 unzip
 
       - name: 📦 Download `rpal.zip` from GitHub release
         id: download_rpal
