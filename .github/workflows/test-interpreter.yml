@@ -57,6 +57,17 @@ jobs:
             mv test/interpreter/temp_extract/* test/interpreter/
           fi
 
+      - name: 📋 List contents after extraction
+        run: ls -la test/interpreter
+
+      - name: ✅ Check rpal.exe exists
+        run: |
+          if [ ! -f test/interpreter/rpal.exe ]; then
+            echo "ERROR: rpal.exe not found in expected location!"
+            find test/interpreter
+            exit 1
+          fi
+
       - name: 🧼 Make test script executable
         run: chmod +x test/interpreter/run_rpal_tests.sh
 
