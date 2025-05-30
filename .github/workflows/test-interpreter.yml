@@ -1,0 +1,56 @@
+name: Interpreter Test
+
+on:
+  push:
+    paths:
+      - 'test/interpreter/**'
+      - '.github/workflows/test-interpreter.yml'
+  workflow_dispatch:
+
+jobs:
+  test-interpreter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🏗️ Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🧪 Install Wine (to run rpal.exe)
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt update
+          sudo apt install -y wine32 unzip
+
+      - name: 📦 Download `rpal.zip` from GitHub release
+        id: download_rpal
+        uses: robinraju/release-downloader@v1.9
+        with:
+          repository: ${{ github.repository }}
+          tag:  thirdparty-interpreter
+          fileName: rpal.zip
+          out-file-path: test/interpreter
+
+      - name: 🧐 Verify `rpal.zip` exists
+        run: |
+          if [ ! -f test/interpreter/rpal.zip ]; then
+            echo "ERROR: rpal.zip not found in test/interpreter/"
+            ls -la test/interpreter
+            exit 1
+          fi
+
+      - name: 📂 Extract `rpal.zip`
+        working-directory: test/interpreter
+        run: unzip -o rpal.zip
+
+      - name: 🧼 Make test script executable
+        run: chmod +x test/interpreter/run_rpal_tests.sh
+
+      - name: 🚀 Run interpreter tests
+        working-directory: test/interpreter
+        run: ./run_rpal_tests.sh
