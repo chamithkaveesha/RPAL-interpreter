@@ -424,7 +424,9 @@ public class RPALParser implements Parser {
             read(TokenType.IDENTIFIER);
             n++;
         }
-        astBuilder.buildTreeOrdered(new ASTList(), n);
+        if (n > 1){
+            astBuilder.buildTreeOrdered(new ASTList(), n);
+        }
     }
 }
 

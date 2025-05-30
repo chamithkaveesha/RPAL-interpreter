@@ -18,35 +18,25 @@ public class ASTList extends ASTNode {
             throw new IllegalStateException("ASTList node has no children.");
         }
 
-        // First standardized node
-        FCNSNode<STNode> stFirst = helper.standardizeChild(current);
-        current = current.getNextSibling();
+        // Root comma node
+        FCNSNode<STNode> commaNode = new FCNSNode<>(new STComma());
 
-        if (current == null) {
-            return stFirst;  // Only one element, not really a list
-        }
-
-        // Build nested comma STNodes
-        FCNSNode<STNode> comma = new FCNSNode<>(new STComma());
-        comma.setFirstChild(stFirst);
-        FCNSNode<STNode> currentComma = comma;
-
+        // Process children and link them as siblings
+        FCNSNode<STNode> previous = null;
         while (current != null) {
             FCNSNode<STNode> standardizedChild = helper.standardizeChild(current);
-            FCNSNode<STNode> nextComma = null;
 
-            if (current.getNextSibling() != null) {
-                // Create a new comma node to continue nesting
-                nextComma = new FCNSNode<>(new STComma());
-                standardizedChild.setNextSibling(nextComma);
+            if (previous == null) {
+                commaNode.setFirstChild(standardizedChild);
+            } else {
+                previous.setNextSibling(standardizedChild);
             }
 
-            currentComma.getFirstChild().setNextSibling(standardizedChild);
-            currentComma = nextComma;
+            previous = standardizedChild;
             current = current.getNextSibling();
         }
 
-        return comma;
+        return commaNode;
     }
 
 }

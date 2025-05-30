@@ -35,3 +35,5 @@ bin/
 build/
 /bin1/
 java/build/**
+/test/interpreter/cygwin1.dll
+/test/interpreter/rpal.exe

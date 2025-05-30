@@ -36,9 +36,11 @@ public class RPALAutomatonFactory {    public static FiniteAutomaton createRPALA
             .withTransition("q0", ' ', "q5")
             .withTransition("q0", '\t', "q5")
             .withTransition("q0", '\n', "q5")
+            .withTransition("q0", '\r', "q5")
             .withTransition("q5", ' ', "q5")
             .withTransition("q5", '\t', "q5")
             .withTransition("q5", '\n', "q5")
+            .withTransition("q5", '\r', "q5")
             // comments
             .withTransition("q0", '/', "q6")
             .withTransition("q6", '/', "q7")
