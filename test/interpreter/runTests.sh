@@ -64,7 +64,8 @@ for input in "$TEST_DIR"/*; do
         continue
       fi
 
-      grep -v -E '^(.*:)?err:|warn:' wine_output.txt | sed 's/[[:space:]]*$//' > wine_output_clean.txt
+      sed '/^wine:/d; /^0[0-9a-fA-F]*:err:/d; /^0[0-9a-fA-F]*:warn:/d' wine_output.txt | \
+      sed 's/[[:space:]]*$//' > wine_output_clean.txt
       sed 's/[[:space:]]*$//' java_output.txt > java_output_clean.txt
 
       if ! diff -u wine_output_clean.txt java_output_clean.txt; then
