@@ -7,8 +7,13 @@ import cse_machine.elements.stack.TupleStackElement;
 public class IsTupleOperation implements UnaryOperation {
     @Override
     public DataStackElement apply(StackElement operand) {
-        return new DataStackElement(DataStackElement.Type.BOOL, operand instanceof TupleStackElement);
+        boolean isTupleOrNil =
+                operand instanceof TupleStackElement ||
+                        (operand instanceof DataStackElement data && data.isNil());
+
+        return new DataStackElement(DataStackElement.Type.BOOL, isTupleOrNil);
     }
+
 
     @Override
     public String toString() {

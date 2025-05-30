@@ -48,6 +48,10 @@ public class PrimitiveEnvironmentFactory {
 
         // Tuple
         env.setVariable("aug", new BinOpStackElement("aug", new AugOperation()));
+        env.setVariable("Order", new UnOpStackElement("aug", new OrderOperation()));
+        env.setVariable("Null", new UnOpStackElement("aug", new TupleNullOperation()));
+
+        env.setVariable("ItoS", new UnOpStackElement("ItoS", new ItoSOperation()));
 
         return env;
     }
