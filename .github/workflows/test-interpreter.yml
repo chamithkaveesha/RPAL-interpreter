@@ -5,6 +5,12 @@ on:
     paths:
       - 'test/interpreter/**'
       - '.github/workflows/test-interpreter.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'test/interpreter/**'
+      - '.github/workflows/test-interpreter.yml'
   workflow_dispatch:
 
 jobs:
