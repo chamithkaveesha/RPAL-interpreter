@@ -21,11 +21,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # - name: 🧪 Install Wine (to run rpal.exe)
-      #   run: |
-      #     sudo dpkg --add-architecture i386
-      #     sudo apt update
-      #     sudo apt install -y wine32 unzip
+      - name: 🧪 Install Wine (to run rpal.exe)
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt update
+          sudo apt install -y wine32 unzip
 
       - name: 📦 Download `rpal.zip` from GitHub release
         id: download_rpal
@@ -68,16 +68,10 @@ jobs:
             exit 1
           fi
 
-      # - name: 🧼 Make test script executable
-      #   run: chmod +x test/interpreter/run_rpal_tests.sh
+      - name: 🧼 Make test script executable
+        run: chmod +x test/interpreter/runTests.sh
 
       - name: 🚀 Run interpreter tests
         working-directory: test/interpreter
-        run: |
-          pwd
-          ls
-          ./runTests.sh
-
-      - name: 🚀 Run interpreter tests
-        run: bash test/interpreter/runTests.sh
+        run: ./runTests.sh
           
