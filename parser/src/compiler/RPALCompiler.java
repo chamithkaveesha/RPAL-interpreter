@@ -7,7 +7,7 @@ import cse_machine.Stack;
 import parser.Parser;
 import parser.RPALParser;
 import scanner.*;
-import st.RPALStandardizer;
+import standardizer.RPALStandardizer;
 import tree.ast.ASTBuilder;
 import tree.ast.ASTNode;
 import tree.st.STNode;

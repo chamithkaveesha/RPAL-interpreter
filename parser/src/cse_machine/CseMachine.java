@@ -98,12 +98,12 @@ public class CseMachine implements ControlElementVisitor{
     @Override
     public void visitLambda(LambdaControlElement element) {
         int nearestEnvNumber = this.stack.findNearestEnvironmentNumber();
-        LambdaStackElement lambdaStackElement = new LambdaStackElement(
+        LambdaClosureStackElement lambdaClosureStackElement = new LambdaClosureStackElement(
                 element.getBoundVariables(),
                 element.getNewIndex(),
                 nearestEnvNumber
         );
-        stack.push(lambdaStackElement);
+        stack.push(lambdaClosureStackElement);
     }
 
     @Override

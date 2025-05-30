@@ -39,7 +39,7 @@ public class EtaStackElement extends StackElement implements CallableElement {
     @Override
     public void apply(Stack stack, Control control, EnvironmentManager envManager, List<StackElement> arguments) {
         stack.push(this); // Push self again
-        stack.push(new LambdaStackElement(boundVariables, newIndex, environmentMarker));
+        stack.push(new LambdaClosureStackElement(boundVariables, newIndex, environmentMarker));
         control.append(new GammaControlElement());
         control.append(new GammaControlElement());
     }

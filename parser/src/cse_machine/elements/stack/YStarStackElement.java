@@ -21,7 +21,7 @@ public class YStarStackElement extends StackElement implements CallableElement {
 
         StackElement arg = arguments.get(0);
 
-        if (!(arg instanceof LambdaStackElement lambda)) {
+        if (!(arg instanceof LambdaClosureStackElement lambda)) {
             throw new IllegalStateException("Y* expects a LambdaStackElement.");
         }
 

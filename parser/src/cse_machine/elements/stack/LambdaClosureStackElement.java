@@ -5,12 +5,12 @@ import cse_machine.elements.control.EnvironmentControlElement;
 
 import java.util.List;
 
-public class LambdaStackElement extends StackElement implements CallableElement {
+public class LambdaClosureStackElement extends StackElement implements CallableElement {
     private final List<String> boundVariables;
     private final int newIndex;
     private final int environmentMarker;
 
-    public LambdaStackElement(List<String> boundVariables, int newIndex, int environmentMarker) {
+    public LambdaClosureStackElement(List<String> boundVariables, int newIndex, int environmentMarker) {
         this.boundVariables = boundVariables;
         this.newIndex = newIndex;
         this.environmentMarker = environmentMarker;

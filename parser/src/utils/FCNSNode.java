@@ -65,13 +65,17 @@ public class FCNSNode<T> {
         }
     }
 
-    // Convert to String representation
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         toString(sb, 0);
+        // Remove trailing newline if it exists
+        if (!sb.isEmpty() && sb.charAt(sb.length() - 1) == '\n') {
+            sb.deleteCharAt(sb.length() - 1);
+        }
         return sb.toString();
     }
+
 
     private void toString(StringBuilder sb, int level) {
         sb.append(".".repeat(level)).append(data).append("\n");

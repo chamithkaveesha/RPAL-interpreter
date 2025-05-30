@@ -1,6 +1,5 @@
-package st;
+package standardizer;
 
-import tree.Node;
 import tree.ast.ASTNode;
 import tree.st.STBuilder;
 import tree.st.STNode;

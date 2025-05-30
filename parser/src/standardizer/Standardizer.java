@@ -1,4 +1,4 @@
-package st;
+package standardizer;
 
 import tree.ast.ASTNode;
 import tree.st.STNode;
