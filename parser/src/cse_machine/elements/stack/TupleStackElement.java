@@ -47,7 +47,7 @@ public class TupleStackElement extends StackElement implements CallableElement {
 
     @Override
     public String toString() {
-        return "(" + elements.stream().map(Object::toString).reduce((a, b) -> a + "," + b).orElse("") + ")";
+        return "(" + elements.stream().map(Object::toString).reduce((a, b) -> a + ", " + b).orElse("") + ")";
     }
 
     @Override
