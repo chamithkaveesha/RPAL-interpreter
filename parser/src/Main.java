@@ -34,19 +34,16 @@ public class Main {
         compiler.compile();
 
         if (cliArgs.shouldPrintAST()) {
-            System.out.println("===== AST =====");
             FCNSNode<ASTNode> ast = compiler.getAST();
             System.out.println(ast);
         }
 
         if (cliArgs.shouldPrintST()) {
-            System.out.println("===== ST =====");
             FCNSNode<STNode> st = compiler.getST();
             System.out.println(st);
         }
 
         if (cliArgs.shouldPrintControlStructures()) {
-            System.out.println("===== Control Structures =====");
             List<ControlStructure> controlStructures = compiler.getControlStructures();
             for (ControlStructure cs : controlStructures) {
                 System.out.println(cs);
