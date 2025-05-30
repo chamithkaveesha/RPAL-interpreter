@@ -10,7 +10,7 @@ import java.util.Stack;
 
 public class ASTFunctionForm extends ASTNode {
     public ASTFunctionForm() {
-        super("fcn_form");
+        super("function_form");
     }
 
     @Override

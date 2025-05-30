@@ -3,6 +3,7 @@ package scanner;
 import automaton.FiniteAutomaton;
 import automaton.RPALAutomatonFactory;
 import automaton.State;
+import utils.StringUtils;
 
 import java.util.*;
 
@@ -60,6 +61,13 @@ public class RPALScanner extends Scanner {
         if (automaton.isAcceptingState()) {
             String tokenText = lexeme.toString();
             TokenType tokenType = acceptingStatesToTokenTypes.get(automaton.getCurrentState());
+
+            if (tokenType == TokenType.STRING) {
+                // Strip quotes and unescape characters
+                tokenText = StringUtils.stripQuotes(tokenText);
+                tokenText = StringUtils.unescape(tokenText);
+            }
+
 
             return new Token(tokenType, tokenText, startLine, startColumn);
         }

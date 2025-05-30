@@ -15,4 +15,9 @@ public class ASTNil extends ASTNode {
     public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
         return new FCNSNode<>(new STNil());
     }
+
+    @Override
+    public String toString() {
+        return "<nil>";
+    }
 }
