@@ -30,10 +30,8 @@ public class LambdaClosureStackElement extends StackElement implements CallableE
 
     @Override
     public String toString() {
-        return String.format(
-                "LambdaStackElement(boundVariable=%s, newIndex=%d, environmentMarker=%d)",
-                boundVariables, newIndex, environmentMarker
-        );
+        String vars = String.join(", ", boundVariables);
+        return String.format("[lambda closure: %s: %d]", vars, newIndex);
     }
 
     @Override

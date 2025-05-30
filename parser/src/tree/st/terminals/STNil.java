@@ -6,7 +6,7 @@ import tree.transform.ControlStructureBuilderHelper;
 
 public class STNil extends STNode {
     public STNil() {
-        super("nil");
+        super("<nil>");
     }
 
     @Override
