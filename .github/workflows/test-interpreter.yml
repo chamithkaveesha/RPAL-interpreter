@@ -75,4 +75,5 @@ jobs:
         working-directory: test/interpreter
         run: |
           pwd
+          ls
           ./run_rpal_tests.sh
