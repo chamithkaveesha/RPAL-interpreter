@@ -51,7 +51,6 @@ public class ASTRecursiveFunction extends ASTNode {
 
         // Step 8: Reattach new RHS to assign
         lhs.setNextSibling(gamma);
-
         return assignNode;
     }
 }

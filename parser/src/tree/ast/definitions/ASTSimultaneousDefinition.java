@@ -2,6 +2,7 @@ package tree.ast.definitions;
 
 import tree.ast.ASTNode;
 import tree.st.*;
+import tree.st.terminals.STIdentifier;
 import utils.FCNSNode;
 
 public class ASTSimultaneousDefinition extends ASTNode {
@@ -27,36 +28,47 @@ public class ASTSimultaneousDefinition extends ASTNode {
         FCNSNode<STNode> tauNode = new FCNSNode<>(tau);
         tau.setTreeNode(tauNode);
 
-        // Traverse each child '=' node under 'and'
-        FCNSNode<ASTNode> defNode = this.getTreeNode().getFirstChild();
-        while (defNode != null) {
-            if (!defNode.getData().getLabel().equals("=") || defNode.getData() == null || defNode.getFirstChild() == null) {
-                throw new IllegalStateException("Expected '=' node with a valid structure inside 'and'");
+        FCNSNode<ASTNode> child = this.getTreeNode().getFirstChild();
+
+        while (child != null) {
+            child.getData().setTreeNode(child);
+
+            FCNSNode<STNode> standardizedChild = child.getData().standardize(helper);
+
+            if (standardizedChild == null || standardizedChild.getData() == null) {
+                throw new IllegalStateException("Standardized child is null or has no data.");
             }
 
-            // Left: ID (X), Right: expression (E)
-            FCNSNode<ASTNode> idNode = defNode.getFirstChild();
-            FCNSNode<ASTNode> exprNode = idNode.getNextSibling();
+            String label = standardizedChild.getData().getLabel();
 
-            if (idNode == null || exprNode == null) {
-                throw new IllegalStateException("Each '=' in 'and' must have both identifier and expression");
+            if (!label.equals("=")) {
+                throw new IllegalStateException("Expected '=' at root of standardized child under 'and', but found: " + label);
             }
 
-            // Standardize ID and E
-            FCNSNode<STNode> stdX = helper.standardizeChild(idNode);
-            FCNSNode<STNode> stdE = helper.standardizeChild(exprNode);
+            FCNSNode<STNode> idNode = standardizedChild.getFirstChild();
+            if (idNode == null) {
+                throw new IllegalStateException("Left-hand side (ID) of '=' node is missing");
+            }
 
-            // Add to comma and tau respectively
-            commaNode.addChildNode(stdX);
-            tauNode.addChildNode(stdE);
+            FCNSNode<STNode> exprNode = idNode.getNextSibling();
+            if (exprNode == null) {
+                throw new IllegalStateException("Right-hand side (expression) of '=' node is missing");
+            }
 
-            defNode = defNode.getNextSibling();
+            if (!(idNode.getData() instanceof STIdentifier id)) {
+                throw new IllegalStateException("Expected STIdentifier in the LHS of '=' under 'and'");
+            }
+
+            commaNode.addChildNode(new FCNSNode<>(new STIdentifier(id.getName())));
+
+            tauNode.addChildNode(exprNode);
+
+            child = child.getNextSibling();
         }
 
-        // Build: = (commaNode) (tauNode)
         assignNode.setFirstChild(commaNode);
         commaNode.setNextSibling(tauNode);
-
         return assignNode;
     }
+
 }
