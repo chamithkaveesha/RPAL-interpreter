@@ -47,9 +47,13 @@ public class STBuilder {
         root.getData().setTreeNode(root);
 
         // Recursively for first child
-        setTreeNodeReferences(root.getFirstChild());
+        if (root.getFirstChild() != null) {
+            setTreeNodeReferences(root.getFirstChild());
+        }
 
         // Recursively for siblings
-        setTreeNodeReferences(root.getNextSibling());
+        if (root.getNextSibling() != null) {
+            setTreeNodeReferences(root.getNextSibling());
+        }
     }
 }
