@@ -11,13 +11,12 @@ public class STGamma extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
-        FCNSNode<STNode> thisNode = this.getTreeNode();
-        if (thisNode == null) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
+        if (currentNode == null) {
             throw new IllegalStateException("STGamma node's tree node is not set");
         }
 
-        FCNSNode<STNode> functionNode = thisNode.getFirstChild();
+        FCNSNode<STNode> functionNode = currentNode.getFirstChild();
         FCNSNode<STNode> argumentNode = (functionNode != null) ? functionNode.getNextSibling() : null;
 
         if (functionNode == null || argumentNode == null) {
@@ -28,9 +27,9 @@ public class STGamma extends STNode {
         helper.addControlElement(new GammaControlElement());
 
         // Build control structure for the function part
-        functionNode.getData().buildControlStructure(helper);
+        functionNode.getData().buildControlStructure(functionNode, helper);
 
         // Build control structure for the argument part
-        argumentNode.getData().buildControlStructure(helper);
+        argumentNode.getData().buildControlStructure(argumentNode, helper);
     }
 }

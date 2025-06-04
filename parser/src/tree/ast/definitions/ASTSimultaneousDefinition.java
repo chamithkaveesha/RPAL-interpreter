@@ -22,15 +22,12 @@ public class ASTSimultaneousDefinition extends ASTNode {
 
         STAssign assign = new STAssign();
         FCNSNode<STNode> assignNode = new FCNSNode<>(assign);
-        assign.setTreeNode(assignNode);
 
         STComma comma = new STComma();
         FCNSNode<STNode> commaNode = new FCNSNode<>(comma);
-        comma.setTreeNode(commaNode);
 
         STTau tau = new STTau();
         FCNSNode<STNode> tauNode = new FCNSNode<>(tau);
-        tau.setTreeNode(tauNode);
 
         FCNSNode<ASTNode> child = currentNode.getFirstChild();
 

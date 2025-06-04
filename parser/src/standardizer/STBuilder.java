@@ -25,7 +25,6 @@ public class STBuilder {
             return null;
         }
 
-        setTreeNodeReferences(stRoot);
         return stRoot;
     }
 
@@ -36,18 +35,5 @@ public class STBuilder {
 
         // Delegate standardization to the ASTNode, passing the helper
         return astNode.getData().standardize(astNode, helper);
-    }
-
-    private static void setTreeNodeReferences(FCNSNode<STNode> root) {
-        if (root == null) return;
-
-        // Set the treeNode reference in the contained STNode
-        root.getData().setTreeNode(root);
-
-        // Recursively for first child
-        setTreeNodeReferences(root.getFirstChild());
-
-        // Recursively for siblings
-        setTreeNodeReferences(root.getNextSibling());
     }
 }

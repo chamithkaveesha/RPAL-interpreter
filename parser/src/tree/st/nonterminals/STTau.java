@@ -11,9 +11,8 @@ public class STTau extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
-        FCNSNode<STNode> thisNode = this.getTreeNode();
-        if (thisNode == null) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
+        if (currentNode == null) {
             throw new IllegalStateException("STTau node's tree node is not set");
         }
 
@@ -23,9 +22,9 @@ public class STTau extends STNode {
 
         // 2. Build control structure for all children
         int count = 0;
-        FCNSNode<STNode> child = thisNode.getFirstChild();
+        FCNSNode<STNode> child = currentNode.getFirstChild();
         while (child != null) {
-            child.getData().buildControlStructure(helper);
+            child.getData().buildControlStructure(child, helper);
             count++;
             child = child.getNextSibling();
         }

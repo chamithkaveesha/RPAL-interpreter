@@ -49,10 +49,12 @@ public class RPALCompiler {
         Parser parser = new RPALParser(tokens, builder);
         parser.parse();
         ast = parser.getAST();
+        System.out.println("AST: " + ast);
     }
 
     private void standardize() {
         st = new RPALStandardizer().getST(ast);
+        System.out.println("ST: " + st);
     }
 
     private void buildControlStructures() {

@@ -11,13 +11,12 @@ public class STAug extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
-        FCNSNode<STNode> thisNode = this.getTreeNode();
-        if (thisNode == null) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
+        if (currentNode == null) {
             throw new IllegalStateException("STAug node's tree node is not set");
         }
 
-        FCNSNode<STNode> leftNode = thisNode.getFirstChild();
+        FCNSNode<STNode> leftNode = currentNode.getFirstChild();
         FCNSNode<STNode> rightNode = (leftNode != null) ? leftNode.getNextSibling() : null;
 
         if (leftNode == null || rightNode == null) {
@@ -28,9 +27,9 @@ public class STAug extends STNode {
         helper.addControlElement(new BinOpControlElement("aug"));
 
         // Build control structure for left operand
-        leftNode.getData().buildControlStructure(helper);
+        leftNode.getData().buildControlStructure(leftNode, helper);
 
         // Build control structure for right operand
-        rightNode.getData().buildControlStructure(helper);
+        rightNode.getData().buildControlStructure(rightNode, helper);
     }
 }

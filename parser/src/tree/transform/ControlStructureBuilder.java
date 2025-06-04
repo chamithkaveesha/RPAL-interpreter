@@ -20,7 +20,7 @@ public class ControlStructureBuilder {
         }
 
         // Start traversal from the root node
-        root.getData().buildControlStructure(helper);
+        root.getData().buildControlStructure(root, helper);
 
         // Return the constructed list of control structures
         return helper.getAllControlStructures();

@@ -2,6 +2,7 @@ package tree.st.nonterminals;
 
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
+import utils.FCNSNode;
 
 public class STComma extends STNode {
     public STComma() {
@@ -9,7 +10,7 @@ public class STComma extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
 
     }
 }

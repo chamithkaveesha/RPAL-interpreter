@@ -15,14 +15,13 @@ public class STLambda extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
-        FCNSNode<STNode> thisNode = this.getTreeNode();
-        if (thisNode == null) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
+        if (currentNode == null) {
             throw new IllegalStateException("STLambda node's tree node is not set");
         }
 
         // Assume children order: parameters node, body node
-        FCNSNode<STNode> parametersNode = thisNode.getFirstChild();
+        FCNSNode<STNode> parametersNode = currentNode.getFirstChild();
         FCNSNode<STNode> bodyNode = (parametersNode != null) ? parametersNode.getNextSibling() : null;
 
         if (parametersNode == null || bodyNode == null) {
@@ -39,7 +38,7 @@ public class STLambda extends STNode {
         helper.setCurrentLevel(newLevel);
 
         // Build control structure for the body
-        bodyNode.getData().buildControlStructure(helper);
+        bodyNode.getData().buildControlStructure(bodyNode, helper);
 
         helper.setCurrentLevel(previousLevel);
     }
