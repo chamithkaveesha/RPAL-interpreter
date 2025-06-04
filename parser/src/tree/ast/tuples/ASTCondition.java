@@ -12,11 +12,7 @@ public class ASTCondition extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        if (currentNode == null || currentNode.getData() == null) {
-            throw new IllegalStateException("Conditional node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the three children: condition, true-branch, false-branch
         FCNSNode<ASTNode> condition = currentNode.getFirstChild();
         FCNSNode<ASTNode> trueBranch = (condition != null) ? condition.getNextSibling() : null;

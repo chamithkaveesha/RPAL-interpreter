@@ -14,11 +14,7 @@ public class ASTFunctionForm extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        if (currentNode == null || currentNode.getData() == null) {
-            throw new IllegalStateException("Function form node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the function name (first child)
         FCNSNode<ASTNode> functionNameNode = currentNode.getFirstChild();
         if (functionNameNode == null) {

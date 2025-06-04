@@ -13,11 +13,7 @@ public class ASTWhere extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        if (currentNode == null || currentNode.getData() == null) {
-            throw new IllegalStateException("Where node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the two main children: E and the definition (X = F)
         FCNSNode<ASTNode> bodyNode = currentNode.getFirstChild();
         FCNSNode<ASTNode> bindingNode = (bodyNode != null) ? bodyNode.getNextSibling() : null;

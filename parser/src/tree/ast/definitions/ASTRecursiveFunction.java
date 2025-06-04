@@ -15,11 +15,7 @@ public class ASTRecursiveFunction extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        if (currentNode == null || currentNode.getData() == null) {
-            throw new IllegalStateException("Tree node is not set for ASTRecursiveFunction.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Step 1: Get child (should be '=' node under 'rec')
         FCNSNode<ASTNode> assignChild = currentNode.getFirstChild();
         if (assignChild == null) {

@@ -12,11 +12,7 @@ public class ASTInfixFunction extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        if (currentNode == null || currentNode.getData() == null) {
-            throw new IllegalStateException("Infix function node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the three children: left operand, function, right operand
         FCNSNode<ASTNode> leftOperand = currentNode.getFirstChild();
         FCNSNode<ASTNode> functionNode = (leftOperand != null) ? leftOperand.getNextSibling() : null;

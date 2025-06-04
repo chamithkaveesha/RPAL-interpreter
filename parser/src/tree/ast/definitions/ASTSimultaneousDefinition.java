@@ -15,11 +15,7 @@ public class ASTSimultaneousDefinition extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        if (currentNode == null || currentNode.getData() == null) {
-            throw new IllegalStateException("Simultaneous definition node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         STAssign assign = new STAssign();
         FCNSNode<STNode> assignNode = new FCNSNode<>(assign);
 

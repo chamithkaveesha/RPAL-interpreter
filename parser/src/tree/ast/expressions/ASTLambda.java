@@ -12,11 +12,7 @@ public class ASTLambda extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        if (currentNode == null || currentNode.getData() == null) {
-            throw new IllegalStateException("Lambda node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         FCNSNode<ASTNode> currentChild = currentNode.getFirstChild();
         if (currentChild == null) {
             throw new IllegalStateException("Lambda must have at least one bound variable and a body");

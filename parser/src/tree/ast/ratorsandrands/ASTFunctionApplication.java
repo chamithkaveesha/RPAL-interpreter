@@ -13,7 +13,7 @@ public class ASTFunctionApplication extends ASTNode {
 
 
     @Override
-    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Gamma node is not properly linked to the AST.");
         }
