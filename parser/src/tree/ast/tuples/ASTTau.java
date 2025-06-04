@@ -6,9 +6,6 @@ import tree.st.STNode;
 import tree.st.nonterminals.STTau;
 import utils.FCNSNode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents a tuple node in the AST, corresponding to the 'tau' construct.
  */

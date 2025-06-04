@@ -14,18 +14,13 @@ public class STBuilder {
         if (astNode == null) {
             throw new IllegalArgumentException("AST node cannot be null");
         }
-        FCNSNode<STNode> stRoot = standardizeNode(astNode, new StandardizationHelper() {
+
+        return standardizeNode(astNode, new StandardizationHelper() {
             @Override
             public FCNSNode<STNode> standardizeChild(FCNSNode<ASTNode> child) {
                 return standardizeNode(child, this);
             }
         });
-
-        if (stRoot == null) {
-            return null;
-        }
-
-        return stRoot;
     }
 
     private static FCNSNode<STNode> standardizeNode(FCNSNode<ASTNode> astNode, StandardizationHelper helper) {

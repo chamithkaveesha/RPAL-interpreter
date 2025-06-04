@@ -58,7 +58,7 @@ public class ASTFunctionForm extends ASTNode {
 
         // Use a stack to maintain parameter order
         Stack<FCNSNode<ASTNode>> paramStack = new Stack<>();
-        FCNSNode<ASTNode> bodyNode = current;
+        FCNSNode<ASTNode> bodyNode;
 
         // Push all parameters to stack (except last node which is body)
         while (current.getNextSibling() != null) {
@@ -68,10 +68,9 @@ public class ASTFunctionForm extends ASTNode {
         bodyNode = current; // Last node is the body
 
         // Standardize the body first
-        FCNSNode<STNode> stBody = helper.standardizeChild(bodyNode);
 
         // Build lambdas from left to right using the stack
-        FCNSNode<STNode> currentLambda = stBody;
+        FCNSNode<STNode> currentLambda = helper.standardizeChild(bodyNode);
         while (!paramStack.empty()) {
             FCNSNode<ASTNode> param = paramStack.pop();
             FCNSNode<STNode> stParam = helper.standardizeChild(param);

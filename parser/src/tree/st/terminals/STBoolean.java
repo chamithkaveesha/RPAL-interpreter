@@ -9,12 +9,8 @@ public class STBoolean extends STNode {
     private final boolean value;
 
     public STBoolean(Boolean value) {
-        super(value != null ? "<" + value.toString() + ">" : throwIllegalArgumentException());
+        super(value != null ? "<" + value + ">" : throwIllegalArgumentException());
         this.value = value;
-    }
-
-    private boolean getValue() {
-        return value;
     }
 
     private static String throwIllegalArgumentException() {

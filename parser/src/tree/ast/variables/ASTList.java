@@ -6,9 +6,6 @@ import tree.st.nonterminals.STComma;
 import tree.st.STNode;
 import utils.FCNSNode;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Represents a list node in the AST, Corresponding to comma-separated values
  * such as function parameters, bindings, and tuples.
