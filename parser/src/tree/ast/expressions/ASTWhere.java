@@ -7,11 +7,29 @@ import tree.st.nonterminals.STLambda;
 import tree.st.STNode;
 import utils.FCNSNode;
 
+
 public class ASTWhere extends ASTNode {
     public ASTWhere() {
         super("where");
     }
 
+    /**
+     * <p>The input AST structure looks like:
+     * <pre>
+     *    ASTWhere ("where")
+     *       /        \
+     *      E       (X = F)
+     * </pre>
+     *
+     * After standardization, it becomes:
+     * <pre>
+     *     STGamma
+     *       /     \
+     *   STLambda   F
+     *      / \
+     *     X    E
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the two main children: E and the definition (X = F)

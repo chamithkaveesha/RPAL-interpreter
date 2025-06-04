@@ -6,11 +6,30 @@ import tree.st.nonterminals.STCondition;
 import tree.st.STNode;
 import utils.FCNSNode;
 
+/**
+ * Represents a conditional node in the AST, corresponding to a conditional expression
+ * with a condition, a true-branch, and a false-branch.
+ */
 public class ASTCondition extends ASTNode {
     public ASTCondition() {
         super("->");
     }
 
+    /**
+     * <p>Conceptually, the input AST tree looks like:
+     * <pre>
+     *    ASTCondition (->)
+     *       /      |      \
+     *   condition true   false
+     * </pre>
+     *
+     * And after standardization, it becomes:
+     * <pre>
+     *    STCondition
+     *       /      |      \
+     *   condition true   false
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the three children: condition, true-branch, false-branch
@@ -23,7 +42,6 @@ public class ASTCondition extends ASTNode {
         FCNSNode<STNode> stTrue = (trueBranch != null) ? helper.standardizeChild(trueBranch) : null;
         FCNSNode<STNode> stFalse = (falseBranch != null) ? helper.standardizeChild(falseBranch) : null;
 
-        // Create the standardized ST node (same operator)
         FCNSNode<STNode> stNode = new FCNSNode<>(new STCondition());
 
         // Rebuild the structure with standardized children

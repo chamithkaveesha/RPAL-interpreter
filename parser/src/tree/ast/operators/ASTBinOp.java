@@ -6,6 +6,22 @@ import standardizer.STBuilder;
 import tree.st.STNode;
 import utils.FCNSNode;
 
+/**
+ * Represents a binary operator node in the AST.
+ * <p>The input AST structure looks like:
+ * <pre>
+ *    ASTBinOp (operator)
+ *       /       \
+ *    left       right
+ * </pre>
+ *
+ * After standardization, it becomes:
+ * <pre>
+ *    STBinOp (operator)
+ *       /       \
+ *    left       right
+ * </pre>
+ */
 public class ASTBinOp extends ASTNode {
     public ASTBinOp(BinaryOperator operator) {
         super(operator.toString());
@@ -13,25 +29,6 @@ public class ASTBinOp extends ASTNode {
 
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        // Get left and right operands from the AST
-        FCNSNode<ASTNode> leftOperand = currentNode.getFirstChild();
-        FCNSNode<ASTNode> rightOperand = (leftOperand != null) ? leftOperand.getNextSibling() : null;
-
-        // Standardize the operands (if they exist)
-        FCNSNode<STNode> stLeft = (leftOperand != null) ? helper.standardizeChild(leftOperand) : null;
-        FCNSNode<STNode> stRight = (rightOperand != null) ? helper.standardizeChild(rightOperand) : null;
-
-        // Create the standardized ST node (same operator)
-        FCNSNode<STNode> stNode = new FCNSNode<>(new STBinOp(getLabel()));
-
-        // Attach standardized children (preserving original structure)
-        if (stLeft != null) {
-            stNode.setFirstChild(stLeft);
-            if (stRight != null) {
-                stLeft.setNextSibling(stRight);
-            }
-        }
-
-        return stNode;
+        return standardizeAndLinkChildren(currentNode, new STBinOp(getLabel()), helper, 2);
     }
 }

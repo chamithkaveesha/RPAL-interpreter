@@ -14,6 +14,21 @@ public class ASTRecursiveFunction extends ASTNode {
         super("rec");
     }
 
+    /**
+     * <p>Example input AST under "rec":
+     * <pre>
+     * rec
+     *  |
+     *  =
+     * / \
+     * X  E
+     * </pre>
+     *
+     * <p>Standardization transforms this into:
+     * <pre>
+     * X = gamma(Y*, lambda(X, E))
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Step 1: Get child (should be '=' node under 'rec')

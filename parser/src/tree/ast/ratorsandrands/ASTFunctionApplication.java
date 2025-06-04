@@ -6,12 +6,30 @@ import tree.st.nonterminals.STGamma;
 import tree.st.STNode;
 import utils.FCNSNode;
 
+/**
+ * Standardizes this function application (gamma) AST node into an STGamma node.
+ */
+
 public class ASTFunctionApplication extends ASTNode {
     public ASTFunctionApplication() {
         super("gamma");
     }
 
-
+    /**
+     * <p>Example structure before standardization:
+     * <pre>
+     *     ASTFunctionApplication (gamma)
+     *        /          \
+     *    function     argument
+     * </pre>
+     *
+     * <p>After standardization:
+     * <pre>
+     *     STGamma
+     *      /    \
+     *  function argument
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         if (currentNode == null || currentNode.getData() == null) {

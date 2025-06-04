@@ -13,6 +13,35 @@ public class ASTFunctionForm extends ASTNode {
         super("function_form");
     }
 
+    /**
+     * <p>Input AST structure:</p>
+     * <pre>
+     *    ASTFunctionForm ("function_form")
+     *         |
+     *         +-- FunctionName
+     *         +-- Param1
+     *         +-- Param2
+     *         +-- ...
+     *         \-- BodyExpression
+     * </pre>
+     *
+     * <p>The function is standardized by converting parameters and body into nested lambda expressions,
+     * and finally assigning the lambda expression to the function name.</p>
+     *
+     * <p>Output standardized tree (ST) structure:</p>
+     * <pre>
+     *    STAssign
+     *       /     \
+     * FunctionName  STLambda
+     *               /      \
+     *          Param1    STLambda
+     *                    /      \
+     *               Param2    ...
+     *                         \
+     *                          BodyExpression
+     *
+     * <p>The lambdas are nested from left to right, corresponding to the function parameters.</p>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the function name (first child)

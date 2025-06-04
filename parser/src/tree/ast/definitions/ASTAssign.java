@@ -11,6 +11,21 @@ public class ASTAssign extends ASTNode {
         super("=");
     }
 
+    /**
+     * <p>Input AST structure:</p>
+     * <pre>
+     *    ASTAssign ("=")
+     *       /      \
+     *   Variable   Expression
+     * </pre>
+     *
+     * <p>After standardization, it transforms into an STAssign node:</p>
+     * <pre>
+     *    STAssign
+     *      /    \
+     * Variable Expression
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         if (currentNode.getFirstChild() == null || currentNode.getFirstChild().getNextSibling() == null) {

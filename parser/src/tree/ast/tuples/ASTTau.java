@@ -6,37 +6,34 @@ import tree.st.STNode;
 import tree.st.nonterminals.STTau;
 import utils.FCNSNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents a tuple node in the AST, corresponding to the 'tau' construct.
+ */
 public class ASTTau extends ASTNode {
     public ASTTau() {
         super("tau");
     }
 
+    /**
+     * <p>Conceptually, the input AST tree looks like:
+     * <pre>
+     *    ASTTau (tau)
+     *       /  |  \
+     *     e1  e2  e3 ...
+     * </pre>
+     *
+     * And after standardization, it becomes:
+     * <pre>
+     *     STTau
+     *      /  |  \
+     *    e1  e2  e3 ...
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
-        // Create the standardized tau node
-        FCNSNode<STNode> stTau = new FCNSNode<>(new STTau());
-
-        // Standardize all children (Ta elements)
-        FCNSNode<ASTNode> child = currentNode.getFirstChild();
-        FCNSNode<STNode> previousSTChild = null;
-
-        while (child != null) {
-            // Standardize the current child
-            FCNSNode<STNode> standardizedChild = helper.standardizeChild(child);
-
-            // Build the sibling chain
-            if (previousSTChild == null) {
-                // First child becomes the head
-                stTau.setFirstChild(standardizedChild);
-            } else {
-                // Link to previous sibling
-                previousSTChild.setNextSibling(standardizedChild);
-            }
-
-            previousSTChild = standardizedChild;
-            child = child.getNextSibling();
-        }
-
-        return stTau;
+        return standardizeListLike(currentNode, new STTau(), helper);
     }
 }

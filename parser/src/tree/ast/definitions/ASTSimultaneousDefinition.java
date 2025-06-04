@@ -14,6 +14,36 @@ public class ASTSimultaneousDefinition extends ASTNode {
         super("and");
     }
 
+    /**
+     * <p>The input AST structure looks like a list of assignment nodes under an "and" node:
+     * <pre>
+     *    ASTSimultaneousDefinition ("and")
+     *       /       |       \
+     *   (X1 = E1) (X2 = E2) ... (Xn = En)
+     * </pre>
+     *
+     * <p>After standardization, it transforms into a single STAssign node where:
+     * <ul>
+     *   <li>The left child is an STComma node holding all the identifiers (X1, X2, ..., Xn).</li>
+     *   <li>The right child is an STTau node holding all the expressions (E1, E2, ..., En).</li>
+     * </ul>
+     *
+     * <pre>
+     *   STAssign
+     *     /     \
+     *  STComma  STTau
+     *   / | ...  / | ...
+     * X1 X2 ... E1 E2 ...
+     * </pre>
+     * Standardizes the "and" node by:
+     * <ol>
+     *   <li>Standardizing each child assignment node.</li>
+     *   <li>Verifying each child standardizes to an '=' node with an identifier on the left side.</li>
+     *   <li>Collecting all identifiers into an STComma node.</li>
+     *   <li>Collecting all right-hand side expressions into an STTau node.</li>
+     *   <li>Creating an STAssign node with the STComma as left child and STTau as right child.</li>
+     * </ol>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         STAssign assign = new STAssign();

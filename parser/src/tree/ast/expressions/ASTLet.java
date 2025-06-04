@@ -12,6 +12,23 @@ public class ASTLet extends ASTNode {
         super("let");
     }
 
+    /**
+     * <p>The input AST structure looks like:
+     * <pre>
+     *    ASTLet ("let")
+     *       /        \
+     *   (X = E)       P
+     * </pre>
+     *
+     * After standardization, it becomes:
+     * <pre>
+     *    STGamma
+     *      /    \
+     *  STLambda   E
+     *     / \
+     *    X   P
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the binding and body parts

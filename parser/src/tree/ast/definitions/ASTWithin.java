@@ -8,11 +8,39 @@ import tree.st.nonterminals.STGamma;
 import tree.st.nonterminals.STLambda;
 import utils.FCNSNode;
 
+/**
+ * Represents a "within" definition in the AST, which combines two assignment definitions
+ * into a nested lambda and application structure.
+ *
+ * <p>Conceptually, this represents the definition:
+ * <br> X2 = (lambda X1 . E2) E1
+ *
+ * @see tree.ast.ASTNode
+ */
 public class ASTWithin extends ASTNode {
     public ASTWithin() {
         super("within");
     }
 
+    /**
+     * <p>The input AST structure for a "within" node looks like:
+     * <pre>
+     *    ASTWithin ("within")
+     *       /              \
+     *    (X1 = E1)        (X2 = E2)
+     * </pre>
+     *
+     * <p>After standardization, this is transformed into an STAssign node:
+     * <pre>
+     *    STAssign
+     *       /       \
+     *     X2     STGamma
+     *               /     \
+     *          STLambda    E1
+     *            /    \
+     *          X1      E2
+     * </pre>
+     */
     @Override
     public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Standardize both children of the "within" node

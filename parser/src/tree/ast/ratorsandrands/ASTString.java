@@ -8,10 +8,10 @@ import utils.FCNSNode;
 import utils.StringUtils;
 
 public class ASTString extends ASTNode {
-    private final String value;     // Already unescaped string from scanner
+    private final String value;
 
     public ASTString(String value) {
-        super("<STR:'" + StringUtils.escape(value) + "'>"); // Escape for debug/AST printing
+        super("<STR:'" + StringUtils.escape(value) + "'>");
         this.value = value;
     }
 
