@@ -1,8 +1,8 @@
 package tree.ast.variables;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STComma;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STComma;
 import tree.st.STNode;
 import utils.FCNSNode;
 

@@ -1,7 +1,11 @@
 package tree.ast.definitions;
 
+import standardizer.STBuilder;
 import tree.ast.ASTNode;
 import tree.st.*;
+import tree.st.nonterminals.STAssign;
+import tree.st.nonterminals.STGamma;
+import tree.st.nonterminals.STLambda;
 import utils.FCNSNode;
 
 public class ASTWithin extends ASTNode {

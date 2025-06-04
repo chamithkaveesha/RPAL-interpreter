@@ -1,10 +1,11 @@
-package tree.st;
+package tree.st.nonterminals;
 
+import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
 
-public class STComma extends STNode {
-    public STComma() {
-        super(",");
+public class STAssign extends STNode {
+    public STAssign() {
+        super("=");
     }
 
     @Override

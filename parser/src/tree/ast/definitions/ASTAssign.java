@@ -1,8 +1,8 @@
 package tree.ast.definitions;
 
 import tree.ast.ASTNode;
-import tree.st.STAssign;
-import tree.st.STBuilder;
+import tree.st.nonterminals.STAssign;
+import standardizer.STBuilder;
 import tree.st.STNode;
 import utils.FCNSNode;
 

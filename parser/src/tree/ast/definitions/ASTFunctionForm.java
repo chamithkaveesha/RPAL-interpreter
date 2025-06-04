@@ -1,10 +1,10 @@
 package tree.ast.definitions;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
+import standardizer.STBuilder;
 import tree.st.STNode;
-import tree.st.STAssign;
-import tree.st.STLambda;
+import tree.st.nonterminals.STAssign;
+import tree.st.nonterminals.STLambda;
 import utils.FCNSNode;
 import java.util.Stack;
 

@@ -1,7 +1,7 @@
 package tree.ast;
 
 import tree.Node;
-import tree.st.STBuilder;
+import standardizer.STBuilder;
 import tree.st.STNode;
 import utils.FCNSNode;
 

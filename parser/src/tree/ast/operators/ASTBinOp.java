@@ -1,8 +1,8 @@
 package tree.ast.operators;
 
 import tree.ast.ASTNode;
-import tree.st.STBinOp;
-import tree.st.STBuilder;
+import tree.st.nonterminals.STBinOp;
+import standardizer.STBuilder;
 import tree.st.STNode;
 import utils.FCNSNode;
 

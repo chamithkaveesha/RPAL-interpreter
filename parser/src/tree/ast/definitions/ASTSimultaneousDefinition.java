@@ -1,7 +1,11 @@
 package tree.ast.definitions;
 
+import standardizer.STBuilder;
 import tree.ast.ASTNode;
 import tree.st.*;
+import tree.st.nonterminals.STAssign;
+import tree.st.nonterminals.STComma;
+import tree.st.nonterminals.STTau;
 import tree.st.terminals.STIdentifier;
 import utils.FCNSNode;
 

@@ -1,7 +1,7 @@
 package tree.ast.ratorsandrands;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
+import standardizer.STBuilder;
 import tree.st.terminals.STNil;
 import tree.st.STNode;
 import utils.FCNSNode;

@@ -1,8 +1,8 @@
 package tree.ast.tuples;
 
 import tree.ast.ASTNode;
-import tree.st.STAug;
-import tree.st.STBuilder;
+import tree.st.nonterminals.STAug;
+import standardizer.STBuilder;
 import tree.st.STNode;
 import utils.FCNSNode;
 

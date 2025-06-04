@@ -1,8 +1,8 @@
 package tree.ast.ratorsandrands;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STGamma;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STGamma;
 import tree.st.STNode;
 import utils.FCNSNode;
 

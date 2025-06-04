@@ -8,7 +8,7 @@ import parser.Parser;
 import parser.RPALParser;
 import scanner.*;
 import standardizer.RPALStandardizer;
-import tree.ast.ASTBuilder;
+import parser.ASTBuilder;
 import tree.ast.ASTNode;
 import tree.st.STNode;
 import tree.transform.ControlStructure;

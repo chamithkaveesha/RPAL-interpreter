@@ -1,10 +1,10 @@
 package tree.ast.expressions;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STGamma;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STGamma;
 import tree.st.STNode;
-import tree.st.STLambda;
+import tree.st.nonterminals.STLambda;
 import utils.FCNSNode;
 
 public class ASTLet extends ASTNode {

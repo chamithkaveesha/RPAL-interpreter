@@ -1,9 +1,9 @@
 package tree.ast.tuples;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
+import standardizer.STBuilder;
 import tree.st.STNode;
-import tree.st.STTau;
+import tree.st.nonterminals.STTau;
 import utils.FCNSNode;
 
 public class ASTTau extends ASTNode {

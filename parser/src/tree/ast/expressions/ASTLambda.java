@@ -1,8 +1,8 @@
 package tree.ast.expressions;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STLambda;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STLambda;
 import tree.st.STNode;
 import utils.FCNSNode;
 
