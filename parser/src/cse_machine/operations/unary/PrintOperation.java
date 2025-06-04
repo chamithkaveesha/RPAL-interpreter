@@ -7,6 +7,7 @@ public class PrintOperation implements UnaryOperation {
     // FIXME: do we need to return this
     @Override
     public DataStackElement apply(StackElement arg) {
+        // TODO: this need to be changed to print to the file
         System.out.println(arg.toString());
         return new DataStackElement(DataStackElement.Type.STRING, arg.toString());
     }
