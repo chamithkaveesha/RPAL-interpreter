@@ -12,12 +12,12 @@ public class ASTLambda extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Lambda node is not properly linked to the AST.");
         }
 
-        FCNSNode<ASTNode> currentChild = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> currentChild = currentNode.getFirstChild();
         if (currentChild == null) {
             throw new IllegalStateException("Lambda must have at least one bound variable and a body");
         }
@@ -50,7 +50,7 @@ public class ASTLambda extends ASTNode {
         if (currentLambda == null) {
             // Single variable case
             firstLambda = new FCNSNode<>(new STLambda());
-            firstLambda.setFirstChild(helper.standardizeChild(getTreeNode().getFirstChild()));
+            firstLambda.setFirstChild(helper.standardizeChild(currentNode.getFirstChild()));
             firstLambda.getFirstChild().setNextSibling(stBody);
         } else {
             currentLambda.getFirstChild().setNextSibling(stBody);

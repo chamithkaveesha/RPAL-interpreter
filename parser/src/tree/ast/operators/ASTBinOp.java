@@ -12,13 +12,13 @@ public class ASTBinOp extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Binary operator node is not properly linked to the AST.");
         }
 
         // Get left and right operands from the AST
-        FCNSNode<ASTNode> leftOperand = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> leftOperand = currentNode.getFirstChild();
         FCNSNode<ASTNode> rightOperand = (leftOperand != null) ? leftOperand.getNextSibling() : null;
 
         // Standardize the operands (if they exist)

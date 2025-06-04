@@ -12,13 +12,13 @@ public class ASTAug extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Aug node is not properly linked to the AST.");
         }
 
         // Get exactly two children as per specification
-        FCNSNode<ASTNode> leftChild = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> leftChild = currentNode.getFirstChild();
         if (leftChild == null) {
             throw new IllegalStateException("Aug node must have at least one child");
         }

@@ -13,13 +13,13 @@ public class ASTLet extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Let node is not properly linked to the AST.");
         }
 
         // Get the binding and body parts
-        FCNSNode<ASTNode> bindingNode = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> bindingNode = currentNode.getFirstChild();
         FCNSNode<ASTNode> bodyNode = (bindingNode != null) ? bindingNode.getNextSibling() : null;
 
         if (bindingNode == null || bodyNode == null) {

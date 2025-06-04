@@ -11,13 +11,13 @@ public class ASTRecursiveFunction extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Tree node is not set for ASTRecursiveFunction.");
         }
 
         // Step 1: Get child (should be '=' node under 'rec')
-        FCNSNode<ASTNode> assignChild = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> assignChild = currentNode.getFirstChild();
         if (assignChild == null) {
             throw new IllegalStateException("Expected '=' under 'rec'.");
         }
@@ -33,7 +33,7 @@ public class ASTRecursiveFunction extends ASTNode {
         FCNSNode<STNode> rhs = lhs.getNextSibling();                 // E
 
         // Step 4: Re-standardize LHS identifier as lambda parameter
-        FCNSNode<ASTNode> lhsAst = assignChild.getData().getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> lhsAst = assignChild.getFirstChild();
         FCNSNode<STNode> paramX = helper.standardizeChild(lhsAst);   // X again
 
         // Step 5: Build STLambda node: lambda(X, E)

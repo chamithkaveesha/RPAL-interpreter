@@ -12,9 +12,14 @@ public class ASTList extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        FCNSNode<ASTNode> current = getTreeNode().getFirstChild();
-        if (current == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
+            throw new IllegalStateException("Comma node is not properly linked to the AST.");
+        }
+
+        FCNSNode<ASTNode> child = currentNode.getFirstChild();
+
+        if (child == null) {
             throw new IllegalStateException("ASTList node has no children.");
         }
 
@@ -23,8 +28,8 @@ public class ASTList extends ASTNode {
 
         // Process children and link them as siblings
         FCNSNode<STNode> previous = null;
-        while (current != null) {
-            FCNSNode<STNode> standardizedChild = helper.standardizeChild(current);
+        while (child != null) {
+            FCNSNode<STNode> standardizedChild = helper.standardizeChild(child);
 
             if (previous == null) {
                 commaNode.setFirstChild(standardizedChild);
@@ -33,7 +38,7 @@ public class ASTList extends ASTNode {
             }
 
             previous = standardizedChild;
-            current = current.getNextSibling();
+            child = child.getNextSibling();
         }
 
         return commaNode;

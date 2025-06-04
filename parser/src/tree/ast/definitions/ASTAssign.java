@@ -12,13 +12,13 @@ public class ASTAssign extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null || getTreeNode().getFirstChild() == null || getTreeNode().getFirstChild().getNextSibling() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getFirstChild() == null || currentNode.getFirstChild().getNextSibling() == null) {
             throw new IllegalStateException("Assign node must have two children: a variable and an expression.");
         }
 
         // Get the two children: variable and expression
-        FCNSNode<ASTNode> varNode = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> varNode = currentNode.getFirstChild();
         FCNSNode<ASTNode> exprNode = varNode.getNextSibling();
 
         // Standardize both

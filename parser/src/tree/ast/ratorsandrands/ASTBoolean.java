@@ -18,7 +18,7 @@ public class ASTBoolean extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // For leaf nodes, just create the corresponding ST node with no children
         return new FCNSNode<>(new STBoolean(value));
     }

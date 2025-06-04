@@ -13,22 +13,24 @@ public class ASTFunctionApplication extends ASTNode {
 
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
+            throw new IllegalStateException("Gamma node is not properly linked to the AST.");
+        }
+
         FCNSNode<STNode> stGamma = new FCNSNode<>(new STGamma());
 
-        if (treeNode != null) {
-            FCNSNode<ASTNode> astChild = treeNode.getFirstChild();
-            if (astChild != null) {
-                // First child: function
-                FCNSNode<STNode> stFunction = helper.standardizeChild(astChild);
-                stGamma.setFirstChild(stFunction);
+        FCNSNode<ASTNode> astChild = currentNode.getFirstChild();
+        if (astChild != null) {
+            // First child: function
+            FCNSNode<STNode> stFunction = helper.standardizeChild(astChild);
+            stGamma.setFirstChild(stFunction);
 
-                // Second child: argument (if exists)
-                FCNSNode<ASTNode> astArg = astChild.getNextSibling();
-                if (astArg != null) {
-                    FCNSNode<STNode> stArg = helper.standardizeChild(astArg);
-                    stFunction.setNextSibling(stArg);
-                }
+            // Second child: argument (if exists)
+            FCNSNode<ASTNode> astArg = astChild.getNextSibling();
+            if (astArg != null) {
+                FCNSNode<STNode> stArg = helper.standardizeChild(astArg);
+                stFunction.setNextSibling(stArg);
             }
         }
 

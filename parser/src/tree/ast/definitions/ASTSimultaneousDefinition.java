@@ -11,8 +11,8 @@ public class ASTSimultaneousDefinition extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Simultaneous definition node is not properly linked to the AST.");
         }
 
@@ -28,12 +28,12 @@ public class ASTSimultaneousDefinition extends ASTNode {
         FCNSNode<STNode> tauNode = new FCNSNode<>(tau);
         tau.setTreeNode(tauNode);
 
-        FCNSNode<ASTNode> child = this.getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> child = currentNode.getFirstChild();
 
         while (child != null) {
-            child.getData().setTreeNode(child);
+//            child.getData().setTreeNode(child);
 
-            FCNSNode<STNode> standardizedChild = child.getData().standardize(helper);
+            FCNSNode<STNode> standardizedChild = child.getData().standardize(child, helper);
 
             if (standardizedChild == null || standardizedChild.getData() == null) {
                 throw new IllegalStateException("Standardized child is null or has no data.");

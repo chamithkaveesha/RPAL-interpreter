@@ -10,9 +10,12 @@ public class ASTWithin extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
+            throw new IllegalStateException("Within node is not properly linked to the AST.");
+        }
         // Standardize both children of the "within" node
-        FCNSNode<ASTNode> astFirstAssign = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> astFirstAssign = currentNode.getFirstChild();
         FCNSNode<ASTNode> astSecondAssign = astFirstAssign.getNextSibling();
 
         FCNSNode<STNode> stdFirstAssign = helper.standardizeChild(astFirstAssign);

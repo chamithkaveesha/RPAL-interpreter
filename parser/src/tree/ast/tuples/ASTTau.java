@@ -12,8 +12,8 @@ public class ASTTau extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Tau node is not properly linked to the AST.");
         }
 
@@ -21,24 +21,24 @@ public class ASTTau extends ASTNode {
         FCNSNode<STNode> stTau = new FCNSNode<>(new STTau());
 
         // Standardize all children (Ta elements)
-        FCNSNode<ASTNode> currentASTChild = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> child = currentNode.getFirstChild();
         FCNSNode<STNode> previousSTChild = null;
 
-        while (currentASTChild != null) {
+        while (child != null) {
             // Standardize the current child
-            FCNSNode<STNode> stChild = helper.standardizeChild(currentASTChild);
+            FCNSNode<STNode> standardizedChild = helper.standardizeChild(child);
 
             // Build the sibling chain
             if (previousSTChild == null) {
                 // First child becomes the head
-                stTau.setFirstChild(stChild);
+                stTau.setFirstChild(standardizedChild);
             } else {
                 // Link to previous sibling
-                previousSTChild.setNextSibling(stChild);
+                previousSTChild.setNextSibling(standardizedChild);
             }
 
-            previousSTChild = stChild;
-            currentASTChild = currentASTChild.getNextSibling();
+            previousSTChild = standardizedChild;
+            child = child.getNextSibling();
         }
 
         return stTau;

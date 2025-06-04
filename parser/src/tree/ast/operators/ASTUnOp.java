@@ -12,13 +12,13 @@ public class ASTUnOp extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
+    public FCNSNode<STNode> standardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode == null || currentNode.getData() == null) {
             throw new IllegalStateException("Unary operator node is not properly linked to the AST.");
         }
 
         // Get the operand (unary operators have exactly one child)
-        FCNSNode<ASTNode> astOperand = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> astOperand = currentNode.getFirstChild();
 
         // Standardize the operand
         FCNSNode<STNode> stOperand = (astOperand != null) ? helper.standardizeChild(astOperand) : null;
