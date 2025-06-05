@@ -82,7 +82,7 @@ public class RPALParser implements Parser {
                 int n = 1;
                 Vb();
                 // Here use available symbols for Vb: is it not?
-                // in ast, as it seems lambda goes for more than two symbols, function definition
+                // in ast, as it seems, lambda goes for more than two symbols, function definition
                 while(nextTokenType == TokenType.IDENTIFIER || nextTokenType == TokenType.OPEN_BRACKET){
                     Vb();
                     n++;
@@ -338,7 +338,7 @@ public class RPALParser implements Parser {
         }
     }
 
-    // is this the way
+    // is this the way?
     private void Dr(){
         if (nextTokenType == TokenType.REC){
             read(TokenType.REC);
@@ -350,9 +350,14 @@ public class RPALParser implements Parser {
         }
     }
 
-    // TODO: verify this
     private void Db(){
         switch (nextTokenType){
+            // If open bracket, no doubt
+            case OPEN_BRACKET:
+                read(TokenType.OPEN_BRACKET);
+                D();
+                read(TokenType.CLOSE_BRACKET);
+                break;
             // 2 steps look ahead needed here
             case IDENTIFIER:
                 read(TokenType.IDENTIFIER);
@@ -368,26 +373,13 @@ public class RPALParser implements Parser {
                     astBuilder.buildTreeOrdered(new ASTFunctionForm(), n + VbCount + 1);
                     break;
                 }
-                if (nextTokenType == TokenType.EQUAL){
-                    read(TokenType.EQUAL);
-                    E();
-                    astBuilder.buildTreeOrdered(new ASTAssign(), 2);
-                    break;
-                }
+                // already read one identifier
                 if (nextTokenType == TokenType.COMMA){
-                    do {
-                        read(TokenType.COMMA);
-                        read(TokenType.IDENTIFIER);
-                        n++;
-                    } while (nextTokenType == TokenType.COMMA);
-                    E();
-                    astBuilder.buildTreeOrdered(new ASTList(), n + 1);
+                    Vl();
                 }
-                break;
-            case OPEN_BRACKET:
-                read(TokenType.OPEN_BRACKET);
-                D();
-                read(TokenType.CLOSE_BRACKET);
+                read(TokenType.EQUAL);
+                E();
+                astBuilder.buildTreeOrdered(new ASTAssign(), 2);
                 break;
             default:
                 break;
@@ -407,6 +399,8 @@ public class RPALParser implements Parser {
                     astBuilder.buildTree(new ASTEmpty(), 0);
                     break;
                 }
+                // need to add one identifier read because the first one is not read in Vl()
+                read(TokenType.IDENTIFIER);
                 Vl();
                 read(TokenType.CLOSE_BRACKET);
                 break;
@@ -416,7 +410,7 @@ public class RPALParser implements Parser {
     }
 
     private void Vl(){
-        read(TokenType.IDENTIFIER);
+        // one identifier is already read, need to read the next set
         int n = 1;
         while (nextTokenType == TokenType.COMMA){
             read(TokenType.COMMA);
