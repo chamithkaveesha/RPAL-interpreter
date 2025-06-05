@@ -4,6 +4,7 @@ import cse_machine.Environment;
 import cse_machine.elements.stack.BinOpStackElement;
 import cse_machine.elements.stack.CurriedOperationStackElement;
 import cse_machine.elements.stack.UnOpStackElement;
+import cse_machine.io.OutputWriter;
 import cse_machine.operations.binary.*;
 import cse_machine.operations.two_step.ConcatenationOperation;
 import cse_machine.operations.unary.*;
@@ -37,8 +38,6 @@ public class PrimitiveEnvironmentFactory {
         env.setVariable("Stern", new UnOpStackElement("Stern", new SternOperation()));
         env.setVariable("Conc", new CurriedOperationStackElement<>(new ConcatenationOperation()));
 
-        env.setVariable("Print", new UnOpStackElement("Print", new PrintOperation()));
-
         // Bool
         env.setVariable("eq", new BinOpStackElement("eq", new EqualOperation()));
         env.setVariable("ne", new BinOpStackElement("ne", new NotEqualOperation()));
@@ -54,5 +53,11 @@ public class PrimitiveEnvironmentFactory {
         env.setVariable("ItoS", new UnOpStackElement("ItoS", new ItoSOperation()));
 
         return env;
+    }
+
+    public static void injectOutputWriter(Environment env, OutputWriter outputWriter) {
+        PrintOperation printOp = new PrintOperation(outputWriter);
+        env.setVariable("Print", new UnOpStackElement("Print", printOp));
+        env.setVariable("print", new UnOpStackElement("print", printOp));
     }
 }
