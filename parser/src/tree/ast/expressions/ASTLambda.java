@@ -1,8 +1,8 @@
 package tree.ast.expressions;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STLambda;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STLambda;
 import tree.st.STNode;
 import utils.FCNSNode;
 
@@ -11,33 +11,59 @@ public class ASTLambda extends ASTNode {
         super("lambda");
     }
 
+    /**
+     * <p>The input AST structure looks like:
+     * <pre>
+     *    ASTLambda ("lambda")
+     *       /       |       ...       \
+     *    var1     var2      ...       body
+     * </pre>
+     *
+     * <p>Where the first n children are bound variables and the last child is the lambda body.
+     *
+     * <p>After standardization, it becomes nested STLambda nodes representing the lambda abstractions:
+     * <pre>
+     *    STLambda
+     *       /      \
+     *    var1    STLambda
+     *              /     \
+     *           var2    ... STLambda
+     *                            /    \
+     *                        varN     body
+     * </pre>
+     *
+     * <p>This method:
+     * <ul>
+     *   <li>Standardizes each variable child into a corresponding STNode.</li>
+     *   <li>Nests lambda abstractions for multiple variables.</li>
+     *   <li>Attaches the standardized body as the final child of the innermost lambda.</li>
+     * </ul>
+     */
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
-            throw new IllegalStateException("Lambda node is not properly linked to the AST.");
-        }
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        FCNSNode<ASTNode> currentChild = currentNode.getFirstChild();
 
-        FCNSNode<ASTNode> currentChild = getTreeNode().getFirstChild();
         if (currentChild == null) {
             throw new IllegalStateException("Lambda must have at least one bound variable and a body");
         }
 
-        // Process variables and build nested lambdas
         FCNSNode<STNode> currentLambda = null;
         FCNSNode<STNode> firstLambda = null;
 
-        while (currentChild.getNextSibling() != null) { // While there are more variables
-            // Create new lambda node for this variable
+        // The ASTLambda children: variables... variables... body (last child)
+        // So loop until the child before the last, treating them as variables
+        while (currentChild.getNextSibling() != null) {
             FCNSNode<STNode> newLambda = new FCNSNode<>(new STLambda());
 
-            // Standardize the variable and set as first child
+            // Standardize current variable
             FCNSNode<STNode> stVar = helper.standardizeChild(currentChild);
+
             newLambda.setFirstChild(stVar);
 
             if (currentLambda == null) {
-                firstLambda = newLambda; // Remember the outermost lambda
+                firstLambda = newLambda;
             } else {
-                // Connect previous lambda's body to this new lambda
+                // Attach the new lambda as the body of previous lambda
                 currentLambda.getFirstChild().setNextSibling(newLambda);
             }
 
@@ -45,17 +71,25 @@ public class ASTLambda extends ASTNode {
             currentChild = currentChild.getNextSibling();
         }
 
-        // Standardize and attach the body to the innermost lambda
+        // Now currentChild is the body expression
         FCNSNode<STNode> stBody = helper.standardizeChild(currentChild);
-        if (currentLambda == null) {
-            // Single variable case
-            firstLambda = new FCNSNode<>(new STLambda());
-            firstLambda.setFirstChild(helper.standardizeChild(getTreeNode().getFirstChild()));
-            firstLambda.getFirstChild().setNextSibling(stBody);
-        } else {
-            currentLambda.getFirstChild().setNextSibling(stBody);
-        }
 
-        return firstLambda;
+        if (currentLambda == null) {
+            // Only one variable and one body
+            // Build lambda node with firstChild = variable and body = stBody
+            FCNSNode<STNode> singleLambda = new FCNSNode<>(new STLambda());
+
+            // Standardize variable (which is currentNode.getFirstChild())
+            FCNSNode<STNode> stVar = helper.standardizeChild(currentNode.getFirstChild());
+
+            singleLambda.setFirstChild(stVar);
+            stVar.setNextSibling(stBody);
+
+            return singleLambda;
+        } else {
+            // Attach body to innermost lambda
+            currentLambda.getFirstChild().setNextSibling(stBody);
+            return firstLambda;
+        }
     }
 }

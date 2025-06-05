@@ -1,10 +1,10 @@
 package tree.ast.definitions;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
+import standardizer.STBuilder;
 import tree.st.STNode;
-import tree.st.STAssign;
-import tree.st.STLambda;
+import tree.st.nonterminals.STAssign;
+import tree.st.nonterminals.STLambda;
 import utils.FCNSNode;
 import java.util.Stack;
 
@@ -13,14 +13,39 @@ public class ASTFunctionForm extends ASTNode {
         super("function_form");
     }
 
+    /**
+     * <p>Input AST structure:</p>
+     * <pre>
+     *    ASTFunctionForm ("function_form")
+     *         |
+     *         +-- FunctionName
+     *         +-- Param1
+     *         +-- Param2
+     *         +-- ...
+     *         \-- BodyExpression
+     * </pre>
+     *
+     * <p>The function is standardized by converting parameters and body into nested lambda expressions,
+     * and finally assigning the lambda expression to the function name.</p>
+     *
+     * <p>Output standardized tree (ST) structure:</p>
+     * <pre>
+     *    STAssign
+     *       /     \
+     * FunctionName  STLambda
+     *               /      \
+     *          Param1    STLambda
+     *                    /      \
+     *               Param2    ...
+     *                         \
+     *                          BodyExpression
+     *
+     * <p>The lambdas are nested from left to right, corresponding to the function parameters.</p>
+     */
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
-            throw new IllegalStateException("Function form node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the function name (first child)
-        FCNSNode<ASTNode> functionNameNode = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> functionNameNode = currentNode.getFirstChild();
         if (functionNameNode == null) {
             throw new IllegalStateException("Function must have a name");
         }
@@ -33,7 +58,7 @@ public class ASTFunctionForm extends ASTNode {
 
         // Use a stack to maintain parameter order
         Stack<FCNSNode<ASTNode>> paramStack = new Stack<>();
-        FCNSNode<ASTNode> bodyNode = current;
+        FCNSNode<ASTNode> bodyNode;
 
         // Push all parameters to stack (except last node which is body)
         while (current.getNextSibling() != null) {
@@ -43,10 +68,9 @@ public class ASTFunctionForm extends ASTNode {
         bodyNode = current; // Last node is the body
 
         // Standardize the body first
-        FCNSNode<STNode> stBody = helper.standardizeChild(bodyNode);
 
         // Build lambdas from left to right using the stack
-        FCNSNode<STNode> currentLambda = stBody;
+        FCNSNode<STNode> currentLambda = helper.standardizeChild(bodyNode);
         while (!paramStack.empty()) {
             FCNSNode<ASTNode> param = paramStack.pop();
             FCNSNode<STNode> stParam = helper.standardizeChild(param);

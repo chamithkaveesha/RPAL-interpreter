@@ -1,7 +1,11 @@
 package tree.ast.definitions;
 
+import standardizer.STBuilder;
 import tree.ast.ASTNode;
 import tree.st.*;
+import tree.st.nonterminals.STAssign;
+import tree.st.nonterminals.STGamma;
+import tree.st.nonterminals.STLambda;
 import tree.st.terminals.STYStar;
 import utils.FCNSNode;
 
@@ -10,14 +14,25 @@ public class ASTRecursiveFunction extends ASTNode {
         super("rec");
     }
 
+    /**
+     * <p>Example input AST under "rec":
+     * <pre>
+     * rec
+     *  |
+     *  =
+     * / \
+     * X  E
+     * </pre>
+     *
+     * <p>Standardization transforms this into:
+     * <pre>
+     * X = gamma(Y*, lambda(X, E))
+     * </pre>
+     */
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
-            throw new IllegalStateException("Tree node is not set for ASTRecursiveFunction.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Step 1: Get child (should be '=' node under 'rec')
-        FCNSNode<ASTNode> assignChild = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> assignChild = currentNode.getFirstChild();
         if (assignChild == null) {
             throw new IllegalStateException("Expected '=' under 'rec'.");
         }
@@ -33,7 +48,7 @@ public class ASTRecursiveFunction extends ASTNode {
         FCNSNode<STNode> rhs = lhs.getNextSibling();                 // E
 
         // Step 4: Re-standardize LHS identifier as lambda parameter
-        FCNSNode<ASTNode> lhsAst = assignChild.getData().getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> lhsAst = assignChild.getFirstChild();
         FCNSNode<STNode> paramX = helper.standardizeChild(lhsAst);   // X again
 
         // Step 5: Build STLambda node: lambda(X, E)

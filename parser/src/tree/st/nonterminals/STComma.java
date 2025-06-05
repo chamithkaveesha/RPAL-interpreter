@@ -1,17 +1,16 @@
-package tree.st.terminals;
+package tree.st.nonterminals;
 
-import cse_machine.elements.control.NilControlElement;
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;
 
-public class STNil extends STNode {
-    public STNil() {
-        super("<nil>");
+public class STComma extends STNode {
+    public STComma() {
+        super(",");
     }
 
     @Override
     public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
-        helper.addControlElement(new NilControlElement());
+
     }
 }

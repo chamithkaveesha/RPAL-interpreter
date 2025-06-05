@@ -1,25 +1,39 @@
 package tree.ast.expressions;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STGamma;
-import tree.st.STLambda;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STGamma;
+import tree.st.nonterminals.STLambda;
 import tree.st.STNode;
 import utils.FCNSNode;
+
 
 public class ASTWhere extends ASTNode {
     public ASTWhere() {
         super("where");
     }
 
+    /**
+     * <p>The input AST structure looks like:
+     * <pre>
+     *    ASTWhere ("where")
+     *       /        \
+     *      E       (X = F)
+     * </pre>
+     *
+     * After standardization, it becomes:
+     * <pre>
+     *     STGamma
+     *       /     \
+     *   STLambda   F
+     *      / \
+     *     X    E
+     * </pre>
+     */
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
-            throw new IllegalStateException("Where node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the two main children: E and the definition (X = F)
-        FCNSNode<ASTNode> bodyNode = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> bodyNode = currentNode.getFirstChild();
         FCNSNode<ASTNode> bindingNode = (bodyNode != null) ? bodyNode.getNextSibling() : null;
 
         if (bodyNode == null || bindingNode == null) {

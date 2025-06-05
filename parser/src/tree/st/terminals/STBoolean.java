@@ -3,17 +3,14 @@ package tree.st.terminals;
 import cse_machine.elements.control.BooleanControlElement;
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
+import utils.FCNSNode;
 
 public class STBoolean extends STNode {
     private final boolean value;
 
     public STBoolean(Boolean value) {
-        super(value != null ? "<" + value.toString() + ">" : throwIllegalArgumentException());
+        super(value != null ? "<" + value + ">" : throwIllegalArgumentException());
         this.value = value;
-    }
-
-    private boolean getValue() {
-        return value;
     }
 
     private static String throwIllegalArgumentException() {
@@ -21,7 +18,7 @@ public class STBoolean extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
         helper.addControlElement(new BooleanControlElement(value));
     }
 }
