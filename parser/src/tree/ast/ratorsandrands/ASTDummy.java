@@ -8,7 +8,7 @@ import utils.FCNSNode;
 
 public class ASTDummy extends ASTNode {
     public ASTDummy() {
-        super("dummy");
+        super("<dummy>");
     }
 
     @Override

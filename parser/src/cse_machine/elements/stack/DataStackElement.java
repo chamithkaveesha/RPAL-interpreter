@@ -8,6 +8,10 @@ public class DataStackElement extends StackElement {
 
     public DataStackElement(Type type, Object value) {
         this.type = type;
+        if (type == Type.DUMMY) {
+            this.value = "";
+            return;
+        }
         this.value = value;
     }
 
