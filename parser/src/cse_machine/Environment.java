@@ -67,6 +67,6 @@ public class Environment {
     @Override
     public String toString() {
         String parentInfo = (parent == null) ? "null" : "Env#" + parent.getId();
-        return "<Env#" + id + " " + variables.toString() + " | Parent: " + parentInfo + ">";
+        return "<Env#" + id + " | Parent: " + parentInfo + ">";
     }
 }

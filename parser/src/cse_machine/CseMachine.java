@@ -172,17 +172,35 @@ public class CseMachine implements ControlElementVisitor{
     @Override
     public void visitTau(TauControlElement element) {
         int count = element.getNumberOfElements();
-
-        if (stack.size() < count) {
-            throw new IllegalStateException("Not enough elements on the stack for tau(" + count + ")");
-        }
-
         List<StackElement> tupleElements = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            tupleElements.add(stack.pop()); // Reverse order
+        List<StackElement> preservedEnvironmentElements = new ArrayList<>();
+
+        while (tupleElements.size() < count) {
+            if (stack.isEmpty()) {
+                throw new IllegalStateException("Not enough elements on the stack for tau(" + count + ")");
+            }
+
+            StackElement top = stack.pop();
+
+            if (top instanceof EnvironmentStackElement) {
+                preservedEnvironmentElements.add(top); // Store to re-add later
+            } else {
+                tupleElements.add(top); // This is a data element for the tuple
+            }
         }
 
-        TupleStackElement tuple = new TupleStackElement(tupleElements);
+        // Restore preserved environment elements to the stack in correct order (top-most last)
+        for (int i = preservedEnvironmentElements.size() - 1; i >= 0; i--) {
+            stack.push(preservedEnvironmentElements.get(i));
+        }
+
+        // Reverse tuple elements to maintain correct order (as they were popped LIFO)
+        List<StackElement> tupleElementsInOrder = new ArrayList<>();
+        for (int i = tupleElements.size() - 1; i >= 0; i--) {
+            tupleElementsInOrder.add(tupleElements.get(i));
+        }
+
+        TupleStackElement tuple = new TupleStackElement(tupleElementsInOrder);
         stack.push(tuple);
     }
 
@@ -214,8 +232,7 @@ public class CseMachine implements ControlElementVisitor{
 
     @Override
     public void visitDummy(DummyControlElement element) {
-//        throw new UnsupportedOperationException("Dummy element should not be executed.");
-        // Do nothing
+        stack.push(new DataStackElement(DataStackElement.Type.DUMMY, null));
     }
 
     @Override
