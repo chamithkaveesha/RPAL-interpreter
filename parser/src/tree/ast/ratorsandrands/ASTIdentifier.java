@@ -1,7 +1,7 @@
 package tree.ast.ratorsandrands;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
+import standardizer.STBuilder;
 import tree.st.terminals.STIdentifier;
 import tree.st.STNode;
 import utils.FCNSNode;
@@ -14,7 +14,7 @@ public class ASTIdentifier extends ASTNode {
     }
 
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         return new FCNSNode<>(new STIdentifier(name));
     }
 

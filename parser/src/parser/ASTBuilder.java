@@ -1,5 +1,6 @@
-package tree.ast;
+package parser;
 
+import tree.ast.ASTNode;
 import utils.FCNSNode;
 import java.util.Stack;
 

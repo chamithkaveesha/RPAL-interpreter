@@ -1,24 +1,44 @@
 package tree.ast.operators;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STGamma;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STGamma;
 import tree.st.STNode;
 import utils.FCNSNode;
+
+/**
+ * Represents an infix function application node in the AST.
+ *
+ * <p>This node models expressions of the form {@code E1 @ F E2}, where
+ * {@code E1} and {@code E2} are operands and {@code F} is a function applied infix.
+ */
 
 public class ASTInfixFunction extends ASTNode {
     public ASTInfixFunction() {
         super("@");
     }
 
+    /**
+     * <p>The input AST looks like:
+     * <pre>
+     *    ASTInfixFunction (@)
+     *       /      |       \
+     *     E1       F        E2
+     * </pre>
+     *
+     * After standardization, the structure is:
+     * <pre>
+     *     STGamma
+     *      /     \
+     *   STGamma   E2
+     *    /    \
+     *   F      E1
+     * </pre>
+     */
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
-            throw new IllegalStateException("Infix function node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the three children: left operand, function, right operand
-        FCNSNode<ASTNode> leftOperand = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> leftOperand = currentNode.getFirstChild();
         FCNSNode<ASTNode> functionNode = (leftOperand != null) ? leftOperand.getNextSibling() : null;
         FCNSNode<ASTNode> rightOperand = (functionNode != null) ? functionNode.getNextSibling() : null;
 

@@ -1,8 +1,8 @@
 package tree.ast.definitions;
 
 import tree.ast.ASTNode;
-import tree.st.STAssign;
-import tree.st.STBuilder;
+import tree.st.nonterminals.STAssign;
+import standardizer.STBuilder;
 import tree.st.STNode;
 import utils.FCNSNode;
 
@@ -11,14 +11,29 @@ public class ASTAssign extends ASTNode {
         super("=");
     }
 
+    /**
+     * <p>Input AST structure:</p>
+     * <pre>
+     *    ASTAssign ("=")
+     *       /      \
+     *   Variable   Expression
+     * </pre>
+     *
+     * <p>After standardization, it transforms into an STAssign node:</p>
+     * <pre>
+     *    STAssign
+     *      /    \
+     * Variable Expression
+     * </pre>
+     */
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null || getTreeNode().getFirstChild() == null || getTreeNode().getFirstChild().getNextSibling() == null) {
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
+        if (currentNode.getFirstChild() == null || currentNode.getFirstChild().getNextSibling() == null) {
             throw new IllegalStateException("Assign node must have two children: a variable and an expression.");
         }
 
         // Get the two children: variable and expression
-        FCNSNode<ASTNode> varNode = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> varNode = currentNode.getFirstChild();
         FCNSNode<ASTNode> exprNode = varNode.getNextSibling();
 
         // Standardize both

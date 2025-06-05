@@ -1,0 +1,5 @@
+let rec recoddEven x = x eq 0 -> 'even' | x eq 1 -> 'odd' | recoddEven(x-2)
+and
+evenOdd x = x - (x/2)*2 eq 1 -> 'Odd' | 'Even'
+in
+Print(evenOdd 1 , recoddEven 4)

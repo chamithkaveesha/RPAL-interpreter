@@ -200,7 +200,8 @@ public class CseMachine implements ControlElementVisitor{
 
     @Override
     public void visitDummy(DummyControlElement element) {
-        throw new UnsupportedOperationException("Dummy element should not be executed.");
+//        throw new UnsupportedOperationException("Dummy element should not be executed.");
+        // Do nothing
     }
 
     @Override

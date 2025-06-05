@@ -1,10 +1,10 @@
 package tree.ast.expressions;
 
 import tree.ast.ASTNode;
-import tree.st.STBuilder;
-import tree.st.STGamma;
+import standardizer.STBuilder;
+import tree.st.nonterminals.STGamma;
 import tree.st.STNode;
-import tree.st.STLambda;
+import tree.st.nonterminals.STLambda;
 import utils.FCNSNode;
 
 public class ASTLet extends ASTNode {
@@ -12,14 +12,27 @@ public class ASTLet extends ASTNode {
         super("let");
     }
 
+    /**
+     * <p>The input AST structure looks like:
+     * <pre>
+     *    ASTLet ("let")
+     *       /        \
+     *   (X = E)       P
+     * </pre>
+     *
+     * After standardization, it becomes:
+     * <pre>
+     *    STGamma
+     *      /    \
+     *  STLambda   E
+     *     / \
+     *    X   P
+     * </pre>
+     */
     @Override
-    public FCNSNode<STNode> standardize(STBuilder.StandardizationHelper helper) {
-        if (getTreeNode() == null) {
-            throw new IllegalStateException("Let node is not properly linked to the AST.");
-        }
-
+    public FCNSNode<STNode> doStandardize(FCNSNode<ASTNode> currentNode, STBuilder.StandardizationHelper helper) {
         // Get the binding and body parts
-        FCNSNode<ASTNode> bindingNode = getTreeNode().getFirstChild();
+        FCNSNode<ASTNode> bindingNode = currentNode.getFirstChild();
         FCNSNode<ASTNode> bodyNode = (bindingNode != null) ? bindingNode.getNextSibling() : null;
 
         if (bindingNode == null || bodyNode == null) {

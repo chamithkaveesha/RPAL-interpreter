@@ -1,7 +1,8 @@
-package tree.st;
+package tree.st.nonterminals;
 
 import cse_machine.elements.control.BetaControlElement;
 import cse_machine.elements.control.DeltaControlElement;
+import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
 import utils.FCNSNode;
 
@@ -11,13 +12,12 @@ public class STCondition extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
-        FCNSNode<STNode> thisNode = this.getTreeNode();
-        if (thisNode == null) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
+        if (currentNode == null) {
             throw new IllegalStateException("STCondition node's tree node is not set");
         }
 
-        FCNSNode<STNode> conditionNode = thisNode.getFirstChild();
+        FCNSNode<STNode> conditionNode = currentNode.getFirstChild();
         FCNSNode<STNode> trueBranchNode = (conditionNode != null) ? conditionNode.getNextSibling() : null;
         FCNSNode<STNode> falseBranchNode = (trueBranchNode != null) ? trueBranchNode.getNextSibling() : null;
 
@@ -33,7 +33,7 @@ public class STCondition extends STNode {
 
         // Build control structure for TRUE branch in new level
         helper.setCurrentLevel(trueLevel);
-        trueBranchNode.getData().buildControlStructure(helper);
+        trueBranchNode.getData().buildControlStructure(trueBranchNode, helper);
 
         // Return to previous level
         helper.setCurrentLevel(previousLevel);
@@ -44,7 +44,7 @@ public class STCondition extends STNode {
 
         // Build control structure for FALSE branch in new level
         helper.setCurrentLevel(falseLevel);
-        falseBranchNode.getData().buildControlStructure(helper);
+        falseBranchNode.getData().buildControlStructure(falseBranchNode, helper);
 
         // Return to previous level
         helper.setCurrentLevel(previousLevel);
@@ -53,6 +53,6 @@ public class STCondition extends STNode {
         helper.addControlElement(new BetaControlElement());
 
         // 4. Build control structure for condition in current level
-        conditionNode.getData().buildControlStructure(helper);
+        conditionNode.getData().buildControlStructure(conditionNode, helper);
     }
 }

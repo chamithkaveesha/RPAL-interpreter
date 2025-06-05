@@ -2,6 +2,7 @@ package tree.st.terminals;
 
 import tree.st.STNode;
 import tree.transform.ControlStructureBuilderHelper;
+import utils.FCNSNode;
 
 // TODO; check proper execution
 public class STEmpty extends STNode {
@@ -10,7 +11,7 @@ public class STEmpty extends STNode {
     }
 
     @Override
-    public void buildControlStructure(ControlStructureBuilderHelper helper) {
+    public void buildControlStructure(FCNSNode<STNode> currentNode, ControlStructureBuilderHelper helper) {
         // TODO
     }
 }
