@@ -1,6 +1,8 @@
 import cli.CLIArguments;
 import compiler.RPALCompiler;
+import compiler.RPALInterpreter;
 import cse_machine.CseMachine;
+import cse_machine.io.ConsoleOutputWriter;
 import tree.ast.ASTNode;
 import tree.st.STNode;
 import tree.transform.ControlStructure;
@@ -50,18 +52,22 @@ public class Main {
             }
         }
 
-        CseMachine machine = compiler.getCseMachine();
-        while (machine.getControl().hasNext()) {
-            if (cliArgs.shouldPrintCSEStates()) {
+        RPALInterpreter interpreter = new RPALInterpreter(compiler.getControlStructures(), new ConsoleOutputWriter());
+        CseMachine machine = interpreter.getCseMachine();
+
+
+        if (cliArgs.shouldPrintCSEStates()) {
+            while (true) {
                 System.out.println("--------------------------------------------------------");
                 System.out.println("Before step:\n" + machine);
-            }
 
-            machine.getControl().next().accept(machine);
-
-            if (cliArgs.shouldPrintCSEStates()) {
-                System.out.println("After step:\n" + machine);
+                boolean hasMore = machine.executeNextStep();
+                if (!hasMore) break;
             }
         }
+        else {
+            interpreter.run();
+        }
+
     }
 }

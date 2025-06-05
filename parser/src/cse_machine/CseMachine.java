@@ -20,6 +20,20 @@ public class CseMachine implements ControlElementVisitor{
         stack.initialize(environment);
     }
 
+    public boolean executeNextStep() {
+        if (!control.hasNext()) {
+            return false; // No more steps
+        }
+
+        ControlElement nextElement = control.next();
+        nextElement.accept(this);
+        return control.hasNext();
+    }
+
+    public void execute() {
+        while (executeNextStep());
+    }
+
     public Control getControl() {
         return control;
     }
@@ -253,4 +267,3 @@ public class CseMachine implements ControlElementVisitor{
         return sb.toString();
     }
 }
-

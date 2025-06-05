@@ -24,7 +24,6 @@ public class RPALCompiler {
     private FCNSNode<ASTNode> ast;
     private FCNSNode<STNode> st;
     private List<ControlStructure> controlStructures;
-    private CseMachine cseMachine;
 
     public RPALCompiler(String source) {
         this.source = source;
@@ -35,7 +34,6 @@ public class RPALCompiler {
         parse();
         standardize();
         buildControlStructures();
-        setupCseMachine();
     }
 
     private void tokenize() {
@@ -60,14 +58,6 @@ public class RPALCompiler {
         controlStructures = builder.build(st);
     }
 
-    private void setupCseMachine() {
-        Control control = new Control(controlStructures);
-        Stack stack = new Stack();
-        Environment primitiveEnvironment = PrimitiveEnvironmentFactory.create();
-        cseMachine = new CseMachine(control, stack, primitiveEnvironment);
-    }
-
-    // Public accessors
     public FCNSNode<ASTNode> getAST() {
         return ast;
     }
@@ -80,7 +70,4 @@ public class RPALCompiler {
         return controlStructures;
     }
 
-    public CseMachine getCseMachine() {
-        return cseMachine;
-    }
 }
