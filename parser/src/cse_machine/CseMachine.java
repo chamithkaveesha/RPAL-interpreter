@@ -194,13 +194,7 @@ public class CseMachine implements ControlElementVisitor{
             stack.push(preservedEnvironmentElements.get(i));
         }
 
-        // Reverse tuple elements to maintain correct order (as they were popped LIFO)
-        List<StackElement> tupleElementsInOrder = new ArrayList<>();
-        for (int i = tupleElements.size() - 1; i >= 0; i--) {
-            tupleElementsInOrder.add(tupleElements.get(i));
-        }
-
-        TupleStackElement tuple = new TupleStackElement(tupleElementsInOrder);
+        TupleStackElement tuple = new TupleStackElement(tupleElements);
         stack.push(tuple);
     }
 
