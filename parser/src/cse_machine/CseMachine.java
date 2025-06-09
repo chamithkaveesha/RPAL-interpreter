@@ -20,6 +20,20 @@ public class CseMachine implements ControlElementVisitor{
         stack.initialize(environment);
     }
 
+    public boolean executeNextStep() {
+        if (!control.hasNext()) {
+            return false; // No more steps
+        }
+
+        ControlElement nextElement = control.next();
+        nextElement.accept(this);
+        return control.hasNext();
+    }
+
+    public void execute() {
+        while (executeNextStep());
+    }
+
     public Control getControl() {
         return control;
     }
@@ -158,14 +172,26 @@ public class CseMachine implements ControlElementVisitor{
     @Override
     public void visitTau(TauControlElement element) {
         int count = element.getNumberOfElements();
+        List<StackElement> tupleElements = new ArrayList<>();
+        List<StackElement> preservedEnvironmentElements = new ArrayList<>();
 
-        if (stack.size() < count) {
-            throw new IllegalStateException("Not enough elements on the stack for tau(" + count + ")");
+        while (tupleElements.size() < count) {
+            if (stack.isEmpty()) {
+                throw new IllegalStateException("Not enough elements on the stack for tau(" + count + ")");
+            }
+
+            StackElement top = stack.pop();
+
+            if (top instanceof EnvironmentStackElement) {
+                preservedEnvironmentElements.add(top); // Store to re-add later
+            } else {
+                tupleElements.add(top); // This is a data element for the tuple
+            }
         }
 
-        List<StackElement> tupleElements = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            tupleElements.add(stack.pop()); // Reverse order
+        // Restore preserved environment elements to the stack in correct order (top-most last)
+        for (int i = preservedEnvironmentElements.size() - 1; i >= 0; i--) {
+            stack.push(preservedEnvironmentElements.get(i));
         }
 
         TupleStackElement tuple = new TupleStackElement(tupleElements);
@@ -200,8 +226,7 @@ public class CseMachine implements ControlElementVisitor{
 
     @Override
     public void visitDummy(DummyControlElement element) {
-//        throw new UnsupportedOperationException("Dummy element should not be executed.");
-        // Do nothing
+        stack.push(new DataStackElement(DataStackElement.Type.DUMMY, null));
     }
 
     @Override
@@ -253,4 +278,3 @@ public class CseMachine implements ControlElementVisitor{
         return sb.toString();
     }
 }
-

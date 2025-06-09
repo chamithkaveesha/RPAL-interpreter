@@ -7,7 +7,7 @@ import utils.FCNSNode;
 
 public class STDummy extends STNode {
     public STDummy() {
-        super("dummy");
+        super("<dummy>");
     }
 
     @Override
