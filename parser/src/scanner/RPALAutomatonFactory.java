@@ -1,4 +1,7 @@
-package automaton;
+package scanner;
+
+import automaton.FiniteAutomaton;
+import automaton.FiniteAutomatonBuilder;
 
 import java.util.List;
 import java.util.Set;
