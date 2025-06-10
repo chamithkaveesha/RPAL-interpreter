@@ -1,4 +1,7 @@
-package automaton;
+package scanner;
+
+import automaton.FiniteAutomaton;
+import automaton.FiniteAutomatonBuilder;
 
 import java.util.List;
 import java.util.Set;
@@ -49,6 +52,7 @@ public class RPALAutomatonFactory {    public static FiniteAutomaton createRPALA
             .withTransition("q7", getOperatorSymbols(), "q7")
             .withTransition("q7", getCommentSymbols(), "q7")
             .withTransition("q7", '\n', "q8")
+            .withTransition("q7", '\r', "q8")
             // operators: two steps
             .withTransition("q0", '-', "q13")
             .withTransition("q13", '>', "q14")
