@@ -33,36 +33,6 @@ jobs:
           sudo apt update
           sudo apt install -y wine32 unzip
 
-      - name: 📦 Download `rpal.zip` from GitHub release
-        id: download_rpal
-        uses: robinraju/release-downloader@v1.9
-        with:
-          repository: ${{ github.repository }}
-          tag:  thirdparty-interpreter
-          fileName: rpal.zip
-          out-file-path: test/interpreter
-
-      - name: 🧐 Verify `rpal.zip` exists
-        run: |
-          if [ ! -f test/interpreter/rpal.zip ]; then
-            echo "ERROR: rpal.zip not found in test/interpreter/"
-            ls -la test/interpreter
-            exit 1
-          fi
-
-      - name: 📂 Extract `rpal.zip` to temp folder
-        run: |
-          mkdir -p test/interpreter/temp_extract
-          unzip -o test/interpreter/rpal.zip -d test/interpreter/temp_extract
-
-      - name: 📦 Move inner contents if nested in 'rpal/' folder
-        run: |
-          if [ -d test/interpreter/temp_extract/rpal ]; then
-            mv test/interpreter/temp_extract/rpal/* test/interpreter/
-          else
-            mv test/interpreter/temp_extract/* test/interpreter/
-          fi
-
       - name: 📋 List contents after extraction
         run: ls -la test/interpreter
 
